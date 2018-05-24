@@ -1,0 +1,9 @@
+---
+title: "Gamlss"
+---
+
+
+Aquí podrá encontrar el enlace para descargar la base de datos y el código que fue usado para el modelamiento estadístico de la generación de energía.
+
+Link base de datos: https://raw.githubusercontent.com/hebermudezg/basededatos/master/GeneracionEPM.txt
+Link Código usado : https://raw.githubusercontent.com/hebermudezg/basededatos/master/EPM.R
