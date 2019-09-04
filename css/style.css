@@ -1164,8 +1164,8 @@ body.offcanvas #fh5co-main, body.offcanvas .fh5co-nav-toggle {
   opacity: 0;
 }
 
+/*-----------------------------------------------------# sourceMappingURL=style.css.map */
 
-/* -------------------------acordion */ 
 * {
     box-sizing: border-box;
 }
@@ -1176,10 +1176,17 @@ body {
 	font-size: 100%;
 	margin: 0;
 	padding:20px;
-	padding-left: 150px;
-	padding-right: 150px;
 	
 }
+/* 
+*	Растягивает картинку на всю ширину блока в котором находится
+*/
+img {
+	width: 100%;
+}
+/* 
+*	Стили для всего меню 
+*/
 .navigation {
 	font-weight: 300;
 	font-size: 0.9375rem;
@@ -1231,7 +1238,7 @@ body {
 .accordion__link:not(.accordion__link_active):after {
 	position: absolute;
 	content: "";
-	border-top: 12px #5C73F2 solid;
+	border-top: 12px #ff8663 solid;
 	border-left: 7px solid transparent;
 	border-right: 7px solid transparent;
 	right: 22px;
@@ -1263,7 +1270,7 @@ body {
 */
 .accordion__link_active {
     color: #ffffff;
-    background-color: #027368;   
+    background-color: #ff8663;   
 }
 .accordion__link_active:after {
 	position: absolute;
@@ -1280,4 +1287,4 @@ body {
     height: 100%;
 }
 
-/*# sourceMappingURL=style.css.map */
+
