@@ -273,8 +273,6 @@ figure figcaption {
   margin: 0 auto;
   padding: 4em 0;
   clear: both;
-  padding-left: 150px;   /* --------------Se cambio con esto----------------- */
-  padding-right: 150px;
 }
 @media screen and (max-width: 768px) {
   #fh5co-main .fh5co-narrow-content {
@@ -1165,6 +1163,8 @@ body.offcanvas #fh5co-main, body.offcanvas .fh5co-nav-toggle {
 .js .animate-box {
   opacity: 0;
 }
+
+/*# sourceMappingURL=style.css.map */
 
 /*-----------------------------------------------------# sourceMappingURL=style.css.map */
 
