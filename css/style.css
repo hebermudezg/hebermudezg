@@ -93,14 +93,7 @@ figure figcaption {
 
 }
 
-/***** padding para acordion */
-#fh5co-page-tutoriales{
-  width: 100%;
-  overflow: hidden;
-  position: relative;
-  padding-left: 250px;
-  padding-right: 250px;
-}
+
 #fh5co-aside {
   padding-top: 60px;
   padding-bottom: 40px;
@@ -288,11 +281,14 @@ figure figcaption {
   margin: 0 auto;
   padding: 4em 0;
   clear: both;
+  padding-left: 200px;
+  padding-right: 200px;
 }
 @media screen and (max-width: 768px) {
   #fh5co-main .fh5co-narrow-content {
     width: 100%;
     padding: 4em 1em;
+
   }
 }
 
