@@ -82,12 +82,25 @@ figure figcaption {
   background: #228896;
 }
 
-#fh5co-page {
+#fh5co-page {    
   width: 100%;
   overflow: hidden;
   position: relative;
+  padding-bottom: 500px;
+  padding-top: 0px;
+  padding-left: 0px;
+  padding-right: 0px;
+
 }
 
+/***** padding para acordion */
+#fh5co-page-tutoriales{
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  padding-left: 250px;
+  padding-right: 250px;
+}
 #fh5co-aside {
   padding-top: 60px;
   padding-bottom: 40px;
@@ -137,10 +150,12 @@ figure figcaption {
   font-weight: 300;
   color: rgba(0, 0, 0, 0.5);
 }
+
 #fh5co-aside #fh5co-main-menu ul {
   text-align: center;
   margin: 0;
   padding: 0;
+  padding-left:0;
 }
 @media screen and (max-width: 768px) {
   #fh5co-aside #fh5co-main-menu ul {
