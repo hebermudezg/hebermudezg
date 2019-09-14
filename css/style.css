@@ -1220,7 +1220,7 @@ body {
 }
 .accordion__item {
 	background: #e7e7e7;
-	border-radius: 20px;
+	border-radius: 10px;
 	margin-bottom: 5px;
 }
 /* 
@@ -1236,8 +1236,8 @@ body {
 	position: relative;
 	color: #696666;
 	text-decoration: none;
-	border-radius: 20px;
-	display: block;
+	border-radius: 15px;
+	display: block; 
 	padding: 12px 50px 12px 20px;
 }
 .accordion__link:not(.accordion__link_active):after {
