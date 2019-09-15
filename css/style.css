@@ -18,6 +18,10 @@ body {
   line-height: 1.6;
   color: rgba(0, 0, 0, 0.5);
   background: whitesmoke;
+  padding-top: 0px;
+  padding-left: 10px;
+  padding-right: 0px;
+  padding-bottom: 20px;
 }
 @media screen and (max-width: 992px) {
   body {
@@ -320,7 +324,7 @@ figure figcaption {
 
 #fh5co-hero {
   min-height: 500px;
-  background: #fff url(../images/loader.gif) no-repeat center center;
+  background: #fff url(../images/../images/tenor.gif) no-repeat center center;
   width: 100%;
   float: left;
   clear: both;
@@ -334,11 +338,17 @@ figure figcaption {
 #fh5co-hero .flexslider {
   border: none;
   z-index: 1;
-  margin-bottom: 0;
+  /*margin-bottom: 0;*/
+  padding-bottom: 200px;
+  padding-top: 0px;
+  padding-left: 0px;
+  padding-right: 0px;
 }
 #fh5co-hero .flexslider .slides {
   position: relative;
   overflow: hidden;
+  
+	
 }
 #fh5co-hero .flexslider .slides .overlay {
   position: absolute;
@@ -348,6 +358,7 @@ figure figcaption {
   right: 0;
   content: '';
   background: rgba(0, 0, 0, 0.3);
+  padding-bottom: 100px;
 }
 #fh5co-hero .flexslider .slides li {
   background-repeat: no-repeat;
@@ -357,11 +368,12 @@ figure figcaption {
   position: relative;
 }
 #fh5co-hero .flexslider .flex-control-nav {
-  bottom: 20px;
+  bottom: 70px;
   z-index: 1000;
   right: 20px;
   float: right;
   width: auto;
+  color:brown;
 }
 #fh5co-hero .flexslider .flex-control-nav li {
   display: block;
@@ -392,7 +404,7 @@ figure figcaption {
   display: table-cell;
   vertical-align: middle;
   min-height: 700px;
-  padding: 2em;
+  padding-top: 400px;
 }
 @media screen and (max-width: 768px) {
   #fh5co-hero .flexslider .slider-text > .slider-text-inner {
