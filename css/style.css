@@ -18,10 +18,7 @@ body {
   line-height: 1.6;
   color: rgba(0, 0, 0, 0.5);
   background: whitesmoke;
-  padding-top: 0px;
-  padding-left: 10px;
-  padding-right: 0px;
-  padding-bottom: 20px;
+
 }
 @media screen and (max-width: 992px) {
   body {
@@ -90,10 +87,7 @@ figure figcaption {
   width: 100%;
   overflow: hidden;
   position: relative;
-  padding-bottom: 500px;
-  padding-top: 0px;
-  padding-left: 0px;
-  padding-right: 0px;
+
 
 }
 
@@ -285,9 +279,9 @@ figure figcaption {
   margin: 0 auto;
   padding: 4em 0;
   clear: both;
-  padding-left: 10px;
+  /*padding-left: 10px;
   padding-right: 10px;
-  padding-top: 20px;
+  padding-top: 20px;*/
 }
 
 
@@ -329,6 +323,7 @@ figure figcaption {
   float: left;
   clear: both;
 }
+
 #fh5co-hero .btn {
   font-size: 24px;
 }
@@ -338,11 +333,7 @@ figure figcaption {
 #fh5co-hero .flexslider {
   border: none;
   z-index: 1;
-  /*margin-bottom: 0;*/
-  padding-bottom: 200px;
-  padding-top: 0px;
-  padding-left: 0px;
-  padding-right: 0px;
+  margin-bottom: 0;
 }
 #fh5co-hero .flexslider .slides {
   position: relative;
@@ -358,7 +349,7 @@ figure figcaption {
   right: 0;
   content: '';
   background: rgba(0, 0, 0, 0.3);
-  padding-bottom: 100px;
+  
 }
 #fh5co-hero .flexslider .slides li {
   background-repeat: no-repeat;
@@ -373,7 +364,7 @@ figure figcaption {
   right: 20px;
   float: right;
   width: auto;
-  color:brown;
+  
 }
 #fh5co-hero .flexslider .flex-control-nav li {
   display: block;
@@ -404,7 +395,7 @@ figure figcaption {
   display: table-cell;
   vertical-align: middle;
   min-height: 700px;
-  padding-top: 400px;
+  padding: 2em;
 }
 @media screen and (max-width: 768px) {
   #fh5co-hero .flexslider .slider-text > .slider-text-inner {
@@ -1217,18 +1208,7 @@ body.offcanvas #fh5co-main, body.offcanvas .fh5co-nav-toggle {
 
 /*-----------------------------------------------------# sourceMappingURL=style.css.map */
 
-* {
-    box-sizing: border-box;
-}
-html,
-body {
-	font-family: 'Fira Sans', sans-serif;
-	font-weight: 500;
-	font-size: 100%;
-	margin: 0;
-	padding:20px;
-	
-}
+
 
 .navigation {
 	font-weight: 300;
