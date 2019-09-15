@@ -216,6 +216,8 @@ figure figcaption {
   -o-transform: scaleX(1);
   transform: scaleX(1);
 }
+
+
 #fh5co-aside .fh5co-footer {
   position: absolute;
   bottom: 40px;
@@ -306,6 +308,19 @@ figure figcaption {
   padding-top: 20px;
 }
 
+
+#fh5co-main .accordion__link{
+	font-family: 'Fira Sans', sans-serif;
+	font-weight: 600;
+	font-size: 110%;
+
+}
+#fh5co-main .sub-accordion__item{
+	font-family: 'Fira Sans', sans-serif;
+	font-weight: 500;
+	font-size: 110%;
+
+}
 
 @media screen and (max-width: 768px) {
   #fh5co-main .fh5co-narrow-content-tuto {
