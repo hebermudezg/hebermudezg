@@ -50,7 +50,7 @@ em {
 #aside {
   align-items: center;
   padding-right: 4rem;
-  width: 15em;
+  width: 20em;
   float: left;
   
 }
@@ -80,8 +80,7 @@ em {
 }
 
 #publications{
-  align-items: center;
-  text-align: center;
+  text-align: justify;
 }
 
 #services{
@@ -171,23 +170,23 @@ footer{
   border-radius: 0px 0px 40px 40px;
   font-family: sans-serif;
   font-weight: bold;
-  font-size: 30px;
-  margin-top: -80px;
+  font-size: 18px;
+  margin-top: -60px;
   height: 40px;
 }
 
 .card:hover {
   transform: scale(0.9, 0.9);
   box-shadow: 5px 5px 30px 15px rgba(0,0,0,0.25), 
-    -5px -5px 30px 15px rgba(0,0,0,0.22);
+    -5px -5px 30px 15px rgba(245, 141, 55, 0.22);
 }
 
 .title-white {
-  color: white;
+  color: #a5a5a5;
 }
 
 .title-black {
-  color: black;
+  color: rgb(255, 255, 255);
 }
 
 @media all and (max-width: 500px) {
