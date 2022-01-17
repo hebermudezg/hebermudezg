@@ -50,7 +50,7 @@ em {
 #aside {
   align-items: center;
   padding-right: 4rem;
-  width: 18em;
+  width: 15em;
   float: left;
   
 }
@@ -90,8 +90,7 @@ em {
 }
 
 footer{
-  background-color: #212121;
-  color:white;
+  color:rgb(168, 184, 255);
 }
 
 /* Style all font awesome icons */
@@ -200,11 +199,3 @@ footer{
 
 
 
-/* Vertical Line */
-.vl {
-  border-left: 1px solid rgb(161, 161, 161);
-  height: 500px;
-  position: absolute;
-  left: 21%;
-  top: 0;
-}
