@@ -34,10 +34,9 @@ header .container{
 
 h1 {
   color: #212121;
-  font-weight: 100;
 }
 
-img {
+#aside img {
   width: 200px;
   border-radius: 10px;
 }
@@ -55,13 +54,24 @@ em {
   float: left;
   
 }
+#aside p{
+  text-align: justify;
+}
+
+
 
 
 #home{
-  justify-content: center;
-  align-items: center;
-  list-style: none;
   
+  align-items: center;
+  
+  
+}
+
+#home img{
+  width: 250px;
+  height: 200px;
+  border-radius: 5px;
 }
 
 #courses{
@@ -99,15 +109,11 @@ footer{
   opacity: 0.7;
 }
 
-/* Set a specific color for each brand */
-
-/* Facebook */
 .fa-facebook {
   background: #3B5998;
   color: white;
 }
 
-/* Twitter */
 .fa-linkedin {
   background: #0e76a8;
   color: white;
@@ -116,4 +122,89 @@ footer{
 .fa-github{
   background: #6e5494;
   color: white;
+}
+
+
+
+/* Cards */
+
+.cards-list {
+  justify-content: center;
+  align-items: center;
+
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 0.5fr));
+  gap: 1rem;
+  margin: 1rem 1vw;
+  padding: 0;
+  list-style-type: none;
+  justify-content: space-around;
+
+}
+
+.card {
+  justify-content: center;
+  align-items: center;
+  
+  width: 200px;
+  height: 200px;
+  border-radius: 40px;
+  box-shadow: 5px 5px 30px 7px rgba(0,0,0,0.25), -5px -5px 30px 7px rgba(0,0,0,0.22);
+  cursor: pointer;
+  transition: 0.4s;
+}
+
+.card .card_image {
+  width: inherit;
+  height: inherit;
+  border-radius: 40px;
+}
+
+.card .card_image img {
+  width: inherit;
+  height: inherit;
+  border-radius: 10px;
+  object-fit: cover;
+}
+
+.card .card_title {
+  text-align: center;
+  border-radius: 0px 0px 40px 40px;
+  font-family: sans-serif;
+  font-weight: bold;
+  font-size: 30px;
+  margin-top: -80px;
+  height: 40px;
+}
+
+.card:hover {
+  transform: scale(0.9, 0.9);
+  box-shadow: 5px 5px 30px 15px rgba(0,0,0,0.25), 
+    -5px -5px 30px 15px rgba(0,0,0,0.22);
+}
+
+.title-white {
+  color: white;
+}
+
+.title-black {
+  color: black;
+}
+
+@media all and (max-width: 500px) {
+  .card-list {
+    /* On small screens, we are no longer using row direction but column */
+    flex-direction: column;
+  }
+}
+
+
+
+/* Vertical Line */
+.vl {
+  border-left: 1px solid rgb(161, 161, 161);
+  height: 500px;
+  position: absolute;
+  left: 21%;
+  top: 0;
 }
