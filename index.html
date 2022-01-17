@@ -1,12 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" >
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta name="keywords" content="hebermudezg, estadistica, statistics, ciencia de datos, datasicience">
-    <meta name="description" content="Space to share and learn about statistics and data science">
-	
-	<title>hebermudezg</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="keywords"
+      content="hebermudezg, estadistica, statistics, ciencia de datos, datasicience"
+    />
+    <meta
+      name="description"
+      content="Space to share and learn about statistics and data science"
+    />
+
+    <title>hebermudezg</title>
 
     <!-- Styles for menus -->
     <link rel="stylesheet" href="css/style-1.css" />
@@ -14,87 +20,153 @@
     <link rel="stylesheet" href="css/style-3.css" />
     <link rel="stylesheet" href="css/style-4.css" />
 
+    <!-- Styles for font -->
     <link
-      href="https://fonts.googleapis.com/css?family=Oswald:300"
       rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Oswald:300"
       type="text/css"
     />
-    <style>
-      /* Common Styles - Can ignore*/
-      body {
-        background: #1b1b2b;
-        background-image: linear-gradient(to top, #ffffff 0%, #e2ebf0 100%);
-        padding: 75px;
-        text-align: center;
-        font-family: "Oswald", sans-serif;
-        font-size: 18px;
-        height: 100vh;
-      }
-      h1 {
-        color: #212121;
-        font-weight: 100;
-      }
 
-      img {
-        width: 200px;
-        border-radius: 10px;
-      }
+    <!-- General Style <styel> -->
+    <link rel="stylesheet" href="css/style.css" type="text/css" />
+	<!-- Iconos -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-	  em{ /* empazised*/
-		color: rgb(202, 72, 72);
-
-	  }
-
-
-    </style>
+    <!-- General js <script> -->
+    <script src="js/javascript.js"></script>
+	
   </head>
 
   <body>
-    <img src="img/hebermudezg.JPG" , alt="hebermudezg" />
-
-    <div class="spacer"></div>
-
-    <h1>Heber Esteban Bermudez</h1>
-
-    <!-- Menu -->
-    <nav class="style-3">
-      <ul class="menu-3">
-        <li><a href="#!">Home</a></li>
-        <li><a href="#!">Courses</a></li>
-        <li><a href="#!">Publications</a></li>
-        <li><a href="#!">Services</a></li>
-      </ul>
-    </nav>
-
-    <!-- About me -->
-    <div class="me">
-      <p>
-        Hi there!, I'm Esteban an <em>Statistician</em> with experience collecting,
-        analyzing, interpreting, and presenting quantitative information,
-        providing insight and recommendations on policies and strategies. I work
-        in data visualization for business intelligence, data mining, written
-        reports, development and implementation of predictive models, database
-        management and software development. I possess strong IT and analytical
-        skills, as well as the interpersonal and communication skills to share
-        findings with colleagues and clients. I apply statistical theories and
-        methods to solve practical problems in a range of sectors, including;
-        business, engineering, science, education, the environment, finance,
-        government, health, market research, transportation, software companies,
-        among others.
-      </p>
-
-      <!-- Download my resume -->
-      <a
-        href="documents/Hebers_cv_english.pdf"
-        download
-        rel="noopener noreferrer"
-        target="_blank"
-      >
-        Download File
-      </a>
-    </div>
 
 
+    <header>
+      <div class="container">
+        <nav class="style-3">
+          <ul class="menu-3">
+            <li><a href="#!">Home</a></li>
+            <li><a href="#!">Courses</a></li>
+            <li><a href="#!">Publications</a></li>
+            <li><a href="#!">Services</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
 
+    <!-- barra lateral -->
+	<section id="aside">
+		<aside>
+			<img src="img/hebermudezg.JPG" alt="hebermudezg" onclick="greeting()" />
+			<h1>Heber Esteban Bermudez</h1>
+			<p>
+			  Hi there!, I'm Esteban an <em>Statistician</em> with experience
+			  collecting, analyzing, interpreting, and presenting quantitative
+			  information. I love music, chess, data science, artificial intelligence
+			  and science popularization.
+			</p>
+
+			<!-- social media buttons -->
+			<a href="mailto:hebermudezg@unal.edu.co"> hebermudezg@unal.edu.co</a>
+			<br>
+			<a href="#" class="fa fa-linkedin"></a>
+			<a href="#" class="fa fa-github"></a>
+			<a href="#" class="fa fa-facebook"></a>		  
+			<br>
+			<br>
+			<!-- Download my resume -->
+			<button>
+				<a
+				href="documents/Hebers_cv_english.pdf"
+				download
+				rel="noopener noreferrer"
+				target="_blank"
+			  >
+				Download CV
+			  </a>
+			</button>
+			
+		  </aside>
+	</section>
+    
+    <section id="home">
+      <p>Aqui van los news</p>
+	<p>
+		Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquid culpa
+		quas itaque nihil perspiciatis quae ut omnis porro asperiores, eum in
+		voluptates rem adipisci laudantium voluptatibus rerum minima,
+		provident quidem?
+
+		Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquid culpa
+			quas itaque nihil perspiciatis quae ut omnis porro asperiores, eum in
+			voluptates rem adipisci laudantium voluptatibus rerum minima,
+			provident quidem?
+
+			Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquid culpa
+			quas itaque nihil perspiciatis quae ut omnis porro asperiores, eum in
+			voluptates rem adipisci laudantium voluptatibus rerum minima,
+			provident quidem?
+		  
+	</p>
+    </section>
+
+	<!--  Setion Courses ***  -->
+    <section id="courses">
+		<did class="container">
+		<div class="course-card">
+			<h3>Python</h3>
+			<p>
+			Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquid culpa
+			quas itaque nihil perspiciatis quae ut omnis porro asperiores, eum in
+			voluptates rem adipisci laudantium voluptatibus rerum minima,
+			provident quidem?
+			</p>
+			<button> More info</button>
+		</div>
+
+		<div class="course-card">
+			<h3>R</h3>
+			<p>
+			Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquid culpa
+			quas itaque nihil perspiciatis quae ut omnis porro asperiores, eum in
+			voluptates rem adipisci laudantium voluptatibus rerum minima,
+			provident quidem?
+			</p>
+			<button> More info</button>
+		</div>
+    </section>
+
+	<!--  Setion Publications ***  -->
+    <section id="publications">
+      <p>Aqui van las publicaciones</p>
+
+	  <p>
+		Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquid culpa
+		quas itaque nihil perspiciatis quae ut omnis porro asperiores, eum in
+		voluptates rem adipisci laudantium voluptatibus rerum minima,
+		provident quidem?
+		Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquid culpa
+			quas itaque nihil perspiciatis quae ut omnis porro asperiores, eum in
+			voluptates rem adipisci laudantium voluptatibus rerum minima,
+			provident quidem?
+	  </p>
+    </section>
+
+    <section id="services">
+      <p>Aqui van los services</p>
+	  <p>
+		Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquid culpa
+		quas itaque nihil perspiciatis quae ut omnis porro asperiores, eum in
+		voluptates rem adipisci laudantium voluptatibus rerum minima,
+		provident quidem?
+
+		Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquid culpa
+			quas itaque nihil perspiciatis quae ut omnis porro asperiores, eum in
+			voluptates rem adipisci laudantium voluptatibus rerum minima,
+			provident quidem?
+	  </p>
+	</did>
+    </section>
+
+    <footer> © 2022-hebermudezg</footer>
   </body>
 </html>

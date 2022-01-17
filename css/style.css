@@ -1,0 +1,119 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: #1b1b2b;
+  background-image: linear-gradient(to top, #e1ecf3 0%, #ffffff 100%);
+  padding: 80px;
+  text-align: center;
+  font-family: "Oswald", sans-serif;
+  font-size: 18px;
+  /*height: 100vh;*/
+}
+
+button {
+  padding: 10px 20px;
+  border-radius: 5px;
+  color: black;
+  background-color: white;
+}
+/* accion sobre el botton */
+button:hover {
+  background-color: rgb(194, 194, 194);
+}
+
+
+header .container{
+  align-items: center;
+  text-align: center;
+  
+}
+
+
+h1 {
+  color: #212121;
+  font-weight: 100;
+}
+
+img {
+  width: 200px;
+  border-radius: 10px;
+}
+
+em {
+  color: #d94f5c;
+  font-weight: bold;
+  font-style: normal;
+}
+
+#aside {
+  align-items: center;
+  padding-right: 4rem;
+  width: 18em;
+  float: left;
+  
+}
+
+
+#home{
+  justify-content: center;
+  align-items: center;
+  list-style: none;
+  
+}
+
+#courses{
+  align-items: center;
+  text-align: center;
+}
+
+#publications{
+  align-items: center;
+  text-align: center;
+}
+
+#services{
+  align-items: center;
+  text-align: center;
+}
+
+footer{
+  background-color: #212121;
+  color:white;
+}
+
+/* Style all font awesome icons */
+.fa {
+  padding: 2px;
+  font-size: 30px;
+  width: 50px;
+  text-align: center;
+  text-decoration: none;
+  border-radius: 8px;
+}
+
+/* Add a hover effect if you want */
+.fa:hover {
+  opacity: 0.7;
+}
+
+/* Set a specific color for each brand */
+
+/* Facebook */
+.fa-facebook {
+  background: #3B5998;
+  color: white;
+}
+
+/* Twitter */
+.fa-linkedin {
+  background: #0e76a8;
+  color: white;
+}
+
+.fa-github{
+  background: #6e5494;
+  color: white;
+}
