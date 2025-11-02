@@ -40,6 +40,8 @@
       --light-bg: #ffffff;
       --light-card: #f8f9fa;
       --light-border: #e5e7eb;
+      --light-accent: #2563eb;
+      --light-accent-hover: #1d4ed8;
     }
 
     body {
@@ -94,7 +96,69 @@
     }
 
     body.light-mode a.text-gray-300:hover {
-      color: var(--neon-green) !important;
+      color: var(--light-accent) !important;
+    }
+
+    /* Light mode accent colors */
+    body.light-mode .neon-text {
+      color: var(--light-accent);
+      text-shadow: none;
+    }
+
+    body.light-mode .text-neon-green {
+      color: var(--light-accent) !important;
+    }
+
+    body.light-mode .border-neon-green {
+      border-color: var(--light-accent) !important;
+    }
+
+    body.light-mode .btn-neon {
+      border-color: var(--light-accent);
+      color: var(--light-accent);
+    }
+
+    body.light-mode .btn-neon:hover {
+      background: var(--light-accent);
+      color: white;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+    }
+
+    body.light-mode .btn-neon-filled {
+      background: var(--light-accent);
+      border-color: var(--light-accent);
+      color: white;
+    }
+
+    body.light-mode .btn-neon-filled:hover {
+      background: var(--light-accent-hover);
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
+    }
+
+    body.light-mode .skill-pill {
+      background: rgba(37, 99, 235, 0.1);
+      border-color: rgba(37, 99, 235, 0.3);
+      color: var(--light-accent);
+    }
+
+    body.light-mode .skill-pill:hover {
+      background: rgba(37, 99, 235, 0.2);
+      border-color: var(--light-accent);
+      box-shadow: 0 0 8px rgba(37, 99, 235, 0.3);
+    }
+
+    body.light-mode .glow-card:hover {
+      border-color: var(--light-accent);
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15);
+    }
+
+    body.light-mode .gradient-divider {
+      background: linear-gradient(90deg, transparent, var(--light-accent), transparent);
+    }
+
+    body.light-mode .neon-border {
+      border-color: var(--light-accent);
+      box-shadow: 0 0 8px rgba(37, 99, 235, 0.3);
     }
 
     /* Theme toggle button */
@@ -315,7 +379,7 @@
             Heber Bermudez<span class="neon-text">_</span>
           </h1>
           <p class="text-xl text-gray-300 mb-4 leading-relaxed">
-            Building data infrastructure and sharing knowledge through research and content creation.
+            Building enterprise-scale data solutions and empowering teams through consulting, research, and education.
           </p>
           <p class="text-lg text-gray-400 mb-8">
             <span class="neon-text">5+</span> years engineering data solutions across cloud platforms.
@@ -324,8 +388,8 @@
             <a href="#contact" class="btn-neon-filled px-8 py-3 rounded-lg font-semibold transition">
               Let's Connect
             </a>
-            <a href="documents/Heber Bermudez.pdf" download class="btn-neon px-8 py-3 rounded-lg font-semibold transition">
-              Download CV
+            <a href="https://www.linkedin.com/in/hebermudezg" target="_blank" class="btn-neon px-8 py-3 rounded-lg font-semibold transition">
+              <i class="fab fa-linkedin mr-2"></i>View LinkedIn
             </a>
           </div>
         </div>
@@ -350,13 +414,19 @@
       <div class="gradient-divider mb-8"></div>
 
       <p class="text-gray-300 text-lg leading-relaxed mb-6">
-        I'm a <span class="neon-text font-semibold">Senior Data Engineer</span> passionate about transforming data into insights
-        and sharing knowledge through research and content creation.
+        I'm a <span class="neon-text font-semibold">Senior Data Engineer</span> with over 5 years of experience designing and implementing
+        enterprise-scale data solutions across multiple industries. My expertise spans the complete data lifecycle, from architecture design
+        to production deployment on cloud platforms.
       </p>
       <p class="text-gray-300 text-lg leading-relaxed mb-6">
-        With <span class="neon-text font-semibold">5+ years of experience</span> designing and implementing large-scale data pipelines across
-        AWS, GCP, and Azure, I've worked in healthcare, finance, and public sectors. I combine technical expertise with academic rigor
-        to build robust data infrastructure and mentor teams.
+        Throughout my career, I've worked extensively in <span class="neon-text font-semibold">consulting</span>, delivering data engineering
+        solutions for clients in healthcare, finance, and public sectors. I specialize in building robust, scalable data infrastructure using
+        AWS, GCP, and Azure, enabling organizations to make data-driven decisions with confidence.
+      </p>
+      <p class="text-gray-300 text-lg leading-relaxed mb-6">
+        Beyond engineering, I'm passionate about <span class="neon-text font-semibold">education and knowledge sharing</span>. I actively
+        contribute to the data community through teaching, research, and technical content creation, helping others grow their skills in
+        data engineering and analytics.
       </p>
       <div class="flex flex-wrap gap-6 mb-6">
         <div class="flex items-center text-gray-400">
