@@ -32,16 +32,20 @@
     }
 
     :root {
+      /* Dark mode colors - Neon Green */
       --neon-green: #00ff88;
       --neon-cyan: #00fff9;
       --dark-bg: #0a0e12;
       --dark-card: #141b23;
       --dark-border: #1f2937;
+
+      /* Light mode colors - Vibrant Blue */
       --light-bg: #ffffff;
-      --light-card: #f8f9fa;
+      --light-card: #f9fafb;
       --light-border: #e5e7eb;
-      --light-accent: #2563eb;
-      --light-accent-hover: #1d4ed8;
+      --light-accent: #3b82f6;
+      --light-accent-hover: #2563eb;
+      --light-accent-glow: rgba(59, 130, 246, 0.15);
     }
 
     body {
@@ -116,40 +120,46 @@
     body.light-mode .btn-neon {
       border-color: var(--light-accent);
       color: var(--light-accent);
+      font-weight: 600;
     }
 
     body.light-mode .btn-neon:hover {
       background: var(--light-accent);
       color: white;
-      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+      box-shadow: 0 8px 20px rgba(59, 130, 246, 0.35);
+      transform: translateY(-2px);
     }
 
     body.light-mode .btn-neon-filled {
-      background: var(--light-accent);
+      background: linear-gradient(135deg, var(--light-accent) 0%, var(--light-accent-hover) 100%);
       border-color: var(--light-accent);
       color: white;
+      font-weight: 600;
     }
 
     body.light-mode .btn-neon-filled:hover {
-      background: var(--light-accent-hover);
-      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
+      background: linear-gradient(135deg, var(--light-accent-hover) 0%, #1d4ed8 100%);
+      box-shadow: 0 8px 24px rgba(59, 130, 246, 0.4);
+      transform: translateY(-2px);
     }
 
     body.light-mode .skill-pill {
-      background: rgba(37, 99, 235, 0.1);
-      border-color: rgba(37, 99, 235, 0.3);
+      background: rgba(59, 130, 246, 0.1);
+      border-color: rgba(59, 130, 246, 0.3);
       color: var(--light-accent);
     }
 
     body.light-mode .skill-pill:hover {
-      background: rgba(37, 99, 235, 0.2);
+      background: rgba(59, 130, 246, 0.2);
       border-color: var(--light-accent);
-      box-shadow: 0 0 8px rgba(37, 99, 235, 0.3);
+      box-shadow: 0 0 12px rgba(59, 130, 246, 0.4);
+      transform: scale(1.05);
     }
 
     body.light-mode .glow-card:hover {
       border-color: var(--light-accent);
-      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15);
+      box-shadow: 0 8px 24px var(--light-accent-glow);
+      transform: translateY(-5px);
     }
 
     body.light-mode .gradient-divider {
@@ -158,7 +168,7 @@
 
     body.light-mode .neon-border {
       border-color: var(--light-accent);
-      box-shadow: 0 0 8px rgba(37, 99, 235, 0.3);
+      box-shadow: 0 0 16px rgba(59, 130, 246, 0.4);
     }
 
     /* Theme toggle button */
@@ -185,6 +195,18 @@
     .theme-toggle:hover {
       transform: scale(1.1);
       box-shadow: 0 6px 30px rgba(0, 255, 136, 0.6);
+    }
+
+    /* Theme toggle in light mode */
+    body.light-mode .theme-toggle {
+      background: var(--light-accent);
+      color: white;
+      box-shadow: 0 4px 20px rgba(59, 130, 246, 0.4);
+    }
+
+    body.light-mode .theme-toggle:hover {
+      background: var(--light-accent-hover);
+      box-shadow: 0 6px 30px rgba(59, 130, 246, 0.6);
     }
 
     .neon-text {
