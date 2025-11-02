@@ -4,9 +4,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="keywords" content="hebermudezg, data engineer, statistics, data science, AWS, GCP, Azure, Snowflake" />
-  <meta name="description" content="Heber Bermudez - Senior Data Engineer specializing in cloud platforms, big data, and AI" />
-  <title>Heber Bermudez | Senior Data Engineer</title>
+  <meta name="keywords" content="hebermudezg, data engineer, statistics, data science, teaching, research" />
+  <meta name="description" content="Heber Bermudez - Data Engineer, Researcher & Educator" />
+  <title>Heber Bermudez | Data Engineer & Educator</title>
 
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -20,79 +20,158 @@
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 
   <style>
     * {
-      font-family: 'Inter', sans-serif;
+      font-family: 'Space Grotesk', sans-serif;
+    }
+
+    code, .mono {
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    :root {
+      --neon-green: #00ff88;
+      --neon-cyan: #00fff9;
+      --dark-bg: #0a0e12;
+      --dark-card: #141b23;
+      --dark-border: #1f2937;
     }
 
     body {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      background-attachment: fixed;
+      background: var(--dark-bg);
+      color: #e5e7eb;
     }
 
-    .glass-effect {
-      background: rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 255, 255, 0.2);
+    .neon-text {
+      color: var(--neon-green);
+      text-shadow: 0 0 10px var(--neon-green), 0 0 20px var(--neon-green);
     }
 
-    .gradient-text {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+    .neon-border {
+      border: 2px solid var(--neon-green);
+      box-shadow: 0 0 10px var(--neon-green), inset 0 0 10px rgba(0, 255, 136, 0.1);
     }
 
-    .card-hover {
+    .glow-card {
+      background: var(--dark-card);
+      border: 1px solid var(--dark-border);
       transition: all 0.3s ease;
     }
 
-    .card-hover:hover {
-      transform: translateY(-10px);
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    .glow-card:hover {
+      border-color: var(--neon-green);
+      box-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
+      transform: translateY(-5px);
     }
 
-    .nav-blur {
+    .nav-dark {
+      background: rgba(10, 14, 18, 0.95);
       backdrop-filter: blur(20px);
-      background: rgba(255, 255, 255, 0.95);
+      border-bottom: 1px solid var(--dark-border);
     }
 
-    .skill-tag {
-      background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
-      border: 1px solid rgba(102, 126, 234, 0.3);
+    .btn-neon {
+      background: transparent;
+      border: 2px solid var(--neon-green);
+      color: var(--neon-green);
+      position: relative;
+      overflow: hidden;
       transition: all 0.3s ease;
     }
 
-    .skill-tag:hover {
-      background: linear-gradient(135deg, rgba(102, 126, 234, 0.2) 0%, rgba(118, 75, 162, 0.2) 100%);
-      border-color: rgba(102, 126, 234, 0.5);
-      transform: scale(1.05);
+    .btn-neon:hover {
+      background: var(--neon-green);
+      color: #0a0e12;
+      box-shadow: 0 0 20px var(--neon-green);
     }
 
-    .timeline-item::before {
-      content: '';
-      position: absolute;
-      left: 0;
-      top: 0;
-      bottom: 0;
-      width: 3px;
-      background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
+    .btn-neon-filled {
+      background: var(--neon-green);
+      color: #0a0e12;
+      border: 2px solid var(--neon-green);
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+
+    .btn-neon-filled:hover {
+      box-shadow: 0 0 30px var(--neon-green);
+      transform: translateY(-2px);
+    }
+
+    .skill-pill {
+      background: rgba(0, 255, 136, 0.1);
+      border: 1px solid rgba(0, 255, 136, 0.3);
+      color: var(--neon-green);
+      transition: all 0.3s ease;
+    }
+
+    .skill-pill:hover {
+      background: rgba(0, 255, 136, 0.2);
+      border-color: var(--neon-green);
+      box-shadow: 0 0 15px rgba(0, 255, 136, 0.4);
+    }
+
+    .gradient-divider {
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--neon-green), transparent);
+    }
+
+    .hero-gradient {
+      background: linear-gradient(135deg, #0a0e12 0%, #1a1f2e 100%);
     }
 
     @media (max-width: 768px) {
       .hero-title {
-        font-size: 2.5rem;
+        font-size: 2rem;
       }
     }
 
-    .section-bg {
-      background: rgba(255, 255, 255, 0.98);
-      border-radius: 20px;
-      padding: 3rem;
+    .section-container {
+      background: var(--dark-card);
+      border: 1px solid var(--dark-border);
+      border-radius: 1rem;
+      padding: 2rem;
       margin-bottom: 2rem;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    .publication-card {
+      background: var(--dark-card);
+      border-left: 3px solid var(--neon-green);
+      padding: 1.5rem;
+      transition: all 0.3s ease;
+    }
+
+    .publication-card:hover {
+      background: rgba(0, 255, 136, 0.05);
+      box-shadow: 0 0 20px rgba(0, 255, 136, 0.2);
+    }
+
+    .book-badge {
+      background: linear-gradient(135deg, rgba(0, 255, 136, 0.2), rgba(0, 255, 249, 0.2));
+      border: 2px solid var(--neon-green);
+      padding: 0.5rem 1rem;
+      border-radius: 2rem;
+      color: var(--neon-green);
+      font-weight: 600;
+      font-size: 0.875rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    /* Glowing effect on scroll */
+    .aos-animate .neon-border {
+      animation: pulse-glow 2s infinite;
+    }
+
+    @keyframes pulse-glow {
+      0%, 100% {
+        box-shadow: 0 0 10px var(--neon-green), inset 0 0 10px rgba(0, 255, 136, 0.1);
+      }
+      50% {
+        box-shadow: 0 0 20px var(--neon-green), inset 0 0 20px rgba(0, 255, 136, 0.2);
+      }
     }
   </style>
 
@@ -101,8 +180,10 @@
       theme: {
         extend: {
           colors: {
-            primary: '#667eea',
-            secondary: '#764ba2',
+            'neon-green': '#00ff88',
+            'neon-cyan': '#00fff9',
+            'dark-bg': '#0a0e12',
+            'dark-card': '#141b23',
           }
         }
       }
@@ -113,66 +194,66 @@
 <body class="antialiased">
 
   <!-- Navigation -->
-  <nav class="fixed w-full top-0 z-50 nav-blur shadow-lg">
+  <nav class="fixed w-full top-0 z-50 nav-dark">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex justify-between items-center h-16">
         <div class="flex-shrink-0">
-          <a href="#home" class="text-2xl font-bold gradient-text">HB</a>
+          <a href="#home" class="text-2xl font-bold neon-text mono">HB_</a>
         </div>
         <div class="hidden md:flex space-x-8">
-          <a href="#home" class="text-gray-700 hover:text-primary transition">Home</a>
-          <a href="#about" class="text-gray-700 hover:text-primary transition">About</a>
-          <a href="#experience" class="text-gray-700 hover:text-primary transition">Experience</a>
-          <a href="#skills" class="text-gray-700 hover:text-primary transition">Skills</a>
-          <a href="#projects" class="text-gray-700 hover:text-primary transition">Projects</a>
-          <a href="#publications" class="text-gray-700 hover:text-primary transition">Publications</a>
-          <a href="#contact" class="text-gray-700 hover:text-primary transition">Contact</a>
+          <a href="#home" class="text-gray-300 hover:text-neon-green transition">Home</a>
+          <a href="#about" class="text-gray-300 hover:text-neon-green transition">About</a>
+          <a href="#teaching" class="text-gray-300 hover:text-neon-green transition">Teaching</a>
+          <a href="#research" class="text-gray-300 hover:text-neon-green transition">Research</a>
+          <a href="#projects" class="text-gray-300 hover:text-neon-green transition">Projects</a>
+          <a href="#contact" class="text-gray-300 hover:text-neon-green transition">Contact</a>
         </div>
-        <button id="mobile-menu-button" class="md:hidden text-gray-700">
+        <button id="mobile-menu-button" class="md:hidden text-neon-green">
           <i class="fas fa-bars text-2xl"></i>
         </button>
       </div>
     </div>
     <!-- Mobile menu -->
-    <div id="mobile-menu" class="hidden md:hidden bg-white shadow-lg">
+    <div id="mobile-menu" class="hidden md:hidden bg-dark-card border-t border-dark-border">
       <div class="px-2 pt-2 pb-3 space-y-1">
-        <a href="#home" class="block px-3 py-2 text-gray-700 hover:bg-gray-100 rounded">Home</a>
-        <a href="#about" class="block px-3 py-2 text-gray-700 hover:bg-gray-100 rounded">About</a>
-        <a href="#experience" class="block px-3 py-2 text-gray-700 hover:bg-gray-100 rounded">Experience</a>
-        <a href="#skills" class="block px-3 py-2 text-gray-700 hover:bg-gray-100 rounded">Skills</a>
-        <a href="#projects" class="block px-3 py-2 text-gray-700 hover:bg-gray-100 rounded">Projects</a>
-        <a href="#publications" class="block px-3 py-2 text-gray-700 hover:bg-gray-100 rounded">Publications</a>
-        <a href="#contact" class="block px-3 py-2 text-gray-700 hover:bg-gray-100 rounded">Contact</a>
+        <a href="#home" class="block px-3 py-2 text-gray-300 hover:bg-dark-bg hover:text-neon-green rounded">Home</a>
+        <a href="#about" class="block px-3 py-2 text-gray-300 hover:bg-dark-bg hover:text-neon-green rounded">About</a>
+        <a href="#teaching" class="block px-3 py-2 text-gray-300 hover:bg-dark-bg hover:text-neon-green rounded">Teaching</a>
+        <a href="#research" class="block px-3 py-2 text-gray-300 hover:bg-dark-bg hover:text-neon-green rounded">Research</a>
+        <a href="#projects" class="block px-3 py-2 text-gray-300 hover:bg-dark-bg hover:text-neon-green rounded">Projects</a>
+        <a href="#contact" class="block px-3 py-2 text-gray-300 hover:bg-dark-bg hover:text-neon-green rounded">Contact</a>
       </div>
     </div>
   </nav>
 
   <!-- Hero Section -->
-  <section id="home" class="min-h-screen flex items-center justify-center pt-16">
+  <section id="home" class="min-h-screen flex items-center justify-center pt-16 hero-gradient">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
       <div class="grid md:grid-cols-2 gap-12 items-center">
         <div data-aos="fade-right">
+          <div class="mono text-neon-green mb-4">// Data Engineer & Educator</div>
           <h1 class="hero-title text-5xl md:text-6xl font-bold text-white mb-6">
-            Hi, I'm <span class="text-yellow-300">Heber Bermudez</span>
+            Heber Bermudez<span class="neon-text">_</span>
           </h1>
-          <h2 class="text-3xl md:text-4xl font-semibold text-white mb-6">Senior Data Engineer</h2>
-          <p class="text-xl text-white/90 mb-8">
-            Specializing in cloud platforms (AWS, GCP, Azure), Big Data technologies, and AI solutions.
-            Building scalable data pipelines and driving data-driven decisions.
+          <p class="text-xl text-gray-300 mb-4 leading-relaxed">
+            Building data infrastructure, teaching future engineers, and sharing knowledge through research and content creation.
+          </p>
+          <p class="text-lg text-gray-400 mb-8">
+            <span class="neon-text">5+</span> years engineering data solutions across cloud platforms.
           </p>
           <div class="flex flex-wrap gap-4">
-            <a href="#contact" class="bg-white text-primary px-8 py-3 rounded-full font-semibold hover:shadow-xl transition transform hover:scale-105">
-              Get In Touch
+            <a href="#contact" class="btn-neon-filled px-8 py-3 rounded-lg font-semibold transition">
+              Let's Connect
             </a>
-            <a href="documents/Heber Bermudez.pdf" download class="bg-transparent border-2 border-white text-white px-8 py-3 rounded-full font-semibold hover:bg-white hover:text-primary transition transform hover:scale-105">
+            <a href="documents/Heber Bermudez.pdf" download class="btn-neon px-8 py-3 rounded-lg font-semibold transition">
               Download CV
             </a>
           </div>
         </div>
         <div data-aos="fade-left" class="flex justify-center">
           <div class="relative">
-            <div class="absolute inset-0 bg-white/20 rounded-full blur-3xl"></div>
-            <img src="img/hebermudezg.jpeg" alt="Heber Bermudez" class="relative rounded-full w-80 h-80 object-cover border-8 border-white/30 shadow-2xl">
+            <div class="absolute inset-0 bg-neon-green opacity-20 rounded-full blur-3xl"></div>
+            <img src="img/hebermudezg.jpeg" alt="Heber Bermudez" class="relative rounded-2xl w-80 h-80 object-cover neon-border shadow-2xl">
           </div>
         </div>
       </div>
@@ -183,431 +264,379 @@
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
 
     <!-- About Section -->
-    <section id="about" class="section-bg" data-aos="fade-up">
-      <h2 class="text-4xl font-bold gradient-text mb-8 text-center">About Me</h2>
-      <div class="grid md:grid-cols-2 gap-8">
-        <div>
-          <p class="text-gray-700 text-lg leading-relaxed mb-4">
-            I'm a <strong>Senior Data Engineer</strong> with extensive experience in designing and implementing large-scale data processing pipelines
-            across multiple cloud platforms. My expertise lies in building robust, scalable data infrastructure that enables organizations
-            to harness the power of their data.
+    <section id="about" class="section-container" data-aos="fade-up">
+      <h2 class="text-4xl font-bold neon-text mb-8">
+        <i class="fas fa-user-circle mr-3"></i>About Me
+      </h2>
+      <div class="gradient-divider mb-8"></div>
+
+      <div class="grid md:grid-cols-3 gap-8">
+
+        <!-- Profile -->
+        <div class="md:col-span-2">
+          <p class="text-gray-300 text-lg leading-relaxed mb-6">
+            I'm a <span class="neon-text font-semibold">Senior Data Engineer</span>, researcher, and educator passionate about transforming data into insights
+            and sharing knowledge with the next generation of data professionals.
           </p>
-          <p class="text-gray-700 text-lg leading-relaxed">
-            With a strong foundation in statistics and AI, I combine technical excellence with innovative thinking to solve complex
-            data challenges in healthcare, finance, and public sector domains.
+          <p class="text-gray-300 text-lg leading-relaxed mb-6">
+            With <span class="neon-text font-semibold">5+ years of experience</span> designing and implementing large-scale data pipelines across
+            AWS, GCP, and Azure, I've worked in healthcare, finance, and public sectors. I combine technical expertise with academic rigor
+            to build robust data infrastructure and mentor teams.
           </p>
+          <div class="flex items-center text-gray-400 mb-2">
+            <i class="fas fa-map-marker-alt text-neon-green mr-3"></i>
+            <span>Colombia</span>
+          </div>
+          <div class="flex items-center text-gray-400 mb-2">
+            <i class="fas fa-graduation-cap text-neon-green mr-3"></i>
+            <span>MSc in Artificial Intelligence - UNIR, Spain</span>
+          </div>
+          <div class="flex items-center text-gray-400">
+            <i class="fas fa-graduation-cap text-neon-green mr-3"></i>
+            <span>BSc in Statistics - UNAL, Colombia</span>
+          </div>
         </div>
+
+        <!-- Quick Skills -->
         <div>
-          <h3 class="text-2xl font-semibold text-gray-800 mb-4">Quick Facts</h3>
+          <h3 class="text-xl font-semibold text-white mb-4 flex items-center">
+            <i class="fas fa-code text-neon-green mr-2"></i>
+            Core Skills
+          </h3>
+          <div class="space-y-3">
+            <div class="text-gray-300">
+              <i class="fas fa-chevron-right text-neon-green mr-2 text-sm"></i>
+              Python, Java, SQL
+            </div>
+            <div class="text-gray-300">
+              <i class="fas fa-chevron-right text-neon-green mr-2 text-sm"></i>
+              AWS, GCP, Azure
+            </div>
+            <div class="text-gray-300">
+              <i class="fas fa-chevron-right text-neon-green mr-2 text-sm"></i>
+              Snowflake, Databricks
+            </div>
+            <div class="text-gray-300">
+              <i class="fas fa-chevron-right text-neon-green mr-2 text-sm"></i>
+              PySpark, Airflow, DBT
+            </div>
+            <div class="text-gray-300">
+              <i class="fas fa-chevron-right text-neon-green mr-2 text-sm"></i>
+              Docker, Kubernetes
+            </div>
+            <div class="text-gray-300">
+              <i class="fas fa-chevron-right text-neon-green mr-2 text-sm"></i>
+              Terraform, CI/CD
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Expanded Tech Stack -->
+      <div class="mt-8 pt-8 border-t border-dark-border">
+        <h3 class="text-xl font-semibold text-white mb-6">Tech Stack</h3>
+        <div class="grid md:grid-cols-4 gap-4">
+
+          <div>
+            <h4 class="text-sm text-gray-400 mb-3 uppercase tracking-wide">Cloud Platforms</h4>
+            <div class="flex flex-wrap gap-2">
+              <span class="skill-pill px-3 py-1 rounded-full text-sm">AWS</span>
+              <span class="skill-pill px-3 py-1 rounded-full text-sm">GCP</span>
+              <span class="skill-pill px-3 py-1 rounded-full text-sm">Azure</span>
+            </div>
+          </div>
+
+          <div>
+            <h4 class="text-sm text-gray-400 mb-3 uppercase tracking-wide">Data Engineering</h4>
+            <div class="flex flex-wrap gap-2">
+              <span class="skill-pill px-3 py-1 rounded-full text-sm">PySpark</span>
+              <span class="skill-pill px-3 py-1 rounded-full text-sm">Airflow</span>
+              <span class="skill-pill px-3 py-1 rounded-full text-sm">DBT</span>
+              <span class="skill-pill px-3 py-1 rounded-full text-sm">Snowflake</span>
+            </div>
+          </div>
+
+          <div>
+            <h4 class="text-sm text-gray-400 mb-3 uppercase tracking-wide">Databases</h4>
+            <div class="flex flex-wrap gap-2">
+              <span class="skill-pill px-3 py-1 rounded-full text-sm">PostgreSQL</span>
+              <span class="skill-pill px-3 py-1 rounded-full text-sm">MongoDB</span>
+              <span class="skill-pill px-3 py-1 rounded-full text-sm">DynamoDB</span>
+            </div>
+          </div>
+
+          <div>
+            <h4 class="text-sm text-gray-400 mb-3 uppercase tracking-wide">DevOps</h4>
+            <div class="flex flex-wrap gap-2">
+              <span class="skill-pill px-3 py-1 rounded-full text-sm">Docker</span>
+              <span class="skill-pill px-3 py-1 rounded-full text-sm">Kubernetes</span>
+              <span class="skill-pill px-3 py-1 rounded-full text-sm">Terraform</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Teaching Section -->
+    <section id="teaching" class="section-container" data-aos="fade-up">
+      <h2 class="text-4xl font-bold neon-text mb-8">
+        <i class="fas fa-chalkboard-teacher mr-3"></i>Teaching
+      </h2>
+      <div class="gradient-divider mb-8"></div>
+
+      <p class="text-gray-300 text-lg mb-8">
+        I'm passionate about education and knowledge sharing. Here are the courses and training programs I've developed:
+      </p>
+
+      <div class="grid md:grid-cols-2 gap-8">
+
+        <!-- Statistics & Analytics Card -->
+        <div class="glow-card p-8 rounded-xl" data-aos="fade-right">
+          <div class="flex items-center mb-6">
+            <i class="fas fa-chart-line text-5xl text-neon-green mr-4"></i>
+            <h3 class="text-2xl font-bold text-white">Statistics & Analytics</h3>
+          </div>
           <ul class="space-y-3">
-            <li class="flex items-center text-gray-700">
-              <i class="fas fa-graduation-cap text-primary mr-3"></i>
-              MSc in Artificial Intelligence - UNIR, Spain
+            <li class="text-gray-300 flex items-start">
+              <i class="fas fa-check-circle text-neon-green mr-3 mt-1"></i>
+              <span>Basic Statistics</span>
             </li>
-            <li class="flex items-center text-gray-700">
-              <i class="fas fa-graduation-cap text-primary mr-3"></i>
-              BSc in Statistics - UNAL, Colombia
+            <li class="text-gray-300 flex items-start">
+              <i class="fas fa-check-circle text-neon-green mr-3 mt-1"></i>
+              <span>Data Science with R</span>
             </li>
-            <li class="flex items-center text-gray-700">
-              <i class="fas fa-map-marker-alt text-primary mr-3"></i>
-              Medellín, Colombia
+            <li class="text-gray-300 flex items-start">
+              <i class="fas fa-check-circle text-neon-green mr-3 mt-1"></i>
+              <span>Advanced Analytics & Machine Learning</span>
             </li>
-            <li class="flex items-center text-gray-700">
-              <i class="fas fa-language text-primary mr-3"></i>
-              Spanish (Native), English (Professional)
+            <li class="text-gray-300 flex items-start">
+              <i class="fas fa-check-circle text-neon-green mr-3 mt-1"></i>
+              <span>Statistical Modeling</span>
             </li>
           </ul>
         </div>
-      </div>
-    </section>
 
-    <!-- Experience Section -->
-    <section id="experience" class="section-bg" data-aos="fade-up">
-      <h2 class="text-4xl font-bold gradient-text mb-12 text-center">Professional Experience</h2>
-      <div class="space-y-8">
-
-        <!-- Globant -->
-        <div class="relative pl-8 timeline-item" data-aos="fade-right">
-          <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition">
-            <div class="flex flex-col md:flex-row md:justify-between md:items-start mb-4">
-              <div>
-                <h3 class="text-2xl font-bold text-gray-800">Senior Data Engineer</h3>
-                <p class="text-primary font-semibold text-lg">Globant</p>
-              </div>
-              <span class="text-gray-600 font-medium mt-2 md:mt-0">Aug 2024 - Present</span>
-            </div>
-            <ul class="list-disc list-inside text-gray-700 space-y-2">
-              <li>Designed and executed large-scale data processing pipelines for monitoring Google Cloud services</li>
-              <li>Integrated LLM-based models to improve observability and insights across the organization</li>
-              <li>Implemented DevOps and SRE practices building multi-tenant monitoring platform with Grafana and Terraform</li>
-              <li>Automated creation of dashboards, alerts, and notification policies for diverse cloud services</li>
-            </ul>
+        <!-- Data Engineering Card -->
+        <div class="glow-card p-8 rounded-xl" data-aos="fade-left">
+          <div class="flex items-center mb-6">
+            <i class="fas fa-database text-5xl text-neon-green mr-4"></i>
+            <h3 class="text-2xl font-bold text-white">Data Engineering</h3>
           </div>
-        </div>
-
-        <!-- SENA -->
-        <div class="relative pl-8 timeline-item" data-aos="fade-right">
-          <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition">
-            <div class="flex flex-col md:flex-row md:justify-between md:items-start mb-4">
-              <div>
-                <h3 class="text-2xl font-bold text-gray-800">Data Engineer</h3>
-                <p class="text-primary font-semibold text-lg">SENNOVA-SENA, Health Service Center</p>
-              </div>
-              <span class="text-gray-600 font-medium mt-2 md:mt-0">Oct 2022 - Dec 2024</span>
-            </div>
-            <ul class="list-disc list-inside text-gray-700 space-y-2">
-              <li>Led development of automated ETL processes for extensive medical data using AWS, Snowflake, and DBT</li>
-              <li>Designed scalable data pipeline infrastructure enabling real-time healthcare data analysis</li>
-              <li>Supported cardiovascular disease detection model achieving 83% sensitivity rate</li>
-              <li>Planned and executed training events on data engineering and AI applications in medical field</li>
-            </ul>
-          </div>
-        </div>
-
-        <!-- ISVIMED -->
-        <div class="relative pl-8 timeline-item" data-aos="fade-right">
-          <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition">
-            <div class="flex flex-col md:flex-row md:justify-between md:items-start mb-4">
-              <div>
-                <h3 class="text-2xl font-bold text-gray-800">Data Engineer & Analytics Team Lead</h3>
-                <p class="text-primary font-semibold text-lg">ISVIMED - Institute for Housing and Habitat of Medellín</p>
-              </div>
-              <span class="text-gray-600 font-medium mt-2 md:mt-0">May 2023 - Dec 2023</span>
-            </div>
-            <ul class="list-disc list-inside text-gray-700 space-y-2">
-              <li>Led design and implementation of data pipeline systems improving property transfer tracking by 65%</li>
-              <li>Developed Medellin's social housing data architecture integrating ML and statistics in AWS ecosystem</li>
-              <li>Led and mentored data analytics team fostering culture of excellence and innovation</li>
-              <li>Engineered LLM (RAG) solution for automatic audio processing and executive meeting minutes generation</li>
-            </ul>
-          </div>
-        </div>
-
-        <!-- UNAL -->
-        <div class="relative pl-8 timeline-item" data-aos="fade-right">
-          <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition">
-            <div class="flex flex-col md:flex-row md:justify-between md:items-start mb-4">
-              <div>
-                <h3 class="text-2xl font-bold text-gray-800">Data Scientist & Data Engineer Consultant</h3>
-                <p class="text-primary font-semibold text-lg">National University of Colombia</p>
-              </div>
-              <span class="text-gray-600 font-medium mt-2 md:mt-0">Jan 2019 - Oct 2022</span>
-            </div>
-            <ul class="list-disc list-inside text-gray-700 space-y-2">
-              <li>Co-founded and led research team within School of Statistics overseeing 20 professionals</li>
-              <li>Provided data engineering consultancy across finance, healthcare, and energy sectors</li>
-              <li>Applied skills in data processing, database management, and pipeline development</li>
-              <li>Enhanced data-driven decision-making using Snowflake, AWS, and Azure</li>
-              <li>Learn more: <a href="https://unalyticsteam.github.io/unalytics/" class="text-primary hover:underline">Unalytics Project</a></li>
-            </ul>
-          </div>
+          <ul class="space-y-3">
+            <li class="text-gray-300 flex items-start">
+              <i class="fas fa-check-circle text-neon-green mr-3 mt-1"></i>
+              <span>SQL for Data Science</span>
+            </li>
+            <li class="text-gray-300 flex items-start">
+              <i class="fas fa-check-circle text-neon-green mr-3 mt-1"></i>
+              <span>Python for Data Engineering</span>
+            </li>
+            <li class="text-gray-300 flex items-start">
+              <i class="fas fa-check-circle text-neon-green mr-3 mt-1"></i>
+              <span>AWS for Data Engineers</span>
+            </li>
+            <li class="text-gray-300 flex items-start">
+              <i class="fas fa-check-circle text-neon-green mr-3 mt-1"></i>
+              <span>Bash & Linux for Data Workflows</span>
+            </li>
+            <li class="text-gray-300 flex items-start">
+              <i class="fas fa-check-circle text-neon-green mr-3 mt-1"></i>
+              <span>Cloud Data Platforms (GCP, Azure)</span>
+            </li>
+          </ul>
         </div>
 
       </div>
     </section>
 
-    <!-- Skills Section -->
-    <section id="skills" class="section-bg" data-aos="fade-up">
-      <h2 class="text-4xl font-bold gradient-text mb-12 text-center">Technical Skills</h2>
+    <!-- Research & Publications -->
+    <section id="research" class="section-container" data-aos="fade-up">
+      <h2 class="text-4xl font-bold neon-text mb-8">
+        <i class="fas fa-book mr-3"></i>Research & Publications
+      </h2>
+      <div class="gradient-divider mb-8"></div>
 
-      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-
-        <!-- Programming -->
-        <div data-aos="zoom-in" data-aos-delay="100">
-          <h3 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
-            <i class="fas fa-code text-primary mr-3"></i>
-            Programming
-          </h3>
-          <div class="flex flex-wrap gap-2">
-            <span class="skill-tag px-4 py-2 rounded-full text-sm font-medium">Python</span>
-            <span class="skill-tag px-4 py-2 rounded-full text-sm font-medium">Java</span>
-            <span class="skill-tag px-4 py-2 rounded-full text-sm font-medium">Bash Shell</span>
+      <!-- Book in Progress -->
+      <div class="mb-10">
+        <div class="flex items-start mb-3">
+          <i class="fas fa-book text-neon-green text-2xl mr-4 mt-1"></i>
+          <div>
+            <h3 class="text-xl font-bold text-white mb-1">
+              📚 Data Engineering Fundamentals <span class="text-sm text-neon-green">(In Progress)</span>
+            </h3>
+            <p class="text-gray-400 text-sm">
+              Comprehensive guide to modern data engineering practices, cloud platforms, and scalable infrastructure.
+            </p>
           </div>
         </div>
+      </div>
 
-        <!-- Databases -->
-        <div data-aos="zoom-in" data-aos-delay="200">
-          <h3 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
-            <i class="fas fa-database text-primary mr-3"></i>
-            Databases
-          </h3>
-          <div class="flex flex-wrap gap-2">
-            <span class="skill-tag px-4 py-2 rounded-full text-sm font-medium">SQL Server</span>
-            <span class="skill-tag px-4 py-2 rounded-full text-sm font-medium">PostgreSQL</span>
-            <span class="skill-tag px-4 py-2 rounded-full text-sm font-medium">Oracle</span>
-            <span class="skill-tag px-4 py-2 rounded-full text-sm font-medium">MongoDB</span>
-            <span class="skill-tag px-4 py-2 rounded-full text-sm font-medium">DynamoDB</span>
+      <!-- Academic Publications -->
+      <div class="mb-10">
+        <h3 class="text-lg font-semibold text-gray-400 mb-4 uppercase tracking-wide">Academic Publications</h3>
+        <ul class="space-y-4">
+          <li class="flex items-start">
+            <i class="fas fa-file-alt text-neon-green mr-4 mt-1"></i>
+            <div>
+              <a href="https://revistas.sena.edu.co/index.php/CITEISA/article/view/7192" target="_blank"
+                 class="text-white hover:text-neon-green transition">
+                Mixed Models for Analysis of CD4 Glycoprotein Counts
+              </a>
+              <p class="text-gray-500 text-sm">SENA Journal</p>
+            </div>
+          </li>
+          <li class="flex items-start">
+            <i class="fas fa-file-alt text-neon-green mr-4 mt-1"></i>
+            <div>
+              <a href="https://github.com/hebermudezg/hydroelectric-energy-GAMLSS/blob/main/Posterwin.pdf" target="_blank"
+                 class="text-white hover:text-neon-green transition">
+                Hydroelectric Energy Production: Statistical Modeling with GAMLSS
+              </a>
+            </div>
+          </li>
+          <li class="flex items-start">
+            <i class="fas fa-file-alt text-neon-green mr-4 mt-1"></i>
+            <div>
+              <a href="http://simposioestadistica.unal.edu.co/fileadmin/Facultad_de_Ciencias/Eventos/Simposio_internacional_de_estadistica/Files/Memorias_Simposio_29_-_2019.pdf"
+                 target="_blank" class="text-white hover:text-neon-green transition">
+                Text Mining to Study Data Science Terminologies in Colombia
+              </a>
+              <p class="text-gray-500 text-sm">International Statistics Symposium - UNAL</p>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Medium Articles -->
+      <div class="mb-10">
+        <h3 class="text-lg font-semibold text-gray-400 mb-4 uppercase tracking-wide">Articles & Blog</h3>
+        <div class="flex items-center">
+          <i class="fab fa-medium text-neon-green text-2xl mr-4"></i>
+          <a href="https://medium.com/@hebermudezg" target="_blank"
+             class="text-white hover:text-neon-green transition">
+            Read my articles on Medium
+            <i class="fas fa-external-link-alt ml-2 text-sm"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- Research Projects -->
+      <div>
+        <h3 class="text-lg font-semibold text-gray-400 mb-4 uppercase tracking-wide">Research Projects</h3>
+        <div class="flex items-start">
+          <i class="fas fa-flask text-neon-green text-2xl mr-4 mt-1"></i>
+          <div>
+            <a href="https://unalyticsteam.github.io/unalytics/" target="_blank"
+               class="text-white hover:text-neon-green transition font-semibold">
+              Unalytics Research Team
+            </a>
+            <p class="text-gray-400 text-sm mt-1">
+              Research incubator at National University of Colombia - Data science and analytics projects
+            </p>
           </div>
         </div>
-
-        <!-- Data Engineering -->
-        <div data-aos="zoom-in" data-aos-delay="300">
-          <h3 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
-            <i class="fas fa-project-diagram text-primary mr-3"></i>
-            Data Engineering
-          </h3>
-          <div class="flex flex-wrap gap-2">
-            <span class="skill-tag px-4 py-2 rounded-full text-sm font-medium">PySpark</span>
-            <span class="skill-tag px-4 py-2 rounded-full text-sm font-medium">Terraform</span>
-            <span class="skill-tag px-4 py-2 rounded-full text-sm font-medium">Databricks</span>
-            <span class="skill-tag px-4 py-2 rounded-full text-sm font-medium">Kubernetes</span>
-            <span class="skill-tag px-4 py-2 rounded-full text-sm font-medium">Docker</span>
-            <span class="skill-tag px-4 py-2 rounded-full text-sm font-medium">Snowflake</span>
-            <span class="skill-tag px-4 py-2 rounded-full text-sm font-medium">DBT</span>
-            <span class="skill-tag px-4 py-2 rounded-full text-sm font-medium">Airflow</span>
-          </div>
-        </div>
-
-        <!-- AWS -->
-        <div data-aos="zoom-in" data-aos-delay="400">
-          <h3 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
-            <i class="fab fa-aws text-primary mr-3"></i>
-            Amazon Web Services
-          </h3>
-          <div class="flex flex-wrap gap-2">
-            <span class="skill-tag px-4 py-2 rounded-full text-sm font-medium">Glue</span>
-            <span class="skill-tag px-4 py-2 rounded-full text-sm font-medium">S3</span>
-            <span class="skill-tag px-4 py-2 rounded-full text-sm font-medium">Lambda</span>
-            <span class="skill-tag px-4 py-2 rounded-full text-sm font-medium">Athena</span>
-            <span class="skill-tag px-4 py-2 rounded-full text-sm font-medium">Redshift</span>
-            <span class="skill-tag px-4 py-2 rounded-full text-sm font-medium">SQS/SNS</span>
-            <span class="skill-tag px-4 py-2 rounded-full text-sm font-medium">EventBridge</span>
-            <span class="skill-tag px-4 py-2 rounded-full text-sm font-medium">Step Functions</span>
-          </div>
-        </div>
-
-        <!-- GCP -->
-        <div data-aos="zoom-in" data-aos-delay="500">
-          <h3 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
-            <i class="fab fa-google text-primary mr-3"></i>
-            Google Cloud Platform
-          </h3>
-          <div class="flex flex-wrap gap-2">
-            <span class="skill-tag px-4 py-2 rounded-full text-sm font-medium">BigQuery</span>
-            <span class="skill-tag px-4 py-2 rounded-full text-sm font-medium">Cloud Storage</span>
-            <span class="skill-tag px-4 py-2 rounded-full text-sm font-medium">Dataflow</span>
-            <span class="skill-tag px-4 py-2 rounded-full text-sm font-medium">Dataproc</span>
-            <span class="skill-tag px-4 py-2 rounded-full text-sm font-medium">Cloud Functions</span>
-            <span class="skill-tag px-4 py-2 rounded-full text-sm font-medium">Pub/Sub</span>
-            <span class="skill-tag px-4 py-2 rounded-full text-sm font-medium">Vertex AI</span>
-            <span class="skill-tag px-4 py-2 rounded-full text-sm font-medium">Cloud Composer</span>
-            <span class="skill-tag px-4 py-2 rounded-full text-sm font-medium">Dataform</span>
-          </div>
-        </div>
-
-        <!-- Azure -->
-        <div data-aos="zoom-in" data-aos-delay="600">
-          <h3 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
-            <i class="fab fa-microsoft text-primary mr-3"></i>
-            Microsoft Azure
-          </h3>
-          <div class="flex flex-wrap gap-2">
-            <span class="skill-tag px-4 py-2 rounded-full text-sm font-medium">ADF</span>
-            <span class="skill-tag px-4 py-2 rounded-full text-sm font-medium">Synapse</span>
-            <span class="skill-tag px-4 py-2 rounded-full text-sm font-medium">ADLS</span>
-            <span class="skill-tag px-4 py-2 rounded-full text-sm font-medium">Blob Storage</span>
-          </div>
-        </div>
-
       </div>
     </section>
 
     <!-- Projects Section -->
-    <section id="projects" class="section-bg" data-aos="fade-up">
-      <h2 class="text-4xl font-bold gradient-text mb-12 text-center">Projects & Applications</h2>
-      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+    <section id="projects" class="section-container" data-aos="fade-up">
+      <h2 class="text-4xl font-bold neon-text mb-8">
+        <i class="fas fa-rocket mr-3"></i>Projects & Applications
+      </h2>
+      <div class="gradient-divider mb-8"></div>
+
+      <div class="grid md:grid-cols-2 gap-8">
 
         <!-- Project 1 -->
         <a href="https://hebermudezg.shinyapps.io/StatiSoft_clasificar_Imagen/?_ga=2.66982382.1914422482.1677559341-381922426.1677559341"
-           target="_blank" class="card-hover bg-white rounded-xl overflow-hidden shadow-lg" data-aos="flip-left">
-          <img src="img/gafasseguridad.jpeg" alt="Safety Glasses Detection" class="w-full h-48 object-cover">
-          <div class="p-6">
-            <h3 class="text-xl font-bold text-gray-800 mb-2">Safety Glasses Detection</h3>
-            <p class="text-gray-600">Deep learning application to identify dark safety glasses using computer vision</p>
-            <div class="mt-4 flex items-center text-primary font-semibold">
-              Visit App <i class="fas fa-arrow-right ml-2"></i>
-            </div>
+           target="_blank" class="glow-card rounded-xl p-8 flex flex-col items-center text-center" data-aos="zoom-in">
+          <i class="fas fa-glasses text-6xl text-neon-green mb-6"></i>
+          <h3 class="text-xl font-bold text-white mb-3">Safety Glasses Detection</h3>
+          <p class="text-gray-400 mb-4">Deep learning application using computer vision</p>
+          <div class="text-neon-green font-semibold">
+            Visit App <i class="fas fa-arrow-right ml-2"></i>
           </div>
         </a>
 
         <!-- Project 2 -->
         <a href="https://hebermudezg.shinyapps.io/Madres/"
-           target="_blank" class="card-hover bg-white rounded-xl overflow-hidden shadow-lg" data-aos="flip-left" data-aos-delay="100">
-          <img src="img/madre-solterea.webp" alt="Satisfaction Calculator" class="w-full h-48 object-cover">
-          <div class="p-6">
-            <h3 class="text-xl font-bold text-gray-800 mb-2">Personal Satisfaction Calculator</h3>
-            <p class="text-gray-600">Statistical tool to calculate personal satisfaction levels based on multiple factors</p>
-            <div class="mt-4 flex items-center text-primary font-semibold">
-              Visit App <i class="fas fa-arrow-right ml-2"></i>
-            </div>
+           target="_blank" class="glow-card rounded-xl p-8 flex flex-col items-center text-center" data-aos="zoom-in" data-aos-delay="100">
+          <i class="fas fa-smile text-6xl text-neon-green mb-6"></i>
+          <h3 class="text-xl font-bold text-white mb-3">Satisfaction Calculator</h3>
+          <p class="text-gray-400 mb-4">Statistical tool for personal satisfaction analysis</p>
+          <div class="text-neon-green font-semibold">
+            Visit App <i class="fas fa-arrow-right ml-2"></i>
           </div>
         </a>
 
         <!-- Project 3 -->
         <a href="https://hebermudezg.shinyapps.io/Colnalitycs/"
-           target="_blank" class="card-hover bg-white rounded-xl overflow-hidden shadow-lg" data-aos="flip-left" data-aos-delay="200">
-          <img src="img/vehiculos.webp" alt="RUNT Prediction" class="w-full h-48 object-cover">
-          <div class="p-6">
-            <h3 class="text-xl font-bold text-gray-800 mb-2">RUNT Vehicle Prediction</h3>
-            <p class="text-gray-600">Predictive analytics for vehicle registrations in Colombia's National Registry</p>
-            <div class="mt-4 flex items-center text-primary font-semibold">
-              Visit App <i class="fas fa-arrow-right ml-2"></i>
-            </div>
+           target="_blank" class="glow-card rounded-xl p-8 flex flex-col items-center text-center" data-aos="zoom-in" data-aos-delay="200">
+          <i class="fas fa-car text-6xl text-neon-green mb-6"></i>
+          <h3 class="text-xl font-bold text-white mb-3">RUNT Vehicle Prediction</h3>
+          <p class="text-gray-400 mb-4">Predictive analytics for vehicle registrations</p>
+          <div class="text-neon-green font-semibold">
+            Visit App <i class="fas fa-arrow-right ml-2"></i>
           </div>
         </a>
 
-        <!-- Unalytics Project -->
+        <!-- Unalytics -->
         <a href="https://unalyticsteam.github.io/unalytics/"
-           target="_blank" class="card-hover bg-white rounded-xl overflow-hidden shadow-lg" data-aos="flip-left" data-aos-delay="300">
-          <div class="p-6 h-full flex flex-col justify-center bg-gradient-to-br from-purple-50 to-blue-50">
-            <i class="fas fa-chart-line text-6xl text-primary mb-4"></i>
-            <h3 class="text-xl font-bold text-gray-800 mb-2">Unalytics Research</h3>
-            <p class="text-gray-600">Research incubator from the National University of Colombia - Medellín campus. Data science and analytics research projects.</p>
-            <div class="mt-4 flex items-center text-primary font-semibold">
-              Learn More <i class="fas fa-arrow-right ml-2"></i>
-            </div>
+           target="_blank" class="glow-card rounded-xl p-8 flex flex-col items-center text-center" data-aos="zoom-in" data-aos-delay="300">
+          <i class="fas fa-chart-line text-6xl text-neon-green mb-6"></i>
+          <h3 class="text-xl font-bold text-white mb-3">Unalytics Research</h3>
+          <p class="text-gray-400 mb-4">Data science research incubator - UNAL</p>
+          <div class="text-neon-green font-semibold">
+            Learn More <i class="fas fa-arrow-right ml-2"></i>
           </div>
         </a>
-
-      </div>
-    </section>
-
-    <!-- Courses Section -->
-    <section id="courses" class="section-bg" data-aos="fade-up">
-      <h2 class="text-4xl font-bold gradient-text mb-12 text-center">Courses & Training</h2>
-      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-
-        <div class="card-hover bg-gradient-to-br from-blue-50 to-blue-100 p-6 rounded-xl" data-aos="zoom-in">
-          <div class="flex items-center mb-4">
-            <img src="img/sql_logo.png" alt="SQL" class="w-16 h-16 object-contain mr-4">
-            <h3 class="text-lg font-bold text-gray-800">SQL for Data Science</h3>
-          </div>
-        </div>
-
-        <div class="card-hover bg-gradient-to-br from-yellow-50 to-yellow-100 p-6 rounded-xl" data-aos="zoom-in" data-aos-delay="50">
-          <div class="flex items-center mb-4">
-            <img src="img/python_logo1.png" alt="Python" class="w-16 h-16 object-contain mr-4">
-            <h3 class="text-lg font-bold text-gray-800">Data Science with Python</h3>
-          </div>
-        </div>
-
-        <div class="card-hover bg-gradient-to-br from-purple-50 to-purple-100 p-6 rounded-xl" data-aos="zoom-in" data-aos-delay="100">
-          <div class="flex items-center mb-4">
-            <img src="img/normal_logo.png" alt="Statistics" class="w-16 h-16 object-contain mr-4">
-            <h3 class="text-lg font-bold text-gray-800">Basic Statistics Course</h3>
-          </div>
-        </div>
-
-        <div class="card-hover bg-gradient-to-br from-blue-50 to-cyan-100 p-6 rounded-xl" data-aos="zoom-in" data-aos-delay="150">
-          <div class="flex items-center mb-4">
-            <img src="img/R_logo1.jpeg" alt="R" class="w-16 h-16 object-contain mr-4">
-            <h3 class="text-lg font-bold text-gray-800">Data Science with RStudio</h3>
-          </div>
-        </div>
-
-        <div class="card-hover bg-gradient-to-br from-gray-50 to-gray-100 p-6 rounded-xl" data-aos="zoom-in" data-aos-delay="200">
-          <div class="flex items-center mb-4">
-            <img src="img/bash_linux_logo1.jpeg" alt="Bash" class="w-16 h-16 object-contain mr-4">
-            <h3 class="text-lg font-bold text-gray-800">Bash on Linux Course</h3>
-          </div>
-        </div>
-
-        <div class="card-hover bg-gradient-to-br from-orange-50 to-orange-100 p-6 rounded-xl" data-aos="zoom-in" data-aos-delay="250">
-          <div class="flex items-center mb-4">
-            <img src="img/AWS_logo1.jpeg" alt="AWS" class="w-16 h-16 object-contain mr-4">
-            <h3 class="text-lg font-bold text-gray-800">Amazon Web Services</h3>
-          </div>
-        </div>
-
-      </div>
-    </section>
-
-    <!-- Publications Section -->
-    <section id="publications" class="section-bg" data-aos="fade-up">
-      <h2 class="text-4xl font-bold gradient-text mb-12 text-center">Publications & Research</h2>
-      <div class="space-y-6">
-
-        <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition border-l-4 border-primary" data-aos="fade-right">
-          <h3 class="text-lg font-semibold text-gray-800 mb-2">
-            <a href="https://rpubs.com/hebermudezg/cd4andmixmodels" target="_blank" class="text-primary hover:underline">
-              Mixed Models for Analysis of CD4 Glycoprotein Counts in Patients with Advanced Immune Suppression
-            </a>
-          </h3>
-          <p class="text-gray-600">Statistical modeling of CD4 counts using mixed models for advanced immunosuppression research.</p>
-        </div>
-
-        <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition border-l-4 border-primary" data-aos="fade-right" data-aos-delay="100">
-          <h3 class="text-lg font-semibold text-gray-800 mb-2">
-            <a href="https://github.com/hebermudezg/hydroelectric-energy-GAMLSS/blob/main/Posterwin.pdf" target="_blank" class="text-primary hover:underline">
-              Hydroelectric Energy Production: Statistical Modeling with GAMLSS
-            </a>
-          </h3>
-          <p class="text-gray-600">Advanced statistical modeling for hydroelectric energy production using GAMLSS methodology.</p>
-        </div>
-
-        <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition border-l-4 border-primary" data-aos="fade-right" data-aos-delay="200">
-          <h3 class="text-lg font-semibold text-gray-800 mb-2">
-            <a href="http://simposioestadistica.unal.edu.co/fileadmin/Facultad_de_Ciencias/Eventos/Simposio_internacional_de_estadistica/Files/Memorias_Simposio_29_-_2019.pdf"
-               target="_blank" class="text-primary hover:underline">
-              Text Mining to Study Data Science Terminologies in Colombia
-            </a>
-          </h3>
-          <p class="text-gray-600">Research on data science terminology in Colombia using text mining techniques (page 249).</p>
-        </div>
 
       </div>
     </section>
 
     <!-- Contact Section -->
-    <section id="contact" class="section-bg" data-aos="fade-up">
-      <h2 class="text-4xl font-bold gradient-text mb-12 text-center">Get In Touch</h2>
-      <div class="max-w-3xl mx-auto">
-        <div class="grid md:grid-cols-2 gap-8 mb-8">
+    <section id="contact" class="section-container" data-aos="fade-up">
+      <h2 class="text-4xl font-bold neon-text mb-8">
+        <i class="fas fa-paper-plane mr-3"></i>Get In Touch
+      </h2>
+      <div class="gradient-divider mb-8"></div>
 
-          <div class="flex items-start space-x-4" data-aos="fade-right">
-            <div class="bg-primary/10 p-4 rounded-full">
-              <i class="fas fa-envelope text-primary text-2xl"></i>
-            </div>
-            <div>
-              <h3 class="font-semibold text-gray-800 mb-1">Email</h3>
-              <a href="mailto:hebermudezg@gmail.com" class="text-primary hover:underline">hebermudezg@gmail.com</a>
-            </div>
+      <div class="text-center max-w-2xl mx-auto">
+
+        <!-- Email -->
+        <div class="mb-8" data-aos="zoom-in">
+          <div class="inline-flex items-center justify-center bg-dark-bg neon-border p-4 rounded-full mb-4">
+            <i class="fas fa-envelope text-neon-green text-3xl"></i>
           </div>
-
-          <div class="flex items-start space-x-4" data-aos="fade-left">
-            <div class="bg-primary/10 p-4 rounded-full">
-              <i class="fas fa-phone text-primary text-2xl"></i>
-            </div>
-            <div>
-              <h3 class="font-semibold text-gray-800 mb-1">Phone</h3>
-              <a href="tel:+573115604078" class="text-primary hover:underline">(+57) 311 560 4078</a>
-            </div>
-          </div>
-
+          <h3 class="text-xl font-semibold text-white mb-2">Email</h3>
+          <a href="mailto:hebermudezg@gmail.com" class="text-neon-green hover:underline text-lg">
+            hebermudezg@gmail.com
+          </a>
         </div>
 
         <!-- Social Media -->
-        <div class="text-center mt-12" data-aos="zoom-in">
-          <h3 class="text-xl font-semibold text-gray-800 mb-6">Connect With Me</h3>
+        <div class="mt-12" data-aos="zoom-in" data-aos-delay="100">
+          <h3 class="text-xl font-semibold text-white mb-6">Connect With Me</h3>
           <div class="flex justify-center space-x-6">
             <a href="https://www.linkedin.com/in/hebermudezg" target="_blank"
-               class="bg-blue-600 text-white w-14 h-14 rounded-full flex items-center justify-center hover:bg-blue-700 transition transform hover:scale-110 shadow-lg">
+               class="w-16 h-16 flex items-center justify-center rounded-full bg-dark-card border-2 border-neon-green text-neon-green hover:bg-neon-green hover:text-dark-bg transition transform hover:scale-110">
               <i class="fab fa-linkedin-in text-2xl"></i>
             </a>
             <a href="https://github.com/hebermudezg" target="_blank"
-               class="bg-gray-800 text-white w-14 h-14 rounded-full flex items-center justify-center hover:bg-gray-900 transition transform hover:scale-110 shadow-lg">
+               class="w-16 h-16 flex items-center justify-center rounded-full bg-dark-card border-2 border-neon-green text-neon-green hover:bg-neon-green hover:text-dark-bg transition transform hover:scale-110">
               <i class="fab fa-github text-2xl"></i>
             </a>
-            <a href="mailto:hebermudezg@gmail.com"
-               class="bg-red-600 text-white w-14 h-14 rounded-full flex items-center justify-center hover:bg-red-700 transition transform hover:scale-110 shadow-lg">
-              <i class="fas fa-envelope text-2xl"></i>
+            <a href="https://medium.com/@hebermudezg" target="_blank"
+               class="w-16 h-16 flex items-center justify-center rounded-full bg-dark-card border-2 border-neon-green text-neon-green hover:bg-neon-green hover:text-dark-bg transition transform hover:scale-110">
+              <i class="fab fa-medium text-2xl"></i>
             </a>
           </div>
         </div>
 
         <!-- LinkedIn Badge -->
-        <div class="mt-12 flex justify-center" data-aos="fade-up">
-          <div class="badge-base LI-profile-badge" data-locale="es_ES" data-size="large" data-theme="light"
+        <div class="mt-12" data-aos="fade-up">
+          <div class="badge-base LI-profile-badge" data-locale="es_ES" data-size="large" data-theme="dark"
                data-type="HORIZONTAL" data-vanity="hebermudezg" data-version="v1">
             <a class="badge-base__link LI-simple-link" href="https://co.linkedin.com/in/hebermudezg?trk=profile-badge">
               Heber E. Bermúdez
@@ -621,10 +650,10 @@
   </div>
 
   <!-- Footer -->
-  <footer class="bg-gray-900 text-white py-8 mt-20">
+  <footer class="bg-dark-bg border-t border-dark-border py-8 mt-20">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-      <p class="text-gray-400">© 2025 Heber Bermudez | Senior Data Engineer</p>
-      <p class="text-gray-500 text-sm mt-2">Built with modern web technologies</p>
+      <p class="text-gray-400 mono">© 2025 Heber Bermudez<span class="neon-text">_</span></p>
+      <p class="text-gray-600 text-sm mt-2">Data Engineer • Researcher • Educator</p>
     </div>
   </footer>
 
@@ -668,16 +697,6 @@
           });
         }
       });
-    });
-
-    // Navbar background on scroll
-    const navbar = document.querySelector('nav');
-    window.addEventListener('scroll', () => {
-      if (window.scrollY > 50) {
-        navbar.classList.add('shadow-xl');
-      } else {
-        navbar.classList.remove('shadow-xl');
-      }
     });
   </script>
 
