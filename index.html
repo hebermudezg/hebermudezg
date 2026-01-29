@@ -17,14 +17,14 @@
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
 
-  <!-- Google Fonts -->
+  <!-- Google Fonts - Inter for clean professional look -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 
   <style>
     * {
-      font-family: 'Space Grotesk', sans-serif;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
     }
 
     code, .mono {
@@ -32,311 +32,306 @@
     }
 
     :root {
-      /* Dark mode colors - Neon Green */
-      --neon-green: #00ff88;
-      --neon-cyan: #00fff9;
-      --dark-bg: #0a0e12;
-      --dark-card: #141b23;
-      --dark-border: #1f2937;
-
-      /* Light mode colors - Vibrant Blue */
-      --light-bg: #ffffff;
-      --light-card: #f9fafb;
-      --light-border: #e5e7eb;
-      --light-accent: #3b82f6;
-      --light-accent-hover: #2563eb;
-      --light-accent-glow: rgba(59, 130, 246, 0.15);
+      --primary: #2563eb;
+      --primary-light: #3b82f6;
+      --primary-dark: #1d4ed8;
+      --text-primary: #111827;
+      --text-secondary: #4b5563;
+      --text-muted: #6b7280;
+      --bg-white: #ffffff;
+      --bg-subtle: #f9fafb;
+      --bg-muted: #f3f4f6;
+      --border-light: #e5e7eb;
+      --border-medium: #d1d5db;
     }
 
     body {
-      background: var(--dark-bg);
-      color: #e5e7eb;
-      transition: background-color 0.3s ease, color 0.3s ease;
+      background: var(--bg-white);
+      color: var(--text-primary);
+      line-height: 1.6;
     }
 
-    /* Light mode styles */
-    body.light-mode {
-      background: var(--light-bg);
-      color: #1f2937;
-    }
-
-    body.light-mode .section-container {
-      background: var(--light-card);
-      border-color: var(--light-border);
-    }
-
-    body.light-mode .glow-card {
-      background: var(--light-card);
-      border-color: var(--light-border);
-    }
-
-    body.light-mode .nav-dark {
+    /* Navigation */
+    .nav-container {
       background: rgba(255, 255, 255, 0.95);
-      border-color: var(--light-border);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-light);
     }
 
-    body.light-mode .hero-gradient {
-      background: linear-gradient(135deg, #f8f9fa 0%, #e5e7eb 100%);
-    }
-
-    body.light-mode h1, body.light-mode h2, body.light-mode h3, body.light-mode h4 {
-      color: #1f2937;
-    }
-
-    body.light-mode .text-white {
-      color: #1f2937 !important;
-    }
-
-    body.light-mode .text-gray-300, body.light-mode .text-gray-400 {
-      color: #4b5563 !important;
-    }
-
-    body.light-mode .text-gray-500 {
-      color: #6b7280 !important;
-    }
-
-    body.light-mode a.text-gray-300 {
-      color: #4b5563 !important;
-    }
-
-    body.light-mode a.text-gray-300:hover {
-      color: var(--light-accent) !important;
-    }
-
-    /* Light mode accent colors */
-    body.light-mode .neon-text {
-      color: var(--light-accent);
-      text-shadow: none;
-    }
-
-    body.light-mode .text-neon-green {
-      color: var(--light-accent) !important;
-    }
-
-    body.light-mode .border-neon-green {
-      border-color: var(--light-accent) !important;
-    }
-
-    body.light-mode .btn-neon {
-      border-color: var(--light-accent);
-      color: var(--light-accent);
-      font-weight: 600;
-    }
-
-    body.light-mode .btn-neon:hover {
-      background: var(--light-accent);
-      color: white;
-      box-shadow: 0 8px 20px rgba(59, 130, 246, 0.35);
-      transform: translateY(-2px);
-    }
-
-    body.light-mode .btn-neon-filled {
-      background: linear-gradient(135deg, var(--light-accent) 0%, var(--light-accent-hover) 100%);
-      border-color: var(--light-accent);
-      color: white;
-      font-weight: 600;
-    }
-
-    body.light-mode .btn-neon-filled:hover {
-      background: linear-gradient(135deg, var(--light-accent-hover) 0%, #1d4ed8 100%);
-      box-shadow: 0 8px 24px rgba(59, 130, 246, 0.4);
-      transform: translateY(-2px);
-    }
-
-    body.light-mode .skill-pill {
-      background: rgba(59, 130, 246, 0.1);
-      border-color: rgba(59, 130, 246, 0.3);
-      color: var(--light-accent);
-    }
-
-    body.light-mode .skill-pill:hover {
-      background: rgba(59, 130, 246, 0.2);
-      border-color: var(--light-accent);
-      box-shadow: 0 0 12px rgba(59, 130, 246, 0.4);
-      transform: scale(1.05);
-    }
-
-    body.light-mode .glow-card:hover {
-      border-color: var(--light-accent);
-      box-shadow: 0 8px 24px var(--light-accent-glow);
-      transform: translateY(-5px);
-    }
-
-    body.light-mode .gradient-divider {
-      background: linear-gradient(90deg, transparent, var(--light-accent), transparent);
-    }
-
-    body.light-mode .neon-border {
-      border-color: var(--light-accent);
-      box-shadow: 0 0 16px rgba(59, 130, 246, 0.4);
-    }
-
-    /* Theme toggle button */
-    .theme-toggle {
-      position: fixed;
-      bottom: 2rem;
-      right: 2rem;
-      z-index: 1000;
-      background: var(--neon-green);
-      color: #0a0e12;
-      width: 3.5rem;
-      height: 3.5rem;
-      border-radius: 50%;
-      border: none;
-      cursor: pointer;
-      box-shadow: 0 4px 20px rgba(0, 255, 136, 0.4);
-      transition: all 0.3s ease;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.5rem;
-    }
-
-    .theme-toggle:hover {
-      transform: scale(1.1);
-      box-shadow: 0 6px 30px rgba(0, 255, 136, 0.6);
-    }
-
-    /* Theme toggle in light mode */
-    body.light-mode .theme-toggle {
-      background: var(--light-accent);
-      color: white;
-      box-shadow: 0 4px 20px rgba(59, 130, 246, 0.4);
-    }
-
-    body.light-mode .theme-toggle:hover {
-      background: var(--light-accent-hover);
-      box-shadow: 0 6px 30px rgba(59, 130, 246, 0.6);
-    }
-
-    .neon-text {
-      color: var(--neon-green);
-      text-shadow: 0 0 10px var(--neon-green), 0 0 20px var(--neon-green);
-    }
-
-    .neon-border {
-      border: 2px solid var(--neon-green);
-      box-shadow: 0 0 10px var(--neon-green), inset 0 0 10px rgba(0, 255, 136, 0.1);
-    }
-
-    .glow-card {
-      background: var(--dark-card);
-      border: 1px solid var(--dark-border);
-      transition: all 0.3s ease;
-    }
-
-    .glow-card:hover {
-      border-color: var(--neon-green);
-      box-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
-      transform: translateY(-5px);
-    }
-
-    .nav-dark {
-      background: rgba(10, 14, 18, 0.95);
-      backdrop-filter: blur(20px);
-      border-bottom: 1px solid var(--dark-border);
-    }
-
-    .btn-neon {
-      background: transparent;
-      border: 2px solid var(--neon-green);
-      color: var(--neon-green);
+    .nav-link {
+      color: var(--text-secondary);
+      font-weight: 500;
+      padding: 0.5rem 0;
       position: relative;
-      overflow: hidden;
-      transition: all 0.3s ease;
+      transition: color 0.2s ease;
     }
 
-    .btn-neon:hover {
-      background: var(--neon-green);
-      color: #0a0e12;
-      box-shadow: 0 0 20px var(--neon-green);
+    .nav-link:hover {
+      color: var(--primary);
     }
 
-    .btn-neon-filled {
-      background: var(--neon-green);
-      color: #0a0e12;
-      border: 2px solid var(--neon-green);
-      font-weight: 600;
-      transition: all 0.3s ease;
-    }
-
-    .btn-neon-filled:hover {
-      box-shadow: 0 0 30px var(--neon-green);
-      transform: translateY(-2px);
-    }
-
-    .skill-pill {
-      background: rgba(0, 255, 136, 0.1);
-      border: 1px solid rgba(0, 255, 136, 0.3);
-      color: var(--neon-green);
-      transition: all 0.3s ease;
-    }
-
-    .skill-pill:hover {
-      background: rgba(0, 255, 136, 0.2);
-      border-color: var(--neon-green);
-      box-shadow: 0 0 15px rgba(0, 255, 136, 0.4);
-    }
-
-    .gradient-divider {
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
       height: 2px;
-      background: linear-gradient(90deg, transparent, var(--neon-green), transparent);
+      background: var(--primary);
+      transition: width 0.2s ease;
     }
 
-    .hero-gradient {
-      background: linear-gradient(135deg, #0a0e12 0%, #1a1f2e 100%);
+    .nav-link:hover::after {
+      width: 100%;
+    }
+
+    /* Logo */
+    .logo {
+      font-weight: 700;
+      color: var(--text-primary);
+      letter-spacing: -0.02em;
+    }
+
+    .logo-accent {
+      color: var(--primary);
+    }
+
+    /* Buttons */
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+      padding: 0.75rem 1.5rem;
+      border-radius: 0.5rem;
+      font-weight: 600;
+      transition: all 0.2s ease;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-dark);
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--text-primary);
+      padding: 0.75rem 1.5rem;
+      border-radius: 0.5rem;
+      font-weight: 600;
+      border: 1.5px solid var(--border-medium);
+      transition: all 0.2s ease;
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+      background: rgba(37, 99, 235, 0.04);
+    }
+
+    /* Cards - Soft UI */
+    .card {
+      background: var(--bg-white);
+      border: 1px solid var(--border-light);
+      border-radius: 1rem;
+      transition: all 0.25s ease;
+    }
+
+    .card:hover {
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+      transform: translateY(-2px);
+      border-color: var(--border-medium);
+    }
+
+    .card-link:hover {
+      border-color: var(--primary-light);
+    }
+
+    /* Section containers */
+    .section-card {
+      background: var(--bg-subtle);
+      border-radius: 1.5rem;
+      padding: 3rem;
     }
 
     @media (max-width: 768px) {
-      .hero-title {
-        font-size: 2rem;
+      .section-card {
+        padding: 1.5rem;
+        border-radius: 1rem;
       }
     }
 
-    .section-container {
-      background: var(--dark-card);
-      border: 1px solid var(--dark-border);
-      border-radius: 1rem;
-      padding: 2rem;
-      margin-bottom: 2rem;
-    }
-
-    .publication-card {
-      background: var(--dark-card);
-      border-left: 3px solid var(--neon-green);
-      padding: 1.5rem;
-      transition: all 0.3s ease;
-    }
-
-    .publication-card:hover {
-      background: rgba(0, 255, 136, 0.05);
-      box-shadow: 0 0 20px rgba(0, 255, 136, 0.2);
-    }
-
-    .book-badge {
-      background: linear-gradient(135deg, rgba(0, 255, 136, 0.2), rgba(0, 255, 249, 0.2));
-      border: 2px solid var(--neon-green);
-      padding: 0.5rem 1rem;
-      border-radius: 2rem;
-      color: var(--neon-green);
-      font-weight: 600;
+    /* Skill pills */
+    .skill-pill {
+      background: var(--bg-muted);
+      color: var(--text-secondary);
+      padding: 0.375rem 0.875rem;
+      border-radius: 9999px;
       font-size: 0.875rem;
+      font-weight: 500;
+      border: 1px solid var(--border-light);
+      transition: all 0.2s ease;
+    }
+
+    .skill-pill:hover {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
+
+    /* Profile image */
+    .profile-image {
+      border-radius: 1rem;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.12);
+    }
+
+    /* Accent text */
+    .text-accent {
+      color: var(--primary);
+    }
+
+    /* Divider */
+    .divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border-light), transparent);
+    }
+
+    /* Social icons */
+    .social-icon {
+      width: 2.75rem;
+      height: 2.75rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 0.75rem;
+      background: var(--bg-muted);
+      color: var(--text-secondary);
+      transition: all 0.2s ease;
+      border: 1px solid var(--border-light);
+    }
+
+    .social-icon:hover {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+    }
+
+    /* Publication item */
+    .publication-item {
+      padding-left: 1.25rem;
+      border-left: 2px solid var(--border-light);
+      transition: border-color 0.2s ease;
+    }
+
+    .publication-item:hover {
+      border-left-color: var(--primary);
+    }
+
+    /* Mobile menu */
+    .mobile-menu {
+      background: var(--bg-white);
+      border-top: 1px solid var(--border-light);
+    }
+
+    .mobile-link {
+      color: var(--text-secondary);
+      padding: 0.75rem 1rem;
+      display: block;
+      transition: all 0.2s ease;
+    }
+
+    .mobile-link:hover {
+      background: var(--bg-subtle);
+      color: var(--primary);
+    }
+
+    /* Hero gradient - very subtle */
+    .hero-gradient {
+      background: linear-gradient(180deg, var(--bg-subtle) 0%, var(--bg-white) 100%);
+    }
+
+    /* Course card icon */
+    .icon-container {
+      width: 3rem;
+      height: 3rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(37, 99, 235, 0.1);
+      border-radius: 0.75rem;
+      color: var(--primary);
+    }
+
+    /* Project card */
+    .project-card {
+      background: var(--bg-white);
+      border: 1px solid var(--border-light);
+      border-radius: 1rem;
+      padding: 1.5rem;
+      text-align: center;
+      transition: all 0.25s ease;
+    }
+
+    .project-card:hover {
+      box-shadow: 0 12px 40px rgba(37, 99, 235, 0.12);
+      border-color: var(--primary-light);
+      transform: translateY(-4px);
+    }
+
+    .project-icon {
+      width: 4rem;
+      height: 4rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, rgba(37, 99, 235, 0.1) 0%, rgba(37, 99, 235, 0.05) 100%);
+      border-radius: 1rem;
+      color: var(--primary);
+      margin: 0 auto 1rem;
+    }
+
+    /* Smooth animations */
+    [data-aos] {
+      transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* Footer */
+    footer {
+      background: var(--bg-subtle);
+      border-top: 1px solid var(--border-light);
+    }
+
+    /* Heading styles */
+    .section-title {
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      letter-spacing: -0.02em;
+    }
+
+    .section-subtitle {
+      font-size: 0.875rem;
+      font-weight: 600;
       text-transform: uppercase;
-      letter-spacing: 1px;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
     }
 
-    /* Glowing effect on scroll */
-    .aos-animate .neon-border {
-      animation: pulse-glow 2s infinite;
+    /* Check list items */
+    .check-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.5rem;
+      color: var(--text-secondary);
+      font-size: 0.9375rem;
     }
 
-    @keyframes pulse-glow {
-      0%, 100% {
-        box-shadow: 0 0 10px var(--neon-green), inset 0 0 10px rgba(0, 255, 136, 0.1);
-      }
-      50% {
-        box-shadow: 0 0 20px var(--neon-green), inset 0 0 20px rgba(0, 255, 136, 0.2);
-      }
+    .check-icon {
+      color: var(--primary);
+      margin-top: 0.25rem;
+      flex-shrink: 0;
     }
   </style>
 
@@ -345,10 +340,9 @@
       theme: {
         extend: {
           colors: {
-            'neon-green': '#00ff88',
-            'neon-cyan': '#00fff9',
-            'dark-bg': '#0a0e12',
-            'dark-card': '#141b23',
+            'primary': '#2563eb',
+            'primary-light': '#3b82f6',
+            'primary-dark': '#1d4ed8',
           }
         }
       }
@@ -359,151 +353,153 @@
 <body class="antialiased">
 
   <!-- Navigation -->
-  <nav class="fixed w-full top-0 z-50 nav-dark">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+  <nav class="fixed w-full top-0 z-50 nav-container">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex justify-between items-center h-16">
         <div class="flex-shrink-0">
-          <a href="#home" class="text-2xl font-bold neon-text mono">HB_</a>
+          <a href="#home" class="text-xl logo">Heber<span class="logo-accent">.</span></a>
         </div>
         <div class="hidden md:flex space-x-8">
-          <a href="#home" class="text-gray-300 hover:text-neon-green transition">Home</a>
-          <a href="#about" class="text-gray-300 hover:text-neon-green transition">About</a>
-          <a href="#teaching" class="text-gray-300 hover:text-neon-green transition">Teaching</a>
-          <a href="#research" class="text-gray-300 hover:text-neon-green transition">Research</a>
-          <a href="#projects" class="text-gray-300 hover:text-neon-green transition">Projects</a>
-          <a href="#contact" class="text-gray-300 hover:text-neon-green transition">Contact</a>
+          <a href="#home" class="nav-link">Home</a>
+          <a href="#about" class="nav-link">About</a>
+          <a href="#teaching" class="nav-link">Teaching</a>
+          <a href="#research" class="nav-link">Research</a>
+          <a href="#projects" class="nav-link">Projects</a>
+          <a href="#contact" class="nav-link">Contact</a>
         </div>
-        <button id="mobile-menu-button" class="md:hidden text-neon-green">
-          <i class="fas fa-bars text-2xl"></i>
+        <button id="mobile-menu-button" class="md:hidden text-gray-600 hover:text-primary transition">
+          <i class="fas fa-bars text-xl"></i>
         </button>
       </div>
     </div>
     <!-- Mobile menu -->
-    <div id="mobile-menu" class="hidden md:hidden bg-dark-card border-t border-dark-border">
-      <div class="px-2 pt-2 pb-3 space-y-1">
-        <a href="#home" class="block px-3 py-2 text-gray-300 hover:bg-dark-bg hover:text-neon-green rounded">Home</a>
-        <a href="#about" class="block px-3 py-2 text-gray-300 hover:bg-dark-bg hover:text-neon-green rounded">About</a>
-        <a href="#teaching" class="block px-3 py-2 text-gray-300 hover:bg-dark-bg hover:text-neon-green rounded">Teaching</a>
-        <a href="#research" class="block px-3 py-2 text-gray-300 hover:bg-dark-bg hover:text-neon-green rounded">Research</a>
-        <a href="#projects" class="block px-3 py-2 text-gray-300 hover:bg-dark-bg hover:text-neon-green rounded">Projects</a>
-        <a href="#contact" class="block px-3 py-2 text-gray-300 hover:bg-dark-bg hover:text-neon-green rounded">Contact</a>
+    <div id="mobile-menu" class="hidden md:hidden mobile-menu">
+      <div class="py-2">
+        <a href="#home" class="mobile-link">Home</a>
+        <a href="#about" class="mobile-link">About</a>
+        <a href="#teaching" class="mobile-link">Teaching</a>
+        <a href="#research" class="mobile-link">Research</a>
+        <a href="#projects" class="mobile-link">Projects</a>
+        <a href="#contact" class="mobile-link">Contact</a>
       </div>
     </div>
   </nav>
 
   <!-- Hero Section -->
-  <section id="home" class="min-h-screen flex items-center justify-center pt-16 hero-gradient">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-      <div class="grid md:grid-cols-2 gap-12 items-center">
-        <div data-aos="fade-right">
-          <div class="mono text-neon-green mb-4">// Data Engineer</div>
-          <h1 class="hero-title text-5xl md:text-6xl font-bold text-white mb-6">
-            Heber Bermudez<span class="neon-text">_</span>
+  <section id="home" class="min-h-screen flex items-center pt-16 hero-gradient">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+      <div class="grid md:grid-cols-2 gap-16 items-center">
+        <div data-aos="fade-up" data-aos-duration="800">
+          <p class="text-accent font-semibold mb-3">Data Engineer</p>
+          <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6 leading-tight" style="letter-spacing: -0.02em;">
+            Heber Bermudez
           </h1>
-          <p class="text-xl text-gray-300 mb-4 leading-relaxed">
+          <p class="text-lg text-gray-600 mb-4 leading-relaxed">
             Building enterprise-scale data solutions and empowering teams through consulting, research, and education.
           </p>
-          <p class="text-lg text-gray-400 mb-8">
-            <span class="neon-text">5+</span> years engineering data solutions across cloud platforms.
+          <p class="text-gray-500 mb-8">
+            <span class="text-accent font-semibold">5+</span> years engineering data solutions across cloud platforms.
           </p>
-          <div class="flex flex-wrap gap-4">
-            <a href="#contact" class="btn-neon-filled px-8 py-3 rounded-lg font-semibold transition">
+          <div class="flex flex-wrap gap-3">
+            <a href="#contact" class="btn-primary">
               Let's Connect
             </a>
-            <a href="https://www.linkedin.com/in/hebermudezg" target="_blank" class="btn-neon px-8 py-3 rounded-lg font-semibold transition">
-              <i class="fab fa-linkedin mr-2"></i>View LinkedIn
+            <a href="https://www.linkedin.com/in/hebermudezg" target="_blank" class="btn-secondary">
+              <i class="fab fa-linkedin mr-2"></i>LinkedIn
             </a>
           </div>
         </div>
-        <div data-aos="fade-left" class="flex justify-center">
-          <div class="relative">
-            <div class="absolute inset-0 bg-neon-green opacity-20 rounded-full blur-3xl"></div>
-            <img src="img/hebermudezg.jpeg" alt="Heber Bermudez" class="relative rounded-2xl w-80 h-80 object-cover neon-border shadow-2xl">
-          </div>
+        <div data-aos="fade-up" data-aos-duration="800" data-aos-delay="100" class="flex justify-center">
+          <img src="img/hebermudezg.jpeg" alt="Heber Bermudez" class="profile-image w-72 h-72 md:w-80 md:h-80 object-cover">
         </div>
       </div>
     </div>
   </section>
 
   <!-- Main Content Container -->
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-16">
 
     <!-- About Section -->
-    <section id="about" class="section-container" data-aos="fade-up">
-      <h2 class="text-4xl font-bold neon-text mb-8">
-        <i class="fas fa-user-circle mr-3"></i>About Me
-      </h2>
-      <div class="gradient-divider mb-8"></div>
+    <section id="about" class="section-card" data-aos="fade-up" data-aos-duration="600">
+      <div class="flex items-center gap-3 mb-6">
+        <div class="icon-container">
+          <i class="fas fa-user text-lg"></i>
+        </div>
+        <h2 class="section-title">About Me</h2>
+      </div>
 
-      <p class="text-gray-300 text-lg leading-relaxed mb-6">
-        I'm a <span class="neon-text font-semibold">Senior Data Engineer</span> with over 5 years of experience designing and implementing
-        enterprise-scale data solutions across multiple industries. My expertise spans the complete data lifecycle, from architecture design
-        to production deployment on cloud platforms.
-      </p>
-      <p class="text-gray-300 text-lg leading-relaxed mb-6">
-        Throughout my career, I've worked extensively in <span class="neon-text font-semibold">consulting</span>, delivering data engineering
-        solutions for clients in healthcare, finance, and public sectors. I specialize in building robust, scalable data infrastructure using
-        AWS, GCP, and Azure, enabling organizations to make data-driven decisions with confidence.
-      </p>
-      <p class="text-gray-300 text-lg leading-relaxed mb-6">
-        Beyond engineering, I'm passionate about <span class="neon-text font-semibold">education and knowledge sharing</span>. I actively
-        contribute to the data community through teaching, research, and technical content creation, helping others grow their skills in
-        data engineering and analytics.
-      </p>
-      <div class="flex flex-wrap gap-6 mb-6">
-        <div class="flex items-center text-gray-400">
-          <i class="fas fa-map-marker-alt text-neon-green mr-2"></i>
+      <div class="space-y-4 text-gray-600 leading-relaxed mb-8">
+        <p>
+          I'm a <span class="text-accent font-semibold">Senior Data Engineer</span> with over 5 years of experience designing and implementing
+          enterprise-scale data solutions across multiple industries. My expertise spans the complete data lifecycle, from architecture design
+          to production deployment on cloud platforms.
+        </p>
+        <p>
+          Throughout my career, I've worked extensively in <span class="text-accent font-semibold">consulting</span>, delivering data engineering
+          solutions for clients in healthcare, finance, and public sectors. I specialize in building robust, scalable data infrastructure using
+          AWS, GCP, and Azure, enabling organizations to make data-driven decisions with confidence.
+        </p>
+        <p>
+          Beyond engineering, I'm passionate about <span class="text-accent font-semibold">education and knowledge sharing</span>. I actively
+          contribute to the data community through teaching, research, and technical content creation, helping others grow their skills in
+          data engineering and analytics.
+        </p>
+      </div>
+
+      <div class="flex flex-wrap gap-6 mb-8 text-sm text-gray-500">
+        <div class="flex items-center gap-2">
+          <i class="fas fa-map-marker-alt text-accent"></i>
           <span>Colombia</span>
         </div>
-        <div class="flex items-center text-gray-400">
-          <i class="fas fa-graduation-cap text-neon-green mr-2"></i>
+        <div class="flex items-center gap-2">
+          <i class="fas fa-graduation-cap text-accent"></i>
           <span>MSc in AI - UNIR, Spain</span>
         </div>
-        <div class="flex items-center text-gray-400">
-          <i class="fas fa-graduation-cap text-neon-green mr-2"></i>
+        <div class="flex items-center gap-2">
+          <i class="fas fa-graduation-cap text-accent"></i>
           <span>BSc in Statistics - UNAL</span>
         </div>
       </div>
 
-      <!-- Expanded Tech Stack -->
-      <div class="mt-8 pt-8 border-t border-dark-border">
-        <h3 class="text-xl font-semibold text-white mb-6">Tech Stack</h3>
-        <div class="grid md:grid-cols-4 gap-4">
+      <!-- Tech Stack -->
+      <div class="pt-8 border-t border-gray-200">
+        <h3 class="text-lg font-semibold text-gray-900 mb-6">Tech Stack</h3>
+        <div class="grid sm:grid-cols-2 md:grid-cols-4 gap-6">
 
           <div>
-            <h4 class="text-sm text-gray-400 mb-3 uppercase tracking-wide">Cloud Platforms</h4>
+            <p class="section-subtitle mb-3">Cloud Platforms</p>
             <div class="flex flex-wrap gap-2">
-              <span class="skill-pill px-3 py-1 rounded-full text-sm">AWS</span>
-              <span class="skill-pill px-3 py-1 rounded-full text-sm">GCP</span>
-              <span class="skill-pill px-3 py-1 rounded-full text-sm">Azure</span>
+              <span class="skill-pill">AWS</span>
+              <span class="skill-pill">GCP</span>
+              <span class="skill-pill">Azure</span>
             </div>
           </div>
 
           <div>
-            <h4 class="text-sm text-gray-400 mb-3 uppercase tracking-wide">Data Engineering</h4>
+            <p class="section-subtitle mb-3">Data Engineering</p>
             <div class="flex flex-wrap gap-2">
-              <span class="skill-pill px-3 py-1 rounded-full text-sm">PySpark</span>
-              <span class="skill-pill px-3 py-1 rounded-full text-sm">Airflow</span>
-              <span class="skill-pill px-3 py-1 rounded-full text-sm">DBT</span>
-              <span class="skill-pill px-3 py-1 rounded-full text-sm">Snowflake</span>
+              <span class="skill-pill">PySpark</span>
+              <span class="skill-pill">Airflow</span>
+              <span class="skill-pill">DBT</span>
+              <span class="skill-pill">Snowflake</span>
             </div>
           </div>
 
           <div>
-            <h4 class="text-sm text-gray-400 mb-3 uppercase tracking-wide">Databases</h4>
+            <p class="section-subtitle mb-3">Databases</p>
             <div class="flex flex-wrap gap-2">
-              <span class="skill-pill px-3 py-1 rounded-full text-sm">PostgreSQL</span>
-              <span class="skill-pill px-3 py-1 rounded-full text-sm">MongoDB</span>
-              <span class="skill-pill px-3 py-1 rounded-full text-sm">DynamoDB</span>
+              <span class="skill-pill">PostgreSQL</span>
+              <span class="skill-pill">MongoDB</span>
+              <span class="skill-pill">DynamoDB</span>
             </div>
           </div>
 
           <div>
-            <h4 class="text-sm text-gray-400 mb-3 uppercase tracking-wide">DevOps</h4>
+            <p class="section-subtitle mb-3">DevOps</p>
             <div class="flex flex-wrap gap-2">
-              <span class="skill-pill px-3 py-1 rounded-full text-sm">Docker</span>
-              <span class="skill-pill px-3 py-1 rounded-full text-sm">Kubernetes</span>
-              <span class="skill-pill px-3 py-1 rounded-full text-sm">Terraform</span>
+              <span class="skill-pill">Docker</span>
+              <span class="skill-pill">Kubernetes</span>
+              <span class="skill-pill">Terraform</span>
             </div>
           </div>
 
@@ -512,69 +508,75 @@
     </section>
 
     <!-- Teaching Section -->
-    <section id="teaching" class="section-container" data-aos="fade-up">
-      <h2 class="text-4xl font-bold neon-text mb-8">
-        <i class="fas fa-chalkboard-teacher mr-3"></i>Teaching
-      </h2>
-      <div class="gradient-divider mb-8"></div>
+    <section id="teaching" data-aos="fade-up" data-aos-duration="600">
+      <div class="flex items-center gap-3 mb-6">
+        <div class="icon-container">
+          <i class="fas fa-chalkboard-teacher text-lg"></i>
+        </div>
+        <h2 class="section-title">Teaching</h2>
+      </div>
 
-      <p class="text-gray-300 text-lg mb-8">
+      <p class="text-gray-600 mb-8">
         I'm passionate about education and knowledge sharing. Here are the courses and training programs I've developed:
       </p>
 
       <div class="grid md:grid-cols-2 gap-6">
 
         <!-- Statistics & Analytics Card -->
-        <div class="glow-card p-6 rounded-lg" data-aos="fade-right">
-          <div class="flex items-center mb-4">
-            <i class="fas fa-chart-line text-3xl text-neon-green mr-3"></i>
-            <h3 class="text-xl font-bold text-white">Statistics & Analytics</h3>
+        <div class="card p-6" data-aos="fade-up" data-aos-delay="100">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="icon-container">
+              <i class="fas fa-chart-line"></i>
+            </div>
+            <h3 class="text-lg font-semibold text-gray-900">Statistics & Analytics</h3>
           </div>
-          <ul class="space-y-2">
-            <li class="text-gray-300 flex items-start text-sm">
-              <i class="fas fa-check-circle text-neon-green mr-2 mt-1 text-xs"></i>
+          <ul class="space-y-2.5">
+            <li class="check-item">
+              <i class="fas fa-check check-icon text-sm"></i>
               <span>Basic Statistics</span>
             </li>
-            <li class="text-gray-300 flex items-start text-sm">
-              <i class="fas fa-check-circle text-neon-green mr-2 mt-1 text-xs"></i>
+            <li class="check-item">
+              <i class="fas fa-check check-icon text-sm"></i>
               <span>Data Science with R</span>
             </li>
-            <li class="text-gray-300 flex items-start text-sm">
-              <i class="fas fa-check-circle text-neon-green mr-2 mt-1 text-xs"></i>
+            <li class="check-item">
+              <i class="fas fa-check check-icon text-sm"></i>
               <span>Advanced Analytics & ML</span>
             </li>
-            <li class="text-gray-300 flex items-start text-sm">
-              <i class="fas fa-check-circle text-neon-green mr-2 mt-1 text-xs"></i>
+            <li class="check-item">
+              <i class="fas fa-check check-icon text-sm"></i>
               <span>Statistical Modeling</span>
             </li>
           </ul>
         </div>
 
         <!-- Data Engineering Card -->
-        <div class="glow-card p-6 rounded-lg" data-aos="fade-left">
-          <div class="flex items-center mb-4">
-            <i class="fas fa-database text-3xl text-neon-green mr-3"></i>
-            <h3 class="text-xl font-bold text-white">Data Engineering</h3>
+        <div class="card p-6" data-aos="fade-up" data-aos-delay="200">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="icon-container">
+              <i class="fas fa-database"></i>
+            </div>
+            <h3 class="text-lg font-semibold text-gray-900">Data Engineering</h3>
           </div>
-          <ul class="space-y-2">
-            <li class="text-gray-300 flex items-start text-sm">
-              <i class="fas fa-check-circle text-neon-green mr-2 mt-1 text-xs"></i>
+          <ul class="space-y-2.5">
+            <li class="check-item">
+              <i class="fas fa-check check-icon text-sm"></i>
               <span>SQL for Data Science</span>
             </li>
-            <li class="text-gray-300 flex items-start text-sm">
-              <i class="fas fa-check-circle text-neon-green mr-2 mt-1 text-xs"></i>
+            <li class="check-item">
+              <i class="fas fa-check check-icon text-sm"></i>
               <span>Python for Data Engineering</span>
             </li>
-            <li class="text-gray-300 flex items-start text-sm">
-              <i class="fas fa-check-circle text-neon-green mr-2 mt-1 text-xs"></i>
+            <li class="check-item">
+              <i class="fas fa-check check-icon text-sm"></i>
               <span>AWS for Data Engineers</span>
             </li>
-            <li class="text-gray-300 flex items-start text-sm">
-              <i class="fas fa-check-circle text-neon-green mr-2 mt-1 text-xs"></i>
+            <li class="check-item">
+              <i class="fas fa-check check-icon text-sm"></i>
               <span>Bash & Linux for Data Workflows</span>
             </li>
-            <li class="text-gray-300 flex items-start text-sm">
-              <i class="fas fa-check-circle text-neon-green mr-2 mt-1 text-xs"></i>
+            <li class="check-item">
+              <i class="fas fa-check check-icon text-sm"></i>
               <span>Cloud Data Platforms (GCP, Azure)</span>
             </li>
           </ul>
@@ -584,21 +586,25 @@
     </section>
 
     <!-- Research & Publications -->
-    <section id="research" class="section-container" data-aos="fade-up">
-      <h2 class="text-4xl font-bold neon-text mb-8">
-        <i class="fas fa-book mr-3"></i>Research & Publications
-      </h2>
-      <div class="gradient-divider mb-8"></div>
+    <section id="research" class="section-card" data-aos="fade-up" data-aos-duration="600">
+      <div class="flex items-center gap-3 mb-6">
+        <div class="icon-container">
+          <i class="fas fa-book text-lg"></i>
+        </div>
+        <h2 class="section-title">Research & Publications</h2>
+      </div>
 
       <!-- Book in Progress -->
-      <div class="mb-10">
-        <div class="flex items-start mb-3">
-          <i class="fas fa-book text-neon-green text-2xl mr-4 mt-1"></i>
+      <div class="mb-10 p-4 bg-white rounded-lg border border-gray-200">
+        <div class="flex items-start gap-4">
+          <div class="icon-container flex-shrink-0">
+            <i class="fas fa-book-open"></i>
+          </div>
           <div>
-            <h3 class="text-xl font-bold text-white mb-1">
-              📚 Data Engineering Fundamentals <span class="text-sm text-neon-green">(In Progress)</span>
+            <h3 class="font-semibold text-gray-900 mb-1">
+              Data Engineering Fundamentals <span class="text-accent text-sm font-medium">(In Progress)</span>
             </h3>
-            <p class="text-gray-400 text-sm">
+            <p class="text-gray-500 text-sm">
               Comprehensive guide to modern data engineering practices, cloud platforms, and scalable infrastructure.
             </p>
           </div>
@@ -607,64 +613,55 @@
 
       <!-- Academic Publications -->
       <div class="mb-10">
-        <h3 class="text-lg font-semibold text-gray-400 mb-4 uppercase tracking-wide">Academic Publications</h3>
+        <p class="section-subtitle mb-4">Academic Publications</p>
         <ul class="space-y-4">
-          <li class="flex items-start">
-            <i class="fas fa-file-alt text-neon-green mr-4 mt-1"></i>
-            <div>
-              <a href="https://revistas.sena.edu.co/index.php/CITEISA/article/view/7192" target="_blank"
-                 class="text-white hover:text-neon-green transition">
-                Mixed Models for Analysis of CD4 Glycoprotein Counts
-              </a>
-              <p class="text-gray-500 text-sm">SENA Journal</p>
-            </div>
+          <li class="publication-item">
+            <a href="https://revistas.sena.edu.co/index.php/CITEISA/article/view/7192" target="_blank"
+               class="text-gray-800 hover:text-accent transition font-medium">
+              Mixed Models for Analysis of CD4 Glycoprotein Counts
+            </a>
+            <p class="text-gray-500 text-sm mt-1">SENA Journal</p>
           </li>
-          <li class="flex items-start">
-            <i class="fas fa-file-alt text-neon-green mr-4 mt-1"></i>
-            <div>
-              <a href="https://github.com/hebermudezg/hydroelectric-energy-GAMLSS/blob/main/Posterwin.pdf" target="_blank"
-                 class="text-white hover:text-neon-green transition">
-                Hydroelectric Energy Production: Statistical Modeling with GAMLSS
-              </a>
-            </div>
+          <li class="publication-item">
+            <a href="https://github.com/hebermudezg/hydroelectric-energy-GAMLSS/blob/main/Posterwin.pdf" target="_blank"
+               class="text-gray-800 hover:text-accent transition font-medium">
+              Hydroelectric Energy Production: Statistical Modeling with GAMLSS
+            </a>
           </li>
-          <li class="flex items-start">
-            <i class="fas fa-file-alt text-neon-green mr-4 mt-1"></i>
-            <div>
-              <a href="http://simposioestadistica.unal.edu.co/fileadmin/Facultad_de_Ciencias/Eventos/Simposio_internacional_de_estadistica/Files/Memorias_Simposio_29_-_2019.pdf"
-                 target="_blank" class="text-white hover:text-neon-green transition">
-                Text Mining to Study Data Science Terminologies in Colombia
-              </a>
-              <p class="text-gray-500 text-sm">International Statistics Symposium - UNAL</p>
-            </div>
+          <li class="publication-item">
+            <a href="http://simposioestadistica.unal.edu.co/fileadmin/Facultad_de_Ciencias/Eventos/Simposio_internacional_de_estadistica/Files/Memorias_Simposio_29_-_2019.pdf"
+               target="_blank" class="text-gray-800 hover:text-accent transition font-medium">
+              Text Mining to Study Data Science Terminologies in Colombia
+            </a>
+            <p class="text-gray-500 text-sm mt-1">International Statistics Symposium - UNAL</p>
           </li>
         </ul>
       </div>
 
       <!-- Medium Articles -->
       <div class="mb-10">
-        <h3 class="text-lg font-semibold text-gray-400 mb-4 uppercase tracking-wide">Articles & Blog</h3>
-        <div class="flex items-center">
-          <i class="fab fa-medium text-neon-green text-2xl mr-4"></i>
-          <a href="https://medium.com/@hebermudezg" target="_blank"
-             class="text-white hover:text-neon-green transition">
-            Read my articles on Medium
-            <i class="fas fa-external-link-alt ml-2 text-sm"></i>
-          </a>
-        </div>
+        <p class="section-subtitle mb-4">Articles & Blog</p>
+        <a href="https://medium.com/@hebermudezg" target="_blank"
+           class="inline-flex items-center gap-3 text-gray-800 hover:text-accent transition font-medium">
+          <i class="fab fa-medium text-2xl"></i>
+          Read my articles on Medium
+          <i class="fas fa-arrow-right text-sm"></i>
+        </a>
       </div>
 
       <!-- Research Projects -->
       <div>
-        <h3 class="text-lg font-semibold text-gray-400 mb-4 uppercase tracking-wide">Research Projects</h3>
-        <div class="flex items-start">
-          <i class="fas fa-flask text-neon-green text-2xl mr-4 mt-1"></i>
+        <p class="section-subtitle mb-4">Research Projects</p>
+        <div class="flex items-start gap-4">
+          <div class="icon-container flex-shrink-0">
+            <i class="fas fa-flask"></i>
+          </div>
           <div>
             <a href="https://unalyticsteam.github.io/unalytics/" target="_blank"
-               class="text-white hover:text-neon-green transition font-semibold">
+               class="text-gray-800 hover:text-accent transition font-semibold">
               Unalytics Research Team
             </a>
-            <p class="text-gray-400 text-sm mt-1">
+            <p class="text-gray-500 text-sm mt-1">
               Research incubator at National University of Colombia - Data science and analytics projects
             </p>
           </div>
@@ -673,146 +670,120 @@
     </section>
 
     <!-- Projects Section -->
-    <section id="projects" class="section-container" data-aos="fade-up">
-      <h2 class="text-4xl font-bold neon-text mb-8">
-        <i class="fas fa-rocket mr-3"></i>Projects & Applications
-      </h2>
-      <div class="gradient-divider mb-8"></div>
+    <section id="projects" data-aos="fade-up" data-aos-duration="600">
+      <div class="flex items-center gap-3 mb-6">
+        <div class="icon-container">
+          <i class="fas fa-rocket text-lg"></i>
+        </div>
+        <h2 class="section-title">Projects & Applications</h2>
+      </div>
 
-      <div class="grid md:grid-cols-3 gap-6">
+      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
 
         <!-- Project 1 -->
         <a href="https://hebermudezg.shinyapps.io/StatiSoft_clasificar_Imagen/?_ga=2.66982382.1914422482.1677559341-381922426.1677559341"
-           target="_blank" class="glow-card rounded-lg p-6 flex flex-col items-center text-center" data-aos="zoom-in">
-          <i class="fas fa-glasses text-4xl text-neon-green mb-4"></i>
-          <h3 class="text-lg font-bold text-white mb-2">Safety Glasses Detection</h3>
-          <p class="text-gray-400 text-sm mb-3">Deep learning with computer vision</p>
-          <div class="text-neon-green font-semibold text-sm">
-            Visit <i class="fas fa-arrow-right ml-1"></i>
+           target="_blank" class="project-card card-link" data-aos="fade-up" data-aos-delay="100">
+          <div class="project-icon">
+            <i class="fas fa-glasses text-2xl"></i>
           </div>
+          <h3 class="font-semibold text-gray-900 mb-2">Safety Glasses Detection</h3>
+          <p class="text-gray-500 text-sm mb-3">Deep learning with computer vision</p>
+          <span class="text-accent font-medium text-sm">
+            Visit <i class="fas fa-arrow-right ml-1 text-xs"></i>
+          </span>
         </a>
 
         <!-- Project 2 -->
         <a href="https://hebermudezg.shinyapps.io/Madres/"
-           target="_blank" class="glow-card rounded-lg p-6 flex flex-col items-center text-center" data-aos="zoom-in" data-aos-delay="100">
-          <i class="fas fa-smile text-4xl text-neon-green mb-4"></i>
-          <h3 class="text-lg font-bold text-white mb-2">Satisfaction Calculator</h3>
-          <p class="text-gray-400 text-sm mb-3">Statistical satisfaction analysis</p>
-          <div class="text-neon-green font-semibold text-sm">
-            Visit <i class="fas fa-arrow-right ml-1"></i>
+           target="_blank" class="project-card card-link" data-aos="fade-up" data-aos-delay="150">
+          <div class="project-icon">
+            <i class="fas fa-smile text-2xl"></i>
           </div>
+          <h3 class="font-semibold text-gray-900 mb-2">Satisfaction Calculator</h3>
+          <p class="text-gray-500 text-sm mb-3">Statistical satisfaction analysis</p>
+          <span class="text-accent font-medium text-sm">
+            Visit <i class="fas fa-arrow-right ml-1 text-xs"></i>
+          </span>
         </a>
 
         <!-- Project 3 -->
         <a href="https://hebermudezg.shinyapps.io/Colnalitycs/"
-           target="_blank" class="glow-card rounded-lg p-6 flex flex-col items-center text-center" data-aos="zoom-in" data-aos-delay="200">
-          <i class="fas fa-car text-4xl text-neon-green mb-4"></i>
-          <h3 class="text-lg font-bold text-white mb-2">RUNT Vehicle Prediction</h3>
-          <p class="text-gray-400 text-sm mb-3">Predictive analytics</p>
-          <div class="text-neon-green font-semibold text-sm">
-            Visit <i class="fas fa-arrow-right ml-1"></i>
+           target="_blank" class="project-card card-link" data-aos="fade-up" data-aos-delay="200">
+          <div class="project-icon">
+            <i class="fas fa-car text-2xl"></i>
           </div>
+          <h3 class="font-semibold text-gray-900 mb-2">RUNT Vehicle Prediction</h3>
+          <p class="text-gray-500 text-sm mb-3">Predictive analytics</p>
+          <span class="text-accent font-medium text-sm">
+            Visit <i class="fas fa-arrow-right ml-1 text-xs"></i>
+          </span>
         </a>
 
         <!-- Project 4 -->
         <a href="https://app.powerbi.com/view?r=eyJrIjoiMGRiNmMyNmEtYjA0Ny00ZGE4LTk4OWMtODcwYzFmMmVjNjBhIiwidCI6IjU3N2ZjMWQ4LTA5MjItNDU4ZS04N2JmLWVjNGY0NTVlYjYwMCIsImMiOjR9"
-           target="_blank" class="glow-card rounded-lg p-6 flex flex-col items-center text-center" data-aos="zoom-in" data-aos-delay="300">
-          <i class="fas fa-chart-bar text-4xl text-neon-green mb-4"></i>
-          <h3 class="text-lg font-bold text-white mb-2">Vivienda y Hábitat Medellín</h3>
-          <p class="text-gray-400 text-sm mb-3">Housing statistics dashboard</p>
-          <div class="text-neon-green font-semibold text-sm">
-            Visit <i class="fas fa-arrow-right ml-1"></i>
+           target="_blank" class="project-card card-link" data-aos="fade-up" data-aos-delay="250">
+          <div class="project-icon">
+            <i class="fas fa-chart-bar text-2xl"></i>
           </div>
+          <h3 class="font-semibold text-gray-900 mb-2">Vivienda y Habitat Medellin</h3>
+          <p class="text-gray-500 text-sm mb-3">Housing statistics dashboard</p>
+          <span class="text-accent font-medium text-sm">
+            Visit <i class="fas fa-arrow-right ml-1 text-xs"></i>
+          </span>
         </a>
 
       </div>
     </section>
 
     <!-- Contact Section -->
-    <section id="contact" class="section-container" data-aos="fade-up">
-      <h2 class="text-3xl font-bold neon-text mb-6 text-center">
-        <i class="fas fa-paper-plane mr-2"></i>Get In Touch
-      </h2>
-      <div class="gradient-divider mb-6"></div>
-
-      <div class="text-center max-w-xl mx-auto">
+    <section id="contact" class="section-card text-center" data-aos="fade-up" data-aos-duration="600">
+      <div class="max-w-md mx-auto">
+        <div class="icon-container mx-auto mb-4">
+          <i class="fas fa-paper-plane text-lg"></i>
+        </div>
+        <h2 class="section-title mb-2">Get In Touch</h2>
+        <p class="text-gray-500 mb-6">Feel free to reach out for collaborations or just a friendly hello</p>
 
         <!-- Email -->
-        <div class="mb-6">
-          <a href="mailto:hebermudezg@gmail.com" class="text-neon-green hover:underline text-lg">
-            <i class="fas fa-envelope mr-2"></i>hebermudezg@gmail.com
-          </a>
-        </div>
+        <a href="mailto:hebermudezg@gmail.com" class="inline-flex items-center gap-2 text-accent hover:underline text-lg font-medium mb-8">
+          <i class="fas fa-envelope"></i>
+          hebermudezg@gmail.com
+        </a>
 
         <!-- Social Media -->
-        <div class="flex justify-center space-x-4">
-          <a href="https://www.linkedin.com/in/hebermudezg" target="_blank"
-             class="w-12 h-12 flex items-center justify-center rounded-full bg-dark-card border-2 border-neon-green text-neon-green hover:bg-neon-green hover:text-dark-bg transition transform hover:scale-110">
-            <i class="fab fa-linkedin-in text-lg"></i>
+        <div class="flex justify-center gap-3">
+          <a href="https://www.linkedin.com/in/hebermudezg" target="_blank" class="social-icon">
+            <i class="fab fa-linkedin-in"></i>
           </a>
-          <a href="https://github.com/hebermudezg" target="_blank"
-             class="w-12 h-12 flex items-center justify-center rounded-full bg-dark-card border-2 border-neon-green text-neon-green hover:bg-neon-green hover:text-dark-bg transition transform hover:scale-110">
-            <i class="fab fa-github text-lg"></i>
+          <a href="https://github.com/hebermudezg" target="_blank" class="social-icon">
+            <i class="fab fa-github"></i>
           </a>
-          <a href="https://medium.com/@hebermudezg" target="_blank"
-             class="w-12 h-12 flex items-center justify-center rounded-full bg-dark-card border-2 border-neon-green text-neon-green hover:bg-neon-green hover:text-dark-bg transition transform hover:scale-110">
-            <i class="fab fa-medium text-lg"></i>
+          <a href="https://medium.com/@hebermudezg" target="_blank" class="social-icon">
+            <i class="fab fa-medium"></i>
           </a>
         </div>
-
       </div>
     </section>
 
   </div>
 
   <!-- Footer -->
-  <footer class="bg-dark-bg border-t border-dark-border py-8 mt-20">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-      <p class="text-gray-400 mono">© 2025 Heber Bermudez<span class="neon-text">_</span></p>
-      <p class="text-gray-600 text-sm mt-2">Data Engineer • Researcher</p>
+  <footer class="py-8 mt-8">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <p class="text-gray-500">© 2025 Heber Bermudez</p>
+      <p class="text-gray-400 text-sm mt-1">Data Engineer • Researcher</p>
     </div>
   </footer>
-
-  <!-- Theme Toggle Button -->
-  <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
-    <i class="fas fa-moon"></i>
-  </button>
 
   <!-- Scripts -->
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
   <script>
-    // Initialize AOS
+    // Initialize AOS with subtle settings
     AOS.init({
-      duration: 1000,
+      duration: 600,
       once: true,
-      offset: 100
-    });
-
-    // Theme Toggle
-    const themeToggle = document.getElementById('theme-toggle');
-    const body = document.body;
-    const themeIcon = themeToggle.querySelector('i');
-
-    // Check for saved theme preference or default to dark mode
-    const currentTheme = localStorage.getItem('theme') || 'dark';
-    if (currentTheme === 'light') {
-      body.classList.add('light-mode');
-      themeIcon.classList.remove('fa-moon');
-      themeIcon.classList.add('fa-sun');
-    }
-
-    themeToggle.addEventListener('click', () => {
-      body.classList.toggle('light-mode');
-
-      if (body.classList.contains('light-mode')) {
-        themeIcon.classList.remove('fa-moon');
-        themeIcon.classList.add('fa-sun');
-        localStorage.setItem('theme', 'light');
-      } else {
-        themeIcon.classList.remove('fa-sun');
-        themeIcon.classList.add('fa-moon');
-        localStorage.setItem('theme', 'dark');
-      }
+      offset: 50,
+      easing: 'ease-out'
     });
 
     // Mobile menu toggle
