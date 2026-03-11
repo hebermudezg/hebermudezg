@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guía Interactiva: Variables Aleatorias y Distribuciones</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800;1,9..40,400&family=DM+Serif+Display&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root{--bg:#f8f9fc;--surface:#fff;--surface2:#f1f3f8;--surface3:#e8ebf2;--border:#e0e4ed;--border-light:#d0d5e1;--text:#1e2a3a;--text-muted:#5a6a80;--text-dim:#8896a8;--accent-blue:#3b82f6;--accent-blue-dim:rgba(59,130,246,0.1);--accent-amber:#f59e0b;--accent-amber-dim:rgba(245,158,11,0.1);--accent-green:#10b981;--accent-green-dim:rgba(16,185,129,0.1);--accent-purple:#8b5cf6;--accent-purple-dim:rgba(139,92,246,0.1);--accent-rose:#f43f5e;--accent-rose-dim:rgba(244,63,94,0.08);--accent-cyan:#0891b2;--accent-cyan-dim:rgba(8,145,178,0.08)}*{margin:0;padding:0;box-sizing:border-box}body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);line-height:1.7;overflow-x:hidden}::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--border-light);border-radius:3px}.container{max-width:1100px;margin:0 auto;padding:0 24px}.hero{padding:80px 0 60px;text-align:center;position:relative;background:linear-gradient(180deg,#eef2ff 0%,var(--bg) 100%)}.hero::before{content:'';position:absolute;top:-100px;left:50%;transform:translateX(-50%);width:700px;height:500px;background:radial-gradient(circle,rgba(59,130,246,0.07) 0%,transparent 70%);pointer-events:none}.hero-badge{display:inline-block;background:var(--accent-blue-dim);color:var(--accent-blue);font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:6px 16px;border-radius:20px;border:1px solid rgba(59,130,246,0.15);margin-bottom:24px}.hero h1{font-family:'DM Serif Display',serif;font-size:clamp(2.5rem,6vw,4.5rem);line-height:1.1;color:var(--text);margin-bottom:20px}.hero h1 span{background:linear-gradient(135deg,var(--accent-amber),#ef4444);-webkit-background-clip:text;-webkit-text-fill-color:transparent}.hero p{font-size:1.15rem;color:var(--text-muted);max-width:700px;margin:0 auto}.nav-bar{position:sticky;top:0;z-index:100;background:rgba(248,249,252,0.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:12px 0}.nav-inner{display:flex;gap:6px;overflow-x:auto;padding:4px 0;scrollbar-width:none}.nav-inner::-webkit-scrollbar{display:none}.nav-pill{flex-shrink:0;padding:6px 14px;border-radius:8px;font-size:12px;font-weight:600;color:var(--text-dim);background:transparent;border:1px solid transparent;cursor:pointer;transition:all .2s;text-decoration:none}.nav-pill:hover{color:var(--text-muted);background:var(--surface2)}.nav-pill.active{color:var(--accent-blue);background:var(--accent-blue-dim);border-color:rgba(59,130,246,0.15)}.chapter{padding:80px 0 40px;border-top:1px solid var(--border)}.chapter:first-of-type{border-top:none}.chapter-number{font-family:'DM Serif Display',serif;font-size:4rem;color:var(--border);line-height:1;margin-bottom:8px}.chapter-title{font-family:'DM Serif Display',serif;font-size:2.2rem;color:var(--text);margin-bottom:8px}.chapter-subtitle{font-size:1rem;color:var(--text-muted);margin-bottom:32px}.card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:28px;margin-bottom:24px;box-shadow:0 1px 3px rgba(0,0,0,0.04)}.card-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}@media(max-width:768px){.card-grid{grid-template-columns:1fr}}.card-highlight{border-left:3px solid var(--accent-blue)}.card-highlight.amber{border-left-color:var(--accent-amber)}.card-highlight.green{border-left-color:var(--accent-green)}.card-highlight.purple{border-left-color:var(--accent-purple)}.card-highlight.rose{border-left-color:var(--accent-rose)}.card-highlight.cyan{border-left-color:var(--accent-cyan)}.card h3{font-size:1.1rem;font-weight:700;margin-bottom:12px;color:var(--text)}.card p,.card li{color:var(--text-muted);font-size:.95rem}.card ul{padding-left:18px}.card li{margin-bottom:6px}.icon-box{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;margin-bottom:12px}.icon-box.blue{background:var(--accent-blue-dim);color:var(--accent-blue)}.icon-box.amber{background:var(--accent-amber-dim);color:var(--accent-amber)}.icon-box.green{background:var(--accent-green-dim);color:var(--accent-green)}.icon-box.purple{background:var(--accent-purple-dim);color:var(--accent-purple)}.icon-box.rose{background:var(--accent-rose-dim);color:var(--accent-rose)}.icon-box.cyan{background:var(--accent-cyan-dim);color:var(--accent-cyan)}.tag{display:inline-block;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:4px 10px;border-radius:6px;margin-bottom:10px}.tag.discrete{background:var(--accent-blue-dim);color:var(--accent-blue)}.tag.continuous{background:var(--accent-rose-dim);color:var(--accent-rose)}.formula-box{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:16px 20px;font-family:'JetBrains Mono',monospace;font-size:.9rem;color:#b45309;margin:12px 0;overflow-x:auto}.sim-panel{background:var(--surface);border:1px solid var(--border);border-radius:20px;overflow:hidden;margin-bottom:32px;box-shadow:0 2px 8px rgba(0,0,0,0.04)}.sim-header{padding:24px 28px 0;display:flex;align-items:center;gap:14px}.sim-icon{width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0}.sim-header-text h3{font-size:1.2rem;font-weight:700;color:var(--text)}.sim-header-text p{font-size:.85rem;color:var(--text-muted)}.sim-body{padding:20px 28px 28px;display:grid;grid-template-columns:260px 1fr;gap:24px}@media(max-width:800px){.sim-body{grid-template-columns:1fr}}.sim-controls{display:flex;flex-direction:column;gap:10px}.sim-btn{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;border-radius:10px;border:1px solid var(--border);background:var(--surface2);color:var(--text);font-family:'DM Sans',sans-serif;font-size:.85rem;font-weight:600;cursor:pointer;transition:all .15s}.sim-btn:hover{background:var(--surface3);border-color:var(--border-light)}.sim-btn:active{transform:scale(.97)}.sim-btn .emoji{font-size:1.1rem}.sim-btn.primary{background:var(--accent-blue);border-color:var(--accent-blue);color:#fff}.sim-btn.primary:hover{filter:brightness(1.08)}.sim-btn.primary.amber{background:var(--accent-amber);border-color:var(--accent-amber);color:#fff}.sim-btn.primary.green{background:var(--accent-green);border-color:var(--accent-green);color:#fff}.sim-btn.primary.purple{background:var(--accent-purple);border-color:var(--accent-purple);color:#fff}.sim-btn.primary.rose{background:var(--accent-rose);border-color:var(--accent-rose);color:#fff}.sim-btn.primary.cyan{background:var(--accent-cyan);border-color:var(--accent-cyan);color:#fff}.sim-btn.reset{background:transparent;border-color:transparent;color:var(--text-dim);font-size:.8rem;justify-content:center}.sim-btn.reset:hover{color:var(--text-muted)}.sim-stat{background:var(--surface2);border-radius:10px;padding:12px 16px;border:1px solid var(--border)}.sim-stat-label{font-size:10px;font-weight:700;color:var(--text-dim);letter-spacing:1px;text-transform:uppercase;margin-bottom:2px}.sim-stat-value{font-size:1.6rem;font-weight:800}.chart-wrap{background:var(--surface2);border-radius:14px;padding:16px;border:1px solid var(--border);min-height:300px;position:relative}.slider-group{margin:8px 0}.slider-label{display:flex;justify-content:space-between;font-size:.8rem;color:var(--text-muted);margin-bottom:4px}.slider-label strong{color:var(--text)}input[type="range"]{width:100%;-webkit-appearance:none;height:6px;border-radius:3px;background:var(--border);outline:none}input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;border-radius:50%;background:var(--accent-blue);cursor:pointer;border:3px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,0.15)}input[type="range"].amber::-webkit-slider-thumb{background:var(--accent-amber)}input[type="range"].green::-webkit-slider-thumb{background:var(--accent-green)}input[type="range"].purple::-webkit-slider-thumb{background:var(--accent-purple)}input[type="range"].rose::-webkit-slider-thumb{background:var(--accent-rose)}input[type="range"].cyan::-webkit-slider-thumb{background:var(--accent-cyan)}.compare-table{width:100%;border-collapse:separate;border-spacing:0;font-size:.85rem}.compare-table th{background:var(--surface2);color:var(--text-muted);font-weight:600;padding:10px 16px;text-align:left;border-bottom:2px solid var(--border)}.compare-table th:first-child{border-radius:10px 0 0 0}.compare-table th:last-child{border-radius:0 10px 0 0}.compare-table td{padding:10px 16px;border-bottom:1px solid var(--border);color:var(--text-muted)}.compare-table tr:last-child td{border-bottom:none}.compare-table tr:hover td{background:var(--surface2)}.callout{background:#fffbeb;border:1px solid #fde68a;border-radius:14px;padding:24px;margin:24px 0;position:relative}.callout::before{content:'💡';position:absolute;top:-14px;left:20px;font-size:1.4rem;background:#fffbeb;padding:0 6px}.callout h4{font-size:.95rem;font-weight:700;color:#92400e;margin-bottom:8px}.callout p{font-size:.9rem;color:#78350f}.measure-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px}.info-box{margin-top:16px;padding:14px;background:var(--surface2);border-radius:10px}.info-box p{font-size:.85rem}.summary-box{background:linear-gradient(135deg,#1e293b,#334155);border-radius:20px;padding:48px;text-align:center;margin-top:32px;color:#fff}.summary-box h2{font-family:'DM Serif Display',serif;font-size:1.8rem;margin-bottom:12px}.summary-box p{color:#94a3b8;max-width:700px;margin:0 auto;font-size:1.05rem}.worked-example{background:var(--surface);border:2px solid var(--border);border-radius:20px;padding:32px;margin:24px 0;position:relative;overflow:hidden}.worked-example::before{content:'';position:absolute;top:0;left:0;right:0;height:4px}.worked-example.amber-ex::before{background:linear-gradient(90deg,var(--accent-amber),#fbbf24)}.worked-example.blue-ex::before{background:linear-gradient(90deg,var(--accent-blue),#60a5fa)}.worked-example.green-ex::before{background:linear-gradient(90deg,var(--accent-green),#34d399)}.worked-example.purple-ex::before{background:linear-gradient(90deg,var(--accent-purple),#a78bfa)}.worked-example.rose-ex::before{background:linear-gradient(90deg,var(--accent-rose),#fb7185)}.worked-example.cyan-ex::before{background:linear-gradient(90deg,var(--accent-cyan),#22d3ee)}.worked-example .we-badge{display:inline-flex;align-items:center;gap:6px;background:var(--surface2);border:1px solid var(--border);color:var(--text);font-size:10px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;padding:5px 14px;border-radius:8px;margin-bottom:16px}.worked-example h4{font-size:1.1rem;font-weight:700;color:var(--text);margin-bottom:16px}.we-context{background:var(--surface2);border-radius:12px;padding:16px 20px;margin-bottom:20px;border:1px solid var(--border)}.we-context p{font-size:.9rem;color:var(--text-muted)}.we-context strong{color:var(--text)}.we-steps{counter-reset:step}.we-step{position:relative;padding:16px 20px 16px 56px;margin-bottom:12px;background:var(--surface2);border-radius:12px;border:1px solid var(--border)}.we-step::before{counter-increment:step;content:'Paso ' counter(step);position:absolute;top:16px;left:16px;font-size:9px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--text-dim);width:36px}.we-step .we-step-title{font-size:.88rem;font-weight:700;color:var(--text);margin-bottom:4px}.we-step p{font-size:.88rem;color:var(--text-muted)}.we-step .formula-box{margin:8px 0 4px;font-size:.82rem;padding:10px 14px}.we-result{background:linear-gradient(135deg,#ecfdf5,#d1fae5);border:2px solid #6ee7b7;border-radius:14px;padding:20px 24px;margin-top:16px;text-align:center}.we-result .we-result-label{font-size:10px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:#059669;margin-bottom:6px}.we-result .we-result-value{font-family:'JetBrains Mono',monospace;font-size:1.4rem;font-weight:800;color:#065f46}.we-result .we-result-explain{font-size:.88rem;color:#047857;margin-top:8px}
+.what-measures{background:linear-gradient(135deg,#fefce8,#fef9c3);border:1px solid #fde68a;border-radius:16px;padding:24px 28px;margin:20px 0;position:relative;overflow:hidden}.what-measures::before{content:'';position:absolute;top:-30px;right:-30px;width:100px;height:100px;background:radial-gradient(circle,rgba(245,158,11,0.12) 0%,transparent 70%);pointer-events:none}.what-measures .wm-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(245,158,11,0.15);color:#92400e;font-size:10px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;padding:5px 12px;border-radius:8px;margin-bottom:12px}.what-measures h4{font-size:1.05rem;font-weight:700;color:#78350f;margin-bottom:8px}.what-measures p{font-size:.92rem;color:#78350f;line-height:1.65}.what-measures .wm-example{background:rgba(255,255,255,0.7);border:1px solid #fde68a;border-radius:12px;padding:16px 20px;margin-top:14px}.what-measures .wm-example .wm-ex-title{font-size:10px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:#b45309;margin-bottom:6px;display:flex;align-items:center;gap:6px}.what-measures .wm-example p{font-size:.88rem;color:#92400e}.what-measures .wm-x{font-family:'JetBrains Mono',monospace;background:rgba(245,158,11,0.18);padding:2px 8px;border-radius:6px;font-size:.88rem;font-weight:600;color:#92400e}
+footer{text-align:center;padding:60px 0 40px;color:var(--text-dim);font-size:.85rem;border-top:1px solid var(--border);margin-top:60px}
+.back-link{display:inline-flex;align-items:center;gap:8px;color:var(--accent-blue);font-weight:600;font-size:.9rem;text-decoration:none;padding:12px 20px;border-radius:10px;transition:all .2s;margin-bottom:8px}.back-link:hover{background:var(--accent-blue-dim)}
+    </style>
+</head>
+<body>
+<div class="hero"><div class="container">
+    <a href="../../index.html#teaching" class="back-link"><i class="fa-solid fa-arrow-left"></i> Back to Portfolio</a>
+    <div class="hero-badge">GUÍA INTERACTIVA COMPLETA</div>
+    <h1>Variables Aleatorias<br>y <span>Distribuciones</span></h1>
+    <p>Aprende paso a paso qué son las variables aleatorias, cómo funcionan las distribuciones de probabilidad y experimenta con simulaciones en tiempo real.</p>
+</div></div>
+<nav class="nav-bar" id="navBar"><div class="container"><div class="nav-inner">
+    <a href="#cap1" class="nav-pill active" data-section="cap1">1. ¿Qué es una V.A.?</a>
+    <a href="#cap2" class="nav-pill" data-section="cap2">2. Tipos</a>
+    <a href="#cap3" class="nav-pill" data-section="cap3">3. PMF / PDF / CDF</a>
+    <a href="#cap4" class="nav-pill" data-section="cap4">4. Bernoulli</a>
+    <a href="#cap5" class="nav-pill" data-section="cap5">5. Binomial</a>
+    <a href="#cap6" class="nav-pill" data-section="cap6">6. Poisson</a>
+    <a href="#cap7" class="nav-pill" data-section="cap7">7. Uniforme</a>
+    <a href="#cap8" class="nav-pill" data-section="cap8">8. Exponencial</a>
+    <a href="#cap9" class="nav-pill" data-section="cap9">9. Normal</a>
+    <a href="#cap10" class="nav-pill" data-section="cap10">10. Medidas Clave</a>
+    <a href="#cap11" class="nav-pill" data-section="cap11">11. Resumen</a>
+    <a href="#cap12" class="nav-pill" data-section="cap12">12. Analítica Predictiva</a>
+</div></div></nav>
+<div class="container">
+<section class="chapter" id="cap1">
+    <div class="chapter-number">01</div><div class="chapter-title">¿Qué es una Variable Aleatoria?</div><div class="chapter-subtitle">El concepto fundamental que conecta el azar con las matemáticas</div>
+    <div class="card card-highlight"><h3><i class="fa-solid fa-lightbulb" style="color:var(--accent-amber)"></i> &nbsp;Definición Simple</h3><p>Una <strong style="color:var(--text)">Variable Aleatoria (V.A.)</strong> es simplemente una regla que le asigna un <strong style="color:var(--text)">número</strong> a cada resultado posible de un experimento aleatorio. Es como un "traductor" que convierte el azar en números que podemos estudiar.</p></div>
+    <div class="card-grid" style="margin-top:20px;">
+        <div class="card"><div class="icon-box amber"><i class="fa-solid fa-dice"></i></div><h3>Ejemplo: El Dado</h3><p>Lanzas un dado. No sabes qué va a caer. La variable aleatoria <strong style="color:var(--accent-amber)">X</strong> = "el número que sale". Puede tomar los valores 1, 2, 3, 4, 5 o 6.</p><p style="margin-top:8px;"><strong style="color:var(--text)">X</strong> no es un número fijo: es una "caja" que se llenará con un número cuando lancemos el dado.</p></div>
+        <div class="card"><div class="icon-box blue"><i class="fa-solid fa-shop"></i></div><h3>Ejemplo: Negocio</h3><p>Abres tu tienda en línea un lunes. La variable aleatoria <strong style="color:var(--accent-blue)">Y</strong> = "número de ventas hoy". No sabes si serán 0, 5 o 200.</p><p style="margin-top:8px;">Con las distribuciones, podrás decir <em>"hay un 80% de probabilidad de vender al menos 10 unidades"</em>.</p></div>
+    </div>
+    <div class="callout"><h4>¿Por qué importa esto?</h4><p>Porque una vez que convertimos el azar en números, podemos usar <strong>matemáticas</strong> para calcular probabilidades, promedios, riesgos y tomar mejores decisiones.</p></div>
+    <div style="margin-top:32px;">
+        <div class="card" style="border:2px solid var(--accent-blue);background:linear-gradient(135deg,#eef2ff,#e0e7ff);border-radius:20px;padding:32px;">
+            <h3 style="font-family:'DM Serif Display',serif;font-size:1.5rem;margin-bottom:16px;"><i class="fa-solid fa-link" style="color:var(--accent-blue)"></i> &nbsp;Pero entonces... ¿qué relación tiene una V.A. con una distribución?</h3>
+            <p style="font-size:1rem;color:var(--text);line-height:1.8;margin-bottom:20px;">Piénsalo así: la <strong>Variable Aleatoria</strong> es la <em>pregunta</em>, y la <strong>Distribución</strong> es la <em>respuesta</em>.</p>
+            <div style="display:grid;grid-template-columns:1fr auto 1fr;gap:20px;align-items:center;margin-bottom:24px;">
+                <div style="background:rgba(255,255,255,0.8);border:1px solid var(--border);border-radius:14px;padding:20px;text-align:center;">
+                    <div style="font-size:2rem;margin-bottom:8px;">❓</div>
+                    <div style="font-weight:800;color:var(--accent-blue);font-size:1.1rem;margin-bottom:6px;">Variable Aleatoria</div>
+                    <div style="font-size:.88rem;color:var(--text-muted);line-height:1.6;">Define <strong style="color:var(--text)">qué estamos midiendo</strong>.<br>"¿Cuántos clientes llegan?" "¿Cuánto tiempo espero?"</div>
+                </div>
+                <div style="font-size:2.2rem;color:var(--accent-blue);">→</div>
+                <div style="background:rgba(255,255,255,0.8);border:1px solid var(--border);border-radius:14px;padding:20px;text-align:center;">
+                    <div style="font-size:2rem;margin-bottom:8px;">📊</div>
+                    <div style="font-weight:800;color:var(--accent-amber);font-size:1.1rem;margin-bottom:6px;">Distribución</div>
+                    <div style="font-size:.88rem;color:var(--text-muted);line-height:1.6;">Describe <strong style="color:var(--text)">cómo se comporta</strong> esa medición.<br>"Con qué probabilidad toma cada valor"</div>
+                </div>
+            </div>
+            <div style="background:rgba(255,255,255,0.85);border-radius:14px;padding:20px 24px;border:1px solid var(--border);">
+                <p style="font-size:.95rem;color:var(--text);font-weight:700;margin-bottom:12px;">🎯 Ejemplo concreto para que quede claro:</p>
+                <p style="font-size:.9rem;color:var(--text-muted);line-height:1.8;margin-bottom:12px;">Imagina que trabajas en un hospital y quieres estudiar <strong style="color:var(--text)">cuántos pacientes llegan a urgencias por hora</strong>.</p>
+                <div style="display:grid;grid-template-columns:auto 1fr;gap:10px;font-size:.88rem;color:var(--text-muted);line-height:1.7;">
+                    <div style="font-weight:800;color:var(--accent-blue);">Paso 1:</div><div>Defines tu V.A. → <strong style="color:var(--text)">X = "número de pacientes que llegan en 1 hora"</strong></div>
+                    <div style="font-weight:800;color:var(--accent-blue);">Paso 2:</div><div>Te preguntas: ¿qué tipo de fenómeno es? → Son eventos independientes que ocurren a un promedio constante en un intervalo de tiempo.</div>
+                    <div style="font-weight:800;color:var(--accent-blue);">Paso 3:</div><div>Eliges la distribución que modela ese comportamiento → <strong style="color:var(--accent-green)">Poisson con λ = 12</strong> (si en promedio llegan 12 pacientes por hora).</div>
+                    <div style="font-weight:800;color:var(--accent-blue);">Paso 4:</div><div>Ahora puedes calcular: <em>"¿Probabilidad de que lleguen más de 20 en una hora?"</em> → <strong style="color:var(--text)">¡Eso es lo poderoso!</strong></div>
+                </div>
+            </div>
+            <div style="margin-top:20px;background:#fffbeb;border:1px solid #fde68a;border-radius:12px;padding:16px 20px;">
+                <p style="font-size:.9rem;color:#78350f;line-height:1.7;"><strong style="color:#92400e;">En resumen:</strong> La V.A. es tu "sensor" que mide algo del mundo real. La distribución es el "modelo matemático" que te dice cómo se va a comportar ese sensor. <strong>Cada distribución que verás en esta guía está diseñada para un tipo de pregunta diferente.</strong></p>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="chapter" id="cap2">
+    <div class="chapter-number">02</div><div class="chapter-title">Tipos de Variables Aleatorias</div><div class="chapter-subtitle">¿Puedes contar los valores o tienes que medirlos?</div>
+    <div class="card-grid">
+        <div class="card card-highlight" style="border-left-color:var(--accent-blue);"><span class="tag discrete">DISCRETA</span><h3>Valores Contables (1, 2, 3...)</h3><p>Números que puedes <strong style="color:var(--text)">contar en saltos</strong>. Generalmente enteros.</p><div class="info-box"><p><i class="fa-solid fa-apple-whole" style="color:var(--accent-green)"></i> &nbsp;<strong style="color:var(--text)">Analogía:</strong> Manzanas en una canasta. 3 o 4, pero no 3.5.</p></div><ul style="margin-top:12px;"><li>Clientes en un día</li><li>Goles en un partido</li><li>Defectos en un lote</li><li>Clics en un anuncio</li></ul></div>
+        <div class="card card-highlight" style="border-left-color:var(--accent-rose);"><span class="tag continuous">CONTINUA</span><h3>Valores en un Rango</h3><p>Pueden tomar <strong style="color:var(--text)">cualquier valor</strong> dentro de un intervalo.</p><div class="info-box"><p><i class="fa-solid fa-glass-water" style="color:var(--accent-cyan)"></i> &nbsp;<strong style="color:var(--text)">Analogía:</strong> Agua en un vaso. 100ml, 100.1ml, 100.11ml...</p></div><ul style="margin-top:12px;"><li>Tiempo en un sitio web</li><li>Peso de un producto</li><li>Temperatura</li><li>Retorno de inversión (%)</li></ul></div>
+    </div>
+</section>
+<section class="chapter" id="cap3">
+    <div class="chapter-number">03</div><div class="chapter-title">Funciones de Probabilidad</div><div class="chapter-subtitle">Las herramientas para describir cómo se comporta una V.A.</div>
+    <div class="card card-highlight" style="margin-bottom:20px;"><h3>Tres funciones que necesitas conocer</h3><p>Cada V.A. tiene funciones que nos dicen <strong style="color:var(--text)">dónde es más probable que caiga su valor</strong>.</p></div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px;">
+        <div class="card"><span class="tag discrete">DISCRETAS</span><div class="icon-box blue"><i class="fa-solid fa-chart-column"></i></div><h3>PMF — Función de Masa de Probabilidad</h3><p><strong style="color:var(--text)">Probabilidad exacta</strong> de un valor específico.</p><div class="formula-box">P(X = k)</div><p style="margin-top:8px;">Ej: P(dado = 4) = 1/6 ≈ 0.167</p></div>
+        <div class="card"><span class="tag continuous">CONTINUAS</span><div class="icon-box rose"><i class="fa-solid fa-chart-area"></i></div><h3>PDF — Función de Densidad</h3><p>Dice <strong style="color:var(--text)">dónde se concentran</strong> los valores. Probabilidad = <strong style="color:var(--text)">área bajo la curva</strong>.</p><div class="formula-box">P(a ≤ X ≤ b) = ∫ₐᵇ f(x) dx</div></div>
+        <div class="card"><span class="tag" style="background:var(--accent-green-dim);color:var(--accent-green);">AMBAS</span><div class="icon-box green"><i class="fa-solid fa-arrow-trend-up"></i></div><h3>CDF — Distribución Acumulada</h3><p>P(valor <strong style="color:var(--text)">menor o igual</strong> a x). Va de 0 a 1.</p><div class="formula-box">F(x) = P(X ≤ x)</div></div>
+    </div>
+</section>
+<section class="chapter" id="cap4">
+    <div class="chapter-number">04</div><div class="chapter-title">Distribución Bernoulli</div><div class="chapter-subtitle">La más simple: un intento, dos resultados</div>
+    <div class="card-grid">
+        <div class="card card-highlight amber"><span class="tag discrete">DISCRETA</span><h3>Éxito o Fracaso</h3><p>Modela <strong style="color:var(--text)">un único experimento</strong> con dos resultados:</p><ul style="margin-top:8px;"><li><strong style="color:var(--accent-green)">Éxito (1)</strong> → probabilidad <em>p</em></li><li><strong style="color:var(--accent-rose)">Fracaso (0)</strong> → probabilidad <em>1 − p</em></li></ul><div class="formula-box">P(X=k) = pᵏ (1-p)¹⁻ᵏ &nbsp; k ∈ {0, 1}</div><p style="margin-top:12px;">Ej: ¿Hizo clic? ¿Es defectuoso? ¿Abrió el email?</p></div>
+        <div class="card" style="display:flex;flex-direction:column;justify-content:space-between;"><div><h3>Medidas</h3><div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px;"><div class="sim-stat"><div class="sim-stat-label">E[X]</div><div class="sim-stat-value" style="color:var(--accent-amber);font-size:1.2rem;">p</div></div><div class="sim-stat"><div class="sim-stat-label">Var(X)</div><div class="sim-stat-value" style="color:var(--accent-amber);font-size:1.2rem;">p(1−p)</div></div></div></div><div style="margin-top:20px;"><h3>Es la base de todo</h3><p>Bernoulli es el "átomo". Repites muchos y obtienes la <strong style="color:var(--accent-blue)">Binomial</strong>. Como LEGO.</p></div></div>
+    </div>
+    <div class="what-measures" style="margin-top:20px;">
+        <div class="wm-badge">🔍 ¿Qué mide X?</div>
+        <h4>X mide: ¿Ocurrió o no ocurrió? (solo dos opciones)</h4>
+        <p>La variable aleatoria X solo puede valer <span class="wm-x">1</span> (sí pasó) o <span class="wm-x">0</span> (no pasó). Es la pregunta más simple del mundo: <strong>¿sí o no?</strong></p>
+        <div class="wm-example">
+            <div class="wm-ex-title">🏥 Ejemplo: Vacuna contra la gripe</div>
+            <p>Un paciente se vacuna. La vacuna tiene <strong>85% de efectividad</strong> (p = 0.85).<br>
+            <span class="wm-x">X = 1</span> → la vacuna lo protege (prob. 85%)<br>
+            <span class="wm-x">X = 0</span> → no lo protege (prob. 15%)<br><br>
+            No hay punto medio: o funcionó o no. <strong>Un solo intento, dos resultados.</strong></p>
+        </div>
+    </div>
+    <div class="sim-panel" style="margin-top:24px;"><div class="sim-header"><div class="sim-icon" style="background:var(--accent-amber-dim);color:var(--accent-amber);">🏥</div><div class="sim-header-text"><h3>Simulador Bernoulli</h3><p>¿Funcionó la vacuna?</p></div></div>
+        <div class="sim-body"><div class="sim-controls">
+            <div class="slider-group"><div class="slider-label"><span>Probabilidad (p)</span><strong id="bernoulliPVal">0.85</strong></div><input type="range" min="5" max="95" value="85" class="amber" id="bernoulliPSlider" oninput="document.getElementById('bernoulliPVal').textContent=(this.value/100).toFixed(2)"></div>
+            <button class="sim-btn primary amber" onclick="simBernoulli(1)"><span>1 paciente</span><span class="emoji">🏥</span></button><button class="sim-btn" onclick="simBernoulli(20)"><span>20 pacientes</span><span class="emoji">🚀</span></button><button class="sim-btn" onclick="simBernoulli(200)"><span>200 pacientes</span><span class="emoji">🔥</span></button><button class="sim-btn reset" onclick="resetBernoulli()">Reiniciar</button>
+            <div class="sim-stat"><div class="sim-stat-label">Total</div><div class="sim-stat-value" style="color:var(--accent-amber);" id="bernoulliCount">0</div></div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;"><div class="sim-stat"><div class="sim-stat-label">Éxitos</div><div class="sim-stat-value" style="color:var(--accent-green);font-size:1.2rem;" id="bernoulliSucc">0</div></div><div class="sim-stat"><div class="sim-stat-label">Fracasos</div><div class="sim-stat-value" style="color:var(--accent-rose);font-size:1.2rem;" id="bernoulliFail">0</div></div></div>
+        </div><div class="chart-wrap"><canvas id="chartBernoulli"></canvas></div></div>
+    </div>
+    <div class="worked-example amber-ex">
+        <div class="we-badge">✏️ Ejemplo Resuelto Paso a Paso</div>
+        <h4>¿Cuál es la probabilidad de que la vacuna SÍ proteja a un paciente?</h4>
+        <div class="we-context">
+            <p><strong>Contexto:</strong> La vacuna tiene <strong>85% de efectividad</strong>. Un paciente se vacuna.</p>
+            <p><strong>Datos:</strong> p = 0.85 &nbsp;|&nbsp; X ~ Bernoulli(p = 0.85) &nbsp;|&nbsp; <strong>Queremos: P(X = 1)</strong></p>
+        </div>
+        <div class="we-steps">
+            <div class="we-step"><div class="we-step-title">Escribir la fórmula</div><div class="formula-box">P(X = k) = p<sup>k</sup> · (1 − p)<sup>1−k</sup> &nbsp;&nbsp; donde k ∈ {0, 1}</div></div>
+            <div class="we-step"><div class="we-step-title">Sustituir con k = 1 (éxito)</div><div class="formula-box">P(X = 1) = 0.85<sup>1</sup> · (1 − 0.85)<sup>1−1</sup></div></div>
+            <div class="we-step"><div class="we-step-title">Simplificar</div><div class="formula-box">P(X = 1) = 0.85 · (0.15)<sup>0</sup> = 0.85 · 1 = 0.85</div></div>
+        </div>
+        <div class="we-result"><div class="we-result-label">Resultado</div><div class="we-result-value">P(X = 1) = 0.85 → 85%</div><div class="we-result-explain">Hay un 85% de probabilidad de que la vacuna proteja al paciente. <br>Y P(X = 0) = 1 − 0.85 = <strong>0.15 (15%)</strong> de que no lo proteja.</div></div>
+    </div>
+</section>
+<section class="chapter" id="cap5">
+    <div class="chapter-number">05</div><div class="chapter-title">Distribución Binomial</div><div class="chapter-subtitle">Muchos intentos Bernoulli: ¿cuántos éxitos?</div>
+    <div class="card card-highlight"><span class="tag discrete">DISCRETA</span><h3>n intentos, contar éxitos</h3><p><strong style="color:var(--text)">n intentos independientes</strong> con probabilidad <em>p</em>.</p><div class="formula-box">P(X=k) = C(n,k) · pᵏ · (1-p)ⁿ⁻ᵏ</div><div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:16px;"><div class="sim-stat"><div class="sim-stat-label">Parámetros</div><div class="sim-stat-value" style="color:var(--accent-blue);font-size:1rem;">n, p</div></div><div class="sim-stat"><div class="sim-stat-label">E[X]</div><div class="sim-stat-value" style="color:var(--accent-blue);font-size:1rem;">n·p</div></div><div class="sim-stat"><div class="sim-stat-label">Var(X)</div><div class="sim-stat-value" style="color:var(--accent-blue);font-size:1rem;">n·p·(1−p)</div></div></div></div>
+    <div class="callout"><h4>¿Cuándo usar Binomial?</h4><p>Número fijo de intentos independientes con la misma probabilidad. Ej: de 50 emails, ¿cuántos se abren?</p></div>
+    <div class="what-measures">
+        <div class="wm-badge">🔍 ¿Qué mide X?</div>
+        <h4>X mide: ¿Cuántos éxitos obtuve en n intentos?</h4>
+        <p>Repites el mismo experimento <strong>n veces</strong>. Cada vez es independiente y tiene la misma probabilidad p de éxito. X cuenta <strong>el total de éxitos</strong>. Puede valer desde <span class="wm-x">0</span> (ningún éxito) hasta <span class="wm-x">n</span> (todos éxitos).</p>
+        <div class="wm-example">
+            <div class="wm-ex-title">📧 Ejemplo: Campaña de email marketing</div>
+            <p>Envías <strong>50 emails</strong> promocionales (n = 50). Históricamente, el <strong>20% abre</strong> el correo (p = 0.20).<br><br>
+            <span class="wm-x">X = número de personas que abren el email</span><br><br>
+            ¿Cuántos abrirán? Puede ser 8, 10, 12... En promedio esperamos <strong>E[X] = 50 × 0.20 = 10 aperturas</strong>. Pero no siempre serán exactamente 10 — a veces 7, a veces 13. La Binomial te dice la probabilidad de cada cantidad.</p>
+        </div>
+    </div>
+    <div class="sim-panel"><div class="sim-header"><div class="sim-icon" style="background:var(--accent-blue-dim);color:var(--accent-blue);">📧</div><div class="sim-header-text"><h3>Simulador Binomial</h3><p>Envía n emails, cuenta cuántos se abren.</p></div></div>
+        <div class="sim-body"><div class="sim-controls">
+            <div class="slider-group"><div class="slider-label"><span>Emails enviados (n)</span><strong id="binomNVal">20</strong></div><input type="range" min="2" max="30" value="20" id="binomNSlider" oninput="updateBinomParams()"></div>
+            <div class="slider-group"><div class="slider-label"><span>P(abrir)</span><strong id="binomPVal">0.20</strong></div><input type="range" min="5" max="95" value="20" id="binomPSlider" oninput="updateBinomParams()"></div>
+            <button class="sim-btn primary" onclick="simBinomial(1)"><span>1 campaña</span><span class="emoji">📧</span></button><button class="sim-btn" onclick="simBinomialAnim(100)"><span>100 campañas</span><span class="emoji">🚀</span></button><button class="sim-btn" onclick="simBinomialAnim(2000)"><span>2,000 campañas</span><span class="emoji">🔥</span></button><button class="sim-btn reset" onclick="resetBinomial()">Reiniciar</button>
+            <div class="sim-stat"><div class="sim-stat-label">Campañas</div><div class="sim-stat-value" style="color:var(--accent-blue);" id="binomCount">0</div></div>
+        </div><div class="chart-wrap"><canvas id="chartBinomial"></canvas></div></div>
+    </div>
+    <div class="worked-example blue-ex">
+        <div class="we-badge">✏️ Ejemplo Resuelto Paso a Paso</div>
+        <h4>Envías 50 emails (p = 0.20). ¿Cuál es la probabilidad de que exactamente 10 se abran?</h4>
+        <div class="we-context"><p><strong>Datos:</strong> n = 50 intentos &nbsp;|&nbsp; p = 0.20 &nbsp;|&nbsp; X ~ Binomial(50, 0.20) &nbsp;|&nbsp; <strong>Queremos: P(X = 10)</strong></p></div>
+        <div class="we-steps">
+            <div class="we-step"><div class="we-step-title">Escribir la fórmula</div><div class="formula-box">P(X = k) = C(n, k) · p<sup>k</sup> · (1 − p)<sup>n−k</sup></div></div>
+            <div class="we-step"><div class="we-step-title">Sustituir los valores (k = 10)</div><div class="formula-box">P(X = 10) = C(50, 10) · 0.20<sup>10</sup> · 0.80<sup>40</sup></div></div>
+            <div class="we-step"><div class="we-step-title">Calcular el combinatorio C(50, 10)</div><p>C(50, 10) = 50! / (10! · 40!) = <strong style="color:var(--text)">10,272,278,170</strong></p><p style="margin-top:4px;">Es un número enorme porque hay <em>muchísimas</em> formas de elegir cuáles 10 de los 50 se abren.</p></div>
+            <div class="we-step"><div class="we-step-title">Calcular las potencias</div><div class="formula-box">0.20<sup>10</sup> = 0.0000001024 &nbsp;&nbsp;(muy pequeño — cada éxito individual es poco probable)<br>0.80<sup>40</sup> = 0.00013363 &nbsp;&nbsp;(40 fracasos seguidos)</div></div>
+            <div class="we-step"><div class="we-step-title">Multiplicar todo</div><div class="formula-box">P(X = 10) = 10,272,278,170 × 0.0000001024 × 0.00013363 ≈ 0.1398</div><p>El combinatorio gigante compensa las potencias diminutas.</p></div>
+        </div>
+        <div class="we-result"><div class="we-result-label">Resultado</div><div class="we-result-value">P(X = 10) ≈ 0.1398 → 13.98%</div><div class="we-result-explain">Hay un ~14% de probabilidad de que exactamente 10 de los 50 emails se abran.<br>Nota: E[X] = 50 × 0.20 = <strong>10</strong>, así que 10 es justo el promedio. ¡Es el valor más probable!</div></div>
+    </div>
+</section>
+<section class="chapter" id="cap6">
+    <div class="chapter-number">06</div><div class="chapter-title">Distribución de Poisson</div><div class="chapter-subtitle">Eventos raros en un intervalo</div>
+    <div class="card card-highlight green"><span class="tag discrete">DISCRETA</span><h3>¿Cuántos eventos en un intervalo?</h3><p>Eventos independientes a tasa promedio <strong style="color:var(--accent-green)">λ</strong>.</p><div class="formula-box">P(X=k) = (λᵏ · e⁻λ) / k!</div><div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:16px;"><div class="sim-stat"><div class="sim-stat-label">Parámetro</div><div class="sim-stat-value" style="color:var(--accent-green);font-size:1rem;">λ</div></div><div class="sim-stat"><div class="sim-stat-label">E[X]</div><div class="sim-stat-value" style="color:var(--accent-green);font-size:1rem;">λ</div></div><div class="sim-stat"><div class="sim-stat-label">Var(X)</div><div class="sim-stat-value" style="color:var(--accent-green);font-size:1rem;">λ</div></div></div></div>
+    <div class="callout"><h4>E[X] = Var(X) = λ</h4><p>Media y varianza son iguales. Cuando λ crece, ¡se parece a una Normal!</p></div>
+    <div class="what-measures">
+        <div class="wm-badge">🔍 ¿Qué mide X?</div>
+        <h4>X mide: ¿Cuántos eventos ocurren en un intervalo fijo de tiempo o espacio?</h4>
+        <p>Sabes que en promedio ocurren <strong>λ eventos</strong> por intervalo (hora, día, metro cuadrado...). X cuenta <strong>cuántos ocurren realmente</strong> en el próximo intervalo. Puede ser 0, 1, 2, 3... hasta infinito (en teoría).</p>
+        <div class="wm-example">
+            <div class="wm-ex-title">🍕 Ejemplo: Pedidos en un restaurante</div>
+            <p>Tu restaurante recibe en promedio <strong>8 pedidos por hora</strong> a través de la app (λ = 8).<br><br>
+            <span class="wm-x">X = número de pedidos que llegan entre 1:00 PM y 2:00 PM</span><br><br>
+            Hoy podrían llegar 5, 8, 11 o incluso 15 pedidos en esa hora. La Poisson te dice: hay ~14% de probabilidad de recibir exactamente 8 pedidos, ~12% de recibir 7, ~12% de recibir 9... <strong>Sabes el promedio, pero no el número exacto.</strong> Eso es lo que modela.</p>
+        </div>
+    </div>
+    <div class="sim-panel"><div class="sim-header"><div class="sim-icon" style="background:var(--accent-green-dim);color:var(--accent-green);">🍕</div><div class="sim-header-text"><h3>Simulador Poisson</h3><p>Pedidos por hora en tu restaurante.</p></div></div>
+        <div class="sim-body"><div class="sim-controls">
+            <div class="slider-group"><div class="slider-label"><span>Pedidos promedio λ</span><strong id="poissonLVal">8</strong></div><input type="range" min="1" max="15" value="8" class="green" id="poissonLSlider" oninput="updatePoissonParams()"></div>
+            <button class="sim-btn primary green" onclick="simPoisson(1)"><span>1 hora</span><span class="emoji">⏱️</span></button><button class="sim-btn" onclick="simPoissonAnim(100)"><span>100 horas</span><span class="emoji">🍕</span></button><button class="sim-btn" onclick="simPoissonAnim(2000)"><span>2,000 horas</span><span class="emoji">🤯</span></button><button class="sim-btn reset" onclick="resetPoisson()">Reiniciar</button>
+            <div class="sim-stat"><div class="sim-stat-label">Horas simuladas</div><div class="sim-stat-value" style="color:var(--accent-green);" id="poissonCount">0</div></div>
+        </div><div class="chart-wrap"><canvas id="chartPoisson"></canvas></div></div>
+    </div>
+    <div class="worked-example green-ex">
+        <div class="we-badge">✏️ Ejemplo Resuelto Paso a Paso</div>
+        <h4>Tu restaurante recibe λ = 8 pedidos/hora. ¿Probabilidad de recibir exactamente 5 en una hora?</h4>
+        <div class="we-context"><p><strong>Datos:</strong> λ = 8 pedidos por hora &nbsp;|&nbsp; X ~ Poisson(λ = 8) &nbsp;|&nbsp; <strong>Queremos: P(X = 5)</strong></p></div>
+        <div class="we-steps">
+            <div class="we-step"><div class="we-step-title">Escribir la fórmula</div><div class="formula-box">P(X = k) = (λ<sup>k</sup> · e<sup>−λ</sup>) / k!</div></div>
+            <div class="we-step"><div class="we-step-title">Sustituir λ = 8, k = 5</div><div class="formula-box">P(X = 5) = (8<sup>5</sup> · e<sup>−8</sup>) / 5!</div></div>
+            <div class="we-step"><div class="we-step-title">Calcular cada parte por separado</div><div class="formula-box">8<sup>5</sup> = 32,768 &nbsp;&nbsp;(8 × 8 × 8 × 8 × 8)<br>e<sup>−8</sup> = 0.000335 &nbsp;&nbsp;(e ≈ 2.718... elevado a −8)<br>5! = 120 &nbsp;&nbsp;(5 × 4 × 3 × 2 × 1)</div></div>
+            <div class="we-step"><div class="we-step-title">Armar la fracción y resolver</div><div class="formula-box">P(X = 5) = (32,768 × 0.000335) / 120<br>P(X = 5) = 10.98 / 120 ≈ 0.0916</div></div>
+        </div>
+        <div class="we-result"><div class="we-result-label">Resultado</div><div class="we-result-value">P(X = 5) ≈ 0.0916 → 9.16%</div><div class="we-result-explain">Hay un ~9% de probabilidad de recibir exactamente 5 pedidos en una hora,<br>cuando el promedio es 8. ¡Es posible, pero un poco bajo — una hora tranquila!</div></div>
+    </div>
+</section>
+<section class="chapter" id="cap7">
+    <div class="chapter-number">07</div><div class="chapter-title">Distribución Uniforme</div><div class="chapter-subtitle">Todos igualmente probables</div>
+    <div class="card card-highlight purple"><span class="tag continuous">CONTINUA</span><h3>Misma probabilidad para todo</h3><p>U(a,b): <strong style="color:var(--text)">misma probabilidad</strong> para todo valor entre <em>a</em> y <em>b</em>.</p><div class="formula-box">f(x) = 1/(b − a) &nbsp;&nbsp; para a ≤ x ≤ b</div><div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:16px;"><div class="sim-stat"><div class="sim-stat-label">Parámetros</div><div class="sim-stat-value" style="color:var(--accent-purple);font-size:1rem;">a, b</div></div><div class="sim-stat"><div class="sim-stat-label">E[X]</div><div class="sim-stat-value" style="color:var(--accent-purple);font-size:1rem;">(a+b)/2</div></div><div class="sim-stat"><div class="sim-stat-label">Var(X)</div><div class="sim-stat-value" style="color:var(--accent-purple);font-size:1rem;">(b−a)²/12</div></div></div></div>
+    <div class="callout"><h4>¿Dónde aparece?</h4><p>Modelo de "pura ignorancia". Generadores aleatorios, ruletas justas, selección al azar.</p></div>
+    <div class="what-measures">
+        <div class="wm-badge">🔍 ¿Qué mide X?</div>
+        <h4>X mide: Un valor al azar donde ninguno es más probable que otro</h4>
+        <p>X puede caer en <strong>cualquier punto</strong> entre a y b con <strong>exactamente la misma probabilidad</strong>. No hay favoritos. Es la distribución de la "pura suerte".</p>
+        <div class="wm-example">
+            <div class="wm-ex-title">🚌 Ejemplo: Esperando el bus</div>
+            <p>El bus pasa cada <strong>15 minutos</strong> y llegas a la parada en un momento aleatorio.<br><br>
+            <span class="wm-x">X = minutos que vas a esperar</span> → Uniforme(0, 15)<br><br>
+            Podrías esperar 1 minuto, 7 minutos o 14.3 minutos — <strong>todos son igual de probables</strong>. En promedio esperas <strong>E[X] = (0+15)/2 = 7.5 minutos</strong>. No hay "hora pico" ni "hora valle", cada momento de llegada es igual.</p>
+        </div>
+    </div>
+    <div class="sim-panel"><div class="sim-header"><div class="sim-icon" style="background:var(--accent-purple-dim);color:var(--accent-purple);">🚌</div><div class="sim-header-text"><h3>Simulador Uniforme</h3><p>Minutos esperando el bus.</p></div></div>
+        <div class="sim-body"><div class="sim-controls">
+            <div class="slider-group"><div class="slider-label"><span>Mínimo espera (a)</span><strong id="unifAVal">0</strong></div><input type="range" min="0" max="40" value="0" class="purple" id="unifASlider" oninput="updateUnifParams()"></div>
+            <div class="slider-group"><div class="slider-label"><span>Máximo espera (b)</span><strong id="unifBVal">15</strong></div><input type="range" min="5" max="50" value="15" class="purple" id="unifBSlider" oninput="updateUnifParams()"></div>
+            <button class="sim-btn primary purple" onclick="simUniforme(1)"><span>1 valor</span><span class="emoji">🎲</span></button><button class="sim-btn" onclick="simUniformeAnim(200)"><span>200</span><span class="emoji">🚀</span></button><button class="sim-btn" onclick="simUniformeAnim(5000)"><span>5,000</span><span class="emoji">🔥</span></button><button class="sim-btn reset" onclick="resetUniforme()">Reiniciar</button>
+            <div class="sim-stat"><div class="sim-stat-label">Generados</div><div class="sim-stat-value" style="color:var(--accent-purple);" id="unifCount">0</div></div>
+        </div><div class="chart-wrap"><canvas id="chartUniforme"></canvas></div></div>
+    </div>
+    <div class="worked-example purple-ex">
+        <div class="we-badge">✏️ Ejemplo Resuelto Paso a Paso</div>
+        <h4>El bus pasa cada 15 min. ¿Probabilidad de esperar entre 3 y 7 minutos?</h4>
+        <div class="we-context"><p><strong>Datos:</strong> a = 0 min, b = 15 min &nbsp;|&nbsp; X ~ Uniforme(0, 15) &nbsp;|&nbsp; <strong>Queremos: P(3 ≤ X ≤ 7)</strong></p></div>
+        <div class="we-steps">
+            <div class="we-step"><div class="we-step-title">Recordar: la densidad es constante</div><div class="formula-box">f(x) = 1 / (b − a) = 1 / (15 − 0) = 1/15 ≈ 0.0667</div><p>Cada minuto tiene la <em>misma densidad</em>. No hay favoritos.</p></div>
+            <div class="we-step"><div class="we-step-title">Probabilidad = largo del intervalo ÷ rango total</div><div class="formula-box">P(3 ≤ X ≤ 7) = (7 − 3) / (15 − 0)</div><p>En distribuciones continuas, la probabilidad es el <strong style="color:var(--text)">área bajo la curva</strong>. Como f(x) es constante, es un simple rectángulo: base × altura.</p></div>
+            <div class="we-step"><div class="we-step-title">Resolver</div><div class="formula-box">P(3 ≤ X ≤ 7) = 4 / 15 ≈ 0.2667</div></div>
+        </div>
+        <div class="we-result"><div class="we-result-label">Resultado</div><div class="we-result-value">P(3 ≤ X ≤ 7) = 4/15 ≈ 26.67%</div><div class="we-result-explain">Hay un ~27% de probabilidad de esperar entre 3 y 7 minutos.<br>Es lógico: 4 minutos de los 15 posibles → 4/15 del rango total.</div></div>
+    </div>
+</section>
+<section class="chapter" id="cap8">
+    <div class="chapter-number">08</div><div class="chapter-title">Distribución Exponencial</div><div class="chapter-subtitle">¿Cuánto tiempo hasta el próximo evento?</div>
+    <div class="card card-highlight rose"><span class="tag continuous">CONTINUA</span><h3>Tiempo de espera entre eventos</h3><p>Si eventos siguen Poisson (tasa λ), el <strong style="color:var(--text)">tiempo entre ellos</strong> es Exponencial.</p><div class="formula-box">f(x) = λ · e⁻λˣ &nbsp;&nbsp; para x ≥ 0</div><div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:16px;"><div class="sim-stat"><div class="sim-stat-label">Parámetro</div><div class="sim-stat-value" style="color:var(--accent-rose);font-size:1rem;">λ</div></div><div class="sim-stat"><div class="sim-stat-label">E[X]</div><div class="sim-stat-value" style="color:var(--accent-rose);font-size:1rem;">1/λ</div></div><div class="sim-stat"><div class="sim-stat-label">Var(X)</div><div class="sim-stat-value" style="color:var(--accent-rose);font-size:1rem;">1/λ²</div></div></div></div>
+    <div class="callout"><h4>Propiedad "sin memoria"</h4><p><strong>No importa cuánto hayas esperado</strong>, la probabilidad de esperar más es la misma. El reloj se reinicia constantemente.</p></div>
+    <div class="card" style="margin-top:16px;border:2px dashed var(--accent-green);background:linear-gradient(135deg,var(--accent-green-dim),var(--accent-rose-dim));"><h3>🔗 Conexión Poisson ↔ Exponencial</h3><p style="color:var(--text-muted);font-size:.92rem;">Son dos formas de ver <strong style="color:var(--text)">el mismo fenómeno</strong>:</p><div style="display:grid;grid-template-columns:1fr auto 1fr;gap:16px;align-items:center;margin-top:12px;"><div style="background:rgba(255,255,255,0.7);padding:16px;border-radius:12px;text-align:center;"><div style="font-weight:700;color:var(--accent-green);margin-bottom:4px;">Poisson (λ=3/hora)</div><div style="font-size:.85rem;color:var(--text-muted);">X = <strong style="color:var(--text);">cuántas</strong> llamadas llegan en 1 hora</div></div><div style="font-size:1.8rem;">⇄</div><div style="background:rgba(255,255,255,0.7);padding:16px;border-radius:12px;text-align:center;"><div style="font-weight:700;color:var(--accent-rose);margin-bottom:4px;">Exponencial (λ=3)</div><div style="font-size:.85rem;color:var(--text-muted);">X = <strong style="color:var(--text);">cuánto tiempo</strong> entre una llamada y la siguiente</div></div></div></div>
+    <div class="what-measures">
+        <div class="wm-badge">🔍 ¿Qué mide X?</div>
+        <h4>X mide: ¿Cuánto tiempo (o distancia) hasta que ocurra el próximo evento?</h4>
+        <p>Si la Poisson cuenta <strong>cuántos eventos</strong> hay en un intervalo, la Exponencial mide <strong>cuánto tiempo pasa entre un evento y el siguiente</strong>. Son dos caras de la misma moneda.</p>
+        <div class="wm-example">
+            <div class="wm-ex-title">☎️ Ejemplo: Call center de soporte</div>
+            <p>Tu call center recibe en promedio <strong>3 llamadas por hora</strong> (λ = 3).<br><br>
+            <span class="wm-x">X = minutos hasta la próxima llamada</span><br><br>
+            En promedio esperas <strong>E[X] = 1/λ = 1/3 de hora = 20 minutos</strong> entre llamadas. Pero ojo: la mayoría de esperas son <strong>cortas</strong> (muchas de 5-10 min) y pocas son largas (rara vez 45+ min). Por eso la gráfica cae rápido — <strong>los tiempos cortos son mucho más frecuentes</strong>.<br><br>
+            🧠 <strong>Propiedad "sin memoria":</strong> Si ya llevas 10 min esperando, la probabilidad de esperar 5 min más es la misma que al inicio. ¡El reloj no cuenta!</p>
+        </div>
+    </div>
+    <div class="sim-panel"><div class="sim-header"><div class="sim-icon" style="background:var(--accent-rose-dim);color:var(--accent-rose);">☎️</div><div class="sim-header-text"><h3>Simulador Exponencial</h3><p>Tiempo entre llamadas en el call center.</p></div></div>
+        <div class="sim-body"><div class="sim-controls">
+            <div class="slider-group"><div class="slider-label"><span>Llamadas/hora λ</span><strong id="expLVal">3</strong></div><input type="range" min="1" max="10" value="3" step="0.5" class="rose" id="expLSlider" oninput="updateExpParams()"></div>
+            <button class="sim-btn primary rose" onclick="simExponencial(1)"><span>1 espera</span><span class="emoji">⏳</span></button><button class="sim-btn" onclick="simExponencialAnim(200)"><span>200</span><span class="emoji">🚀</span></button><button class="sim-btn" onclick="simExponencialAnim(3000)"><span>3,000</span><span class="emoji">🔥</span></button><button class="sim-btn reset" onclick="resetExponencial()">Reiniciar</button>
+            <div class="sim-stat"><div class="sim-stat-label">Esperas</div><div class="sim-stat-value" style="color:var(--accent-rose);" id="expCount">0</div></div>
+        </div><div class="chart-wrap"><canvas id="chartExponencial"></canvas></div></div>
+    </div>
+    <div class="worked-example rose-ex">
+        <div class="we-badge">✏️ Ejemplo Resuelto Paso a Paso</div>
+        <h4>Call center con λ = 3 llamadas/hora. ¿Probabilidad de que la próxima llegue en menos de 30 min?</h4>
+        <div class="we-context"><p><strong>Datos:</strong> λ = 3 llamadas/hora &nbsp;|&nbsp; X ~ Exponencial(λ = 3) &nbsp;|&nbsp; <strong>Queremos: P(X ≤ 0.5 horas)</strong></p><p>⚠️ Como λ está en horas, convertimos: 30 min = 0.5 horas.</p></div>
+        <div class="we-steps">
+            <div class="we-step"><div class="we-step-title">Escribir la fórmula de la CDF (acumulada)</div><div class="formula-box">P(X ≤ t) = 1 − e<sup>−λt</sup></div><p>Para la Exponencial, usamos la CDF porque preguntamos "menor o igual a".</p></div>
+            <div class="we-step"><div class="we-step-title">Sustituir λ = 3, t = 0.5</div><div class="formula-box">P(X ≤ 0.5) = 1 − e<sup>−3 × 0.5</sup> = 1 − e<sup>−1.5</sup></div></div>
+            <div class="we-step"><div class="we-step-title">Calcular e<sup>−1.5</sup></div><div class="formula-box">e<sup>−1.5</sup> ≈ 0.2231</div></div>
+            <div class="we-step"><div class="we-step-title">Restar de 1</div><div class="formula-box">P(X ≤ 0.5) = 1 − 0.2231 = 0.7769</div></div>
+        </div>
+        <div class="we-result"><div class="we-result-label">Resultado</div><div class="we-result-value">P(X ≤ 30 min) ≈ 0.7769 → 77.7%</div><div class="we-result-explain">¡Hay un 78% de probabilidad de recibir la siguiente llamada en menos de 30 min!<br>Tiene sentido: si llegan 3/hora en promedio (una cada 20 min), esperar ≤30 min es bastante probable.</div></div>
+    </div>
+</section>
+<section class="chapter" id="cap9">
+    <div class="chapter-number">09</div><div class="chapter-title">Distribución Normal (Gaussiana)</div><div class="chapter-subtitle">La reina — la Campana de Gauss</div>
+    <div class="card card-highlight cyan"><span class="tag continuous">CONTINUA</span><h3>La curva en forma de campana</h3><p>La más importante. Aparece por el <strong style="color:var(--text)">Teorema del Límite Central</strong>: la suma de muchas variables tiende a una Normal.</p><div class="formula-box">f(x) = (1 / (σ√(2π))) · e^(-(x-μ)²/(2σ²))</div><div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:16px;"><div class="sim-stat"><div class="sim-stat-label">Parámetros</div><div class="sim-stat-value" style="color:var(--accent-cyan);font-size:1rem;">μ, σ</div></div><div class="sim-stat"><div class="sim-stat-label">E[X]</div><div class="sim-stat-value" style="color:var(--accent-cyan);font-size:1rem;">μ</div></div><div class="sim-stat"><div class="sim-stat-label">Var(X)</div><div class="sim-stat-value" style="color:var(--accent-cyan);font-size:1rem;">σ²</div></div></div></div>
+    <div class="card" style="margin-top:20px;"><h3>Regla 68-95-99.7</h3><p>Los datos se concentran alrededor de μ:</p><div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:12px;"><div style="background:var(--accent-cyan-dim);padding:16px;border-radius:10px;text-align:center;"><div style="font-size:2rem;font-weight:800;color:var(--accent-cyan);">68%</div><div style="font-size:.8rem;color:var(--text-muted);">μ ± 1σ</div></div><div style="background:var(--accent-cyan-dim);padding:16px;border-radius:10px;text-align:center;"><div style="font-size:2rem;font-weight:800;color:var(--accent-cyan);">95%</div><div style="font-size:.8rem;color:var(--text-muted);">μ ± 2σ</div></div><div style="background:var(--accent-cyan-dim);padding:16px;border-radius:10px;text-align:center;"><div style="font-size:2rem;font-weight:800;color:var(--accent-cyan);">99.7%</div><div style="font-size:.8rem;color:var(--text-muted);">μ ± 3σ</div></div></div></div>
+    <div class="what-measures">
+        <div class="wm-badge">🔍 ¿Qué mide X?</div>
+        <h4>X mide: Una cantidad influenciada por muchos factores pequeños e independientes</h4>
+        <p>Cuando algo es el resultado de <strong>sumar muchas causas chiquitas</strong> (genética + nutrición + ejercicio = estatura), el resultado tiende a una Normal. La mayoría de valores caen cerca del centro (μ) y pocos se alejan mucho.</p>
+        <div class="wm-example">
+            <div class="wm-ex-title">📊 Ejemplo: Notas de un examen universitario</div>
+            <p>En un examen de 100 puntos, la nota promedio es <strong>μ = 68</strong> y la desviación estándar es <strong>σ = 12</strong>.<br><br>
+            <span class="wm-x">X = la nota que saca un estudiante al azar</span><br><br>
+            Usando la regla 68-95-99.7:<br>
+            → <strong>68%</strong> sacó entre 56 y 80 puntos (μ ± 1σ)<br>
+            → <strong>95%</strong> sacó entre 44 y 92 puntos (μ ± 2σ)<br>
+            → Solo un <strong>2.5%</strong> sacó más de 92 — ¡esos son los "cracks"!<br><br>
+            La nota de cada persona depende de muchos factores (preparación, sueño, dificultad, suerte...). Por eso se forma la campana.</p>
+        </div>
+    </div>
+    <div class="sim-panel" style="margin-top:24px;"><div class="sim-header"><div class="sim-icon" style="background:var(--accent-cyan-dim);color:var(--accent-cyan);">📊</div><div class="sim-header-text"><h3>Simulador Normal</h3><p>Notas de examen: observa la campana.</p></div></div>
+        <div class="sim-body"><div class="sim-controls">
+            <div class="slider-group"><div class="slider-label"><span>Nota promedio μ</span><strong id="normMuVal">68</strong></div><input type="range" min="10" max="90" value="68" class="cyan" id="normMuSlider" oninput="updateNormParams()"></div>
+            <div class="slider-group"><div class="slider-label"><span>Desv. σ</span><strong id="normSigmaVal">12</strong></div><input type="range" min="1" max="25" value="12" class="cyan" id="normSigmaSlider" oninput="updateNormParams()"></div>
+            <button class="sim-btn primary cyan" onclick="simNormal(1)"><span>1 valor</span><span class="emoji">🔔</span></button><button class="sim-btn" onclick="simNormalAnim(200)"><span>200</span><span class="emoji">🚀</span></button><button class="sim-btn" onclick="simNormalAnim(5000)"><span>5,000</span><span class="emoji">🔥</span></button><button class="sim-btn reset" onclick="resetNormal()">Reiniciar</button>
+            <div class="sim-stat"><div class="sim-stat-label">Generados</div><div class="sim-stat-value" style="color:var(--accent-cyan);" id="normCount">0</div></div>
+        </div><div class="chart-wrap"><canvas id="chartNormal"></canvas></div></div>
+    </div>
+    <div class="worked-example cyan-ex">
+        <div class="we-badge">✏️ Ejemplo Resuelto Paso a Paso</div>
+        <h4>Notas de examen: μ = 68, σ = 12. ¿Probabilidad de sacar más de 80?</h4>
+        <div class="we-context"><p><strong>Datos:</strong> μ = 68 puntos, σ = 12 puntos &nbsp;|&nbsp; X ~ Normal(68, 12) &nbsp;|&nbsp; <strong>Queremos: P(X > 80)</strong></p></div>
+        <div class="we-steps">
+            <div class="we-step"><div class="we-step-title">Estandarizar: convertir X a Z (la Normal estándar)</div><p>La Normal no tiene una fórmula "fácil" para calcular probabilidades directamente. El truco es convertir a <strong style="color:var(--text)">Z</strong>, que tiene μ=0 y σ=1, y buscar en la tabla Z.</p><div class="formula-box">Z = (X − μ) / σ</div></div>
+            <div class="we-step"><div class="we-step-title">Sustituir X = 80</div><div class="formula-box">Z = (80 − 68) / 12 = 12 / 12 = 1.00</div><p>Esto significa que 80 puntos está <strong style="color:var(--text)">exactamente 1 desviación estándar arriba</strong> de la media.</p></div>
+            <div class="we-step"><div class="we-step-title">Buscar P(Z ≤ 1.00) en la tabla Z</div><div class="formula-box">P(Z ≤ 1.00) = 0.8413 &nbsp;&nbsp;(dato de la tabla Z estándar)</div><p>El 84.13% de los estudiantes saca 80 o menos.</p></div>
+            <div class="we-step"><div class="we-step-title">Calcular el complemento</div><div class="formula-box">P(X > 80) = 1 − P(Z ≤ 1.00) = 1 − 0.8413 = 0.1587</div><p>Queremos "más de 80", que es lo que queda <em>a la derecha</em> de Z = 1.</p></div>
+        </div>
+        <div class="we-result"><div class="we-result-label">Resultado</div><div class="we-result-value">P(X > 80) ≈ 0.1587 → 15.87%</div><div class="we-result-explain">Solo ~16% de los estudiantes saca más de 80. ¡Tiene sentido con la regla 68-95-99.7!<br>Si el 68% está entre 56 y 80, entonces el 32% está afuera → 16% por arriba y 16% por abajo.</div></div>
+    </div>
+</section>
+<section class="chapter" id="cap10">
+    <div class="chapter-number">10</div><div class="chapter-title">Medidas Clave</div><div class="chapter-subtitle">Resumen numérico de cualquier distribución</div>
+    <div class="measure-grid">
+        <div class="card card-highlight amber"><div class="icon-box amber"><i class="fa-solid fa-bullseye"></i></div><h3>Esperanza E[X]</h3><p>El <strong style="color:var(--text)">promedio a largo plazo</strong>.</p><div class="formula-box">E[X] = Σ x·P(X=x) &nbsp;(discreta)<br>E[X] = ∫ x·f(x) dx &nbsp;(continua)</div><p style="margin-top:8px;"><strong style="color:var(--accent-amber)">Ej:</strong> Inversión con E[X]=$50 → en promedio ganas $50.</p></div>
+        <div class="card card-highlight rose"><div class="icon-box rose"><i class="fa-solid fa-arrows-left-right"></i></div><h3>Varianza y Desv. Estándar</h3><p><strong style="color:var(--text)">Dispersión</strong> respecto al promedio. Más varianza = más riesgo.</p><div class="formula-box">Var(X) = E[(X − E[X])²]<br>σ = √Var(X)</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px;"><div style="background:var(--accent-green-dim);padding:12px;border-radius:8px;text-align:center;"><div style="font-weight:700;color:var(--accent-green);">σ baja</div><div style="font-size:.8rem;color:var(--text-muted);">Estable</div></div><div style="background:var(--accent-rose-dim);padding:12px;border-radius:8px;text-align:center;"><div style="font-weight:700;color:var(--accent-rose);">σ alta</div><div style="font-size:.8rem;color:var(--text-muted);">Volátil</div></div></div></div>
+    </div>
+</section>
+<section class="chapter" id="cap11">
+    <div class="chapter-number">11</div><div class="chapter-title">Resumen de Distribuciones</div><div class="chapter-subtitle">Todo en un vistazo</div>
+    <div class="card" style="overflow-x:auto;"><table class="compare-table"><thead><tr><th>Distribución</th><th>Tipo</th><th>Parámetros</th><th>E[X]</th><th>Var(X)</th><th>Caso de Uso</th></tr></thead><tbody>
+        <tr><td><strong style="color:var(--accent-amber)">Bernoulli</strong></td><td>Discreta</td><td>p</td><td>p</td><td>p(1−p)</td><td>Clic / no clic</td></tr>
+        <tr><td><strong style="color:var(--accent-blue)">Binomial</strong></td><td>Discreta</td><td>n, p</td><td>np</td><td>np(1−p)</td><td>Clics en n correos</td></tr>
+        <tr><td><strong style="color:var(--accent-green)">Poisson</strong></td><td>Discreta</td><td>λ</td><td>λ</td><td>λ</td><td>Llamadas por hora</td></tr>
+        <tr><td><strong style="color:var(--accent-purple)">Uniforme</strong></td><td>Continua</td><td>a, b</td><td>(a+b)/2</td><td>(b−a)²/12</td><td>Número aleatorio</td></tr>
+        <tr><td><strong style="color:var(--accent-rose)">Exponencial</strong></td><td>Continua</td><td>λ</td><td>1/λ</td><td>1/λ²</td><td>Tiempo entre llegadas</td></tr>
+        <tr><td><strong style="color:var(--accent-cyan)">Normal</strong></td><td>Continua</td><td>μ, σ</td><td>μ</td><td>σ²</td><td>Alturas, errores</td></tr>
+    </tbody></table></div>
+    <div class="summary-box"><div style="font-size:2.5rem;margin-bottom:16px;">✨</div><h2>La Magia de los Grandes Números</h2><p>Con pocos datos todo parece caótico. Pero con miles de observaciones, el azar se transforma en patrones matemáticos perfectos. Por eso los analistas, casinos y aseguradoras predicen el comportamiento de <em>miles de personas</em>, aunque no puedan predecir a <em>una sola</em>.</p></div>
+</section>
+<section class="chapter" id="cap12">
+    <div class="chapter-number">12</div><div class="chapter-title">¿Y esto para qué? — Analítica Predictiva</div><div class="chapter-subtitle">Donde las distribuciones se convierten en decisiones reales de negocio</div>
+    <div class="card card-highlight" style="border-left-color:var(--accent-blue);border-left-width:4px;">
+        <h3><i class="fa-solid fa-brain" style="color:var(--accent-blue)"></i> &nbsp;El puente: de la teoría a la predicción</h3>
+        <p>Todo lo que acabas de aprender — variables aleatorias, distribuciones, esperanza, varianza — es exactamente lo que usan los modelos de <strong style="color:var(--text)">analítica predictiva</strong> por dentro. No son conceptos aislados: son los <strong style="color:var(--text)">cimientos</strong>.</p>
+    </div>
+    <div style="margin-top:24px;">
+        <div class="card" style="background:linear-gradient(135deg,#f0fdf4,#dcfce7);border:1px solid #86efac;border-radius:18px;padding:28px;">
+            <h3 style="font-size:1.15rem;margin-bottom:16px;"><i class="fa-solid fa-route" style="color:var(--accent-green)"></i> &nbsp;¿Cómo conectan?</h3>
+            <div style="display:grid;gap:16px;">
+                <div style="background:rgba(255,255,255,0.8);border-radius:14px;padding:20px;border:1px solid #bbf7d0;">
+                    <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+                        <div style="background:var(--accent-blue-dim);color:var(--accent-blue);width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.85rem;">1</div>
+                        <strong style="color:var(--text);font-size:.95rem;">Modelar la incertidumbre</strong>
+                    </div>
+                    <p style="font-size:.88rem;color:var(--text-muted);line-height:1.7;">Cada vez que un modelo predice algo ("este cliente tiene <strong style="color:var(--text)">73% de probabilidad de irse</strong>"), está usando distribuciones de probabilidad por debajo. La regresión logística, por ejemplo, modela cada predicción como una <strong style="color:var(--accent-amber)">Bernoulli</strong>.</p>
+                </div>
+                <div style="background:rgba(255,255,255,0.8);border-radius:14px;padding:20px;border:1px solid #bbf7d0;">
+                    <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+                        <div style="background:var(--accent-blue-dim);color:var(--accent-blue);width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.85rem;">2</div>
+                        <strong style="color:var(--text);font-size:.95rem;">Cuantificar el riesgo</strong>
+                    </div>
+                    <p style="font-size:.88rem;color:var(--text-muted);line-height:1.7;">La <strong style="color:var(--text)">varianza</strong> y la <strong style="color:var(--text)">desviación estándar</strong> te dicen qué tan confiable es una predicción. Una predicción de ventas con σ pequeña es una en la que puedes confiar; con σ grande, prepárate para sorpresas.</p>
+                </div>
+                <div style="background:rgba(255,255,255,0.8);border-radius:14px;padding:20px;border:1px solid #bbf7d0;">
+                    <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+                        <div style="background:var(--accent-blue-dim);color:var(--accent-blue);width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.85rem;">3</div>
+                        <strong style="color:var(--text);font-size:.95rem;">Tomar decisiones con datos</strong>
+                    </div>
+                    <p style="font-size:.88rem;color:var(--text-muted);line-height:1.7;">La <strong style="color:var(--text)">esperanza E[X]</strong> te da el escenario promedio. La distribución completa te da todos los escenarios posibles y sus probabilidades. Así decides: <em>"¿contrato más personal o no?"</em> — no con el estómago, sino con números.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div style="margin-top:24px;">
+        <h3 style="font-size:1.1rem;font-weight:700;margin-bottom:16px;"><i class="fa-solid fa-building" style="color:var(--accent-purple)"></i> &nbsp;Ejemplo real: ¿Cómo usa cada distribución una empresa?</h3>
+        <div class="card" style="overflow-x:auto;">
+            <table class="compare-table">
+                <thead><tr><th>Situación de negocio</th><th>Distribución</th><th>Decisión que tomas</th></tr></thead>
+                <tbody>
+                    <tr><td><strong style="color:var(--text)">¿Este usuario hará clic en el anuncio?</strong></td><td><strong style="color:var(--accent-amber)">Bernoulli</strong></td><td>Personalizar el anuncio para los de mayor probabilidad</td></tr>
+                    <tr><td><strong style="color:var(--text)">De 1,000 usuarios, ¿cuántos comprarán?</strong></td><td><strong style="color:var(--accent-blue)">Binomial</strong></td><td>Planificar inventario y logística</td></tr>
+                    <tr><td><strong style="color:var(--text)">¿Cuántos reclamos recibirá soporte esta tarde?</strong></td><td><strong style="color:var(--accent-green)">Poisson</strong></td><td>Asignar agentes por turno</td></tr>
+                    <tr><td><strong style="color:var(--text)">Seleccionar usuarios al azar para una encuesta</strong></td><td><strong style="color:var(--accent-purple)">Uniforme</strong></td><td>Garantizar muestra representativa sin sesgo</td></tr>
+                    <tr><td><strong style="color:var(--text)">¿Cuánto tardará en llegar el próximo pedido?</strong></td><td><strong style="color:var(--accent-rose)">Exponencial</strong></td><td>Definir tiempos de respuesta y SLAs</td></tr>
+                    <tr><td><strong style="color:var(--text)">¿En qué rango caerán las ventas del mes?</strong></td><td><strong style="color:var(--accent-cyan)">Normal</strong></td><td>Establecer metas realistas y presupuesto</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div style="margin-top:24px;" class="card">
+        <h3><i class="fa-solid fa-diagram-project" style="color:var(--accent-rose)"></i> &nbsp;El flujo completo de la analítica predictiva</h3>
+        <p style="margin-bottom:16px;color:var(--text-muted);font-size:.92rem;">Cada paso que acabas de aprender corresponde a una etapa real de un proyecto de datos:</p>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;">
+            <div style="background:var(--accent-blue-dim);padding:18px;border-radius:12px;text-align:center;"><div style="font-size:1.5rem;margin-bottom:6px;">1️⃣</div><div style="font-weight:700;color:var(--accent-blue);font-size:.85rem;margin-bottom:4px;">Definir la V.A.</div><div style="font-size:.78rem;color:var(--text-muted);">¿Qué quiero predecir?</div></div>
+            <div style="background:var(--accent-amber-dim);padding:18px;border-radius:12px;text-align:center;"><div style="font-size:1.5rem;margin-bottom:6px;">2️⃣</div><div style="font-weight:700;color:var(--accent-amber);font-size:.85rem;margin-bottom:4px;">Elegir distribución</div><div style="font-size:.78rem;color:var(--text-muted);">¿Cómo se comporta?</div></div>
+            <div style="background:var(--accent-green-dim);padding:18px;border-radius:12px;text-align:center;"><div style="font-size:1.5rem;margin-bottom:6px;">3️⃣</div><div style="font-weight:700;color:var(--accent-green);font-size:.85rem;margin-bottom:4px;">Estimar parámetros</div><div style="font-size:.78rem;color:var(--text-muted);">Con datos históricos</div></div>
+            <div style="background:var(--accent-purple-dim);padding:18px;border-radius:12px;text-align:center;"><div style="font-size:1.5rem;margin-bottom:6px;">4️⃣</div><div style="font-weight:700;color:var(--accent-purple);font-size:.85rem;margin-bottom:4px;">Calcular probabilidades</div><div style="font-size:.78rem;color:var(--text-muted);">¿Qué tan probable es X?</div></div>
+            <div style="background:var(--accent-rose-dim);padding:18px;border-radius:12px;text-align:center;"><div style="font-size:1.5rem;margin-bottom:6px;">5️⃣</div><div style="font-weight:700;color:var(--accent-rose);font-size:.85rem;margin-bottom:4px;">Tomar la decisión</div><div style="font-size:.78rem;color:var(--text-muted);">Actuar con datos, no intuición</div></div>
+        </div>
+    </div>
+    <div class="summary-box" style="margin-top:32px;background:linear-gradient(135deg,#0f172a,#1e3a5f);">
+        <div style="font-size:2.5rem;margin-bottom:16px;">🚀</div>
+        <h2>De la teoría a la acción</h2>
+        <p>Las distribuciones no son solo fórmulas de un examen. Son el <strong style="color:#fff;">lenguaje</strong> que usan los algoritmos de Machine Learning, los modelos de riesgo financiero, los sistemas de recomendación y la analítica predictiva. <strong style="color:#60a5fa;">Ahora que las entiendes, puedes leer lo que los datos te dicen — y tomar mejores decisiones.</strong></p>
+    </div>
+</section>
+</div>
+<footer><p>Guía Interactiva de Variables Aleatorias • Diseñada para aprender experimentando</p></footer>
+<script>
+Chart.defaults.font.family="'DM Sans',sans-serif";Chart.defaults.color='#8896a8';
+const CO=()=>({responsive:true,maintainAspectRatio:false,animation:{duration:80},plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,grid:{color:'#e8ebf2'},ticks:{color:'#8896a8'}},x:{grid:{display:false},ticks:{color:'#8896a8',maxRotation:0}}}});
+let bD=[0,0],bT=0;const cB=new Chart(document.getElementById('chartBernoulli').getContext('2d'),{type:'bar',data:{labels:['Fracaso (0)','Éxito (1)'],datasets:[{data:bD,backgroundColor:['rgba(244,63,94,0.3)','rgba(16,185,129,0.3)'],borderColor:['#f43f5e','#10b981'],borderWidth:2,borderRadius:8,hoverBackgroundColor:['rgba(244,63,94,0.5)','rgba(16,185,129,0.5)']}]},options:{...CO(),plugins:{legend:{display:false},tooltip:{callbacks:{title:c=>c[0].label,label:c=>`${c.raw} veces (${bT?((c.raw/bT)*100).toFixed(1):0}%)`}}}}});
+function simBernoulli(n){const p=parseInt(document.getElementById('bernoulliPSlider').value)/100;for(let i=0;i<n;i++){bD[Math.random()<p?1:0]++;bT++;}cB.update();document.getElementById('bernoulliCount').textContent=bT.toLocaleString();document.getElementById('bernoulliSucc').textContent=bD[1].toLocaleString();document.getElementById('bernoulliFail').textContent=bD[0].toLocaleString();}
+function resetBernoulli(){bD[0]=0;bD[1]=0;bT=0;cB.update();document.getElementById('bernoulliCount').textContent='0';document.getElementById('bernoulliSucc').textContent='0';document.getElementById('bernoulliFail').textContent='0';}
+let bN=20,bP=.2,biD=new Array(21).fill(0),biT=0;function mBL(){return Array.from({length:bN+1},(_,i)=>i.toString());}
+const cBi=new Chart(document.getElementById('chartBinomial').getContext('2d'),{type:'bar',data:{labels:mBL(),datasets:[{data:biD,backgroundColor:'rgba(59,130,246,0.35)',borderColor:'#3b82f6',borderWidth:2,borderRadius:6,hoverBackgroundColor:'rgba(59,130,246,0.55)'}]},options:{...CO(),plugins:{legend:{display:false},tooltip:{callbacks:{title:c=>`${c[0].label} aperturas`,label:c=>`${c.raw} veces`}}}}});
+function updateBinomParams(){bN=parseInt(document.getElementById('binomNSlider').value);bP=parseInt(document.getElementById('binomPSlider').value)/100;document.getElementById('binomNVal').textContent=bN;document.getElementById('binomPVal').textContent=bP.toFixed(2);resetBinomial();}
+function simBinomial(n){for(let i=0;i<n;i++){let c=0;for(let j=0;j<bN;j++)if(Math.random()<bP)c++;biD[c]++;biT++;}cBi.update();document.getElementById('binomCount').textContent=biT.toLocaleString();}
+function simBinomialAnim(t){let d=0;const b=t>500?50:10;function s(){const now=Math.min(b,t-d);simBinomial(now);d+=now;if(d<t)requestAnimationFrame(s);}requestAnimationFrame(s);}
+function resetBinomial(){biD=new Array(bN+1).fill(0);biT=0;cBi.data.labels=mBL();cBi.data.datasets[0].data=biD;cBi.update();document.getElementById('binomCount').textContent='0';}
+let pL=8;const pM=20;let pD=new Array(pM).fill(0),pT=0;
+const cP=new Chart(document.getElementById('chartPoisson').getContext('2d'),{type:'bar',data:{labels:Array.from({length:pM},(_,i)=>i===pM-1?`${pM-1}+`:i.toString()),datasets:[{data:pD,backgroundColor:'rgba(16,185,129,0.35)',borderColor:'#10b981',borderWidth:2,borderRadius:6,hoverBackgroundColor:'rgba(16,185,129,0.55)'}]},options:{...CO(),plugins:{legend:{display:false},tooltip:{callbacks:{title:c=>`${c[0].label} pedidos`,label:c=>`${c.raw} horas`}}}}});
+function updatePoissonParams(){pL=parseInt(document.getElementById('poissonLSlider').value);document.getElementById('poissonLVal').textContent=pL;resetPoisson();}
+function gP(l){let L=Math.exp(-l),k=0,p=1;do{k++;p*=Math.random();}while(p>L);return k-1;}
+function simPoisson(n){for(let i=0;i<n;i++){let v=gP(pL);if(v>=pM-1)v=pM-1;pD[v]++;pT++;}cP.update();document.getElementById('poissonCount').textContent=pT.toLocaleString();}
+function simPoissonAnim(t){let d=0;const b=t>500?40:5;function s(){const now=Math.min(b,t-d);simPoisson(now);d+=now;if(d<t)requestAnimationFrame(s);}requestAnimationFrame(s);}
+function resetPoisson(){pD.fill(0);pT=0;cP.update();document.getElementById('poissonCount').textContent='0';}
+let uA=0,uB=15;const uBn=20;let uD=new Array(uBn).fill(0),uT=0;function mUL(){const st=(uB-uA)/uBn;return Array.from({length:uBn},(_,i)=>(uA+st*i+st/2).toFixed(1));}
+const cU=new Chart(document.getElementById('chartUniforme').getContext('2d'),{type:'bar',data:{labels:mUL(),datasets:[{data:uD,backgroundColor:'rgba(139,92,246,0.35)',borderColor:'#8b5cf6',borderWidth:2,borderRadius:4,hoverBackgroundColor:'rgba(139,92,246,0.55)'}]},options:{...CO(),plugins:{legend:{display:false},tooltip:{callbacks:{title:c=>`~${c[0].label}`,label:c=>`${c.raw}`}}}}});
+function updateUnifParams(){const a=parseInt(document.getElementById('unifASlider').value),b=parseInt(document.getElementById('unifBSlider').value);if(b<=a+2)return;uA=a;uB=b;document.getElementById('unifAVal').textContent=uA;document.getElementById('unifBVal').textContent=uB;resetUniforme();}
+function simUniforme(n){const st=(uB-uA)/uBn;for(let i=0;i<n;i++){const v=uA+Math.random()*(uB-uA);let bin=Math.floor((v-uA)/st);if(bin>=uBn)bin=uBn-1;uD[bin]++;uT++;}cU.update();document.getElementById('unifCount').textContent=uT.toLocaleString();}
+function simUniformeAnim(t){let d=0;const b=t>500?50:10;function s(){const now=Math.min(b,t-d);simUniforme(now);d+=now;if(d<t)requestAnimationFrame(s);}requestAnimationFrame(s);}
+function resetUniforme(){uD=new Array(uBn).fill(0);uT=0;cU.data.labels=mUL();cU.data.datasets[0].data=uD;cU.update();document.getElementById('unifCount').textContent='0';}
+let eL=3;const eBn=25;let eD=new Array(eBn).fill(0),eT=0;function mEL(){const mx=5/eL*2,st=mx/eBn;return Array.from({length:eBn},(_,i)=>(st*i+st/2).toFixed(2));}
+const cE=new Chart(document.getElementById('chartExponencial').getContext('2d'),{type:'bar',data:{labels:mEL(),datasets:[{data:eD,backgroundColor:'rgba(244,63,94,0.3)',borderColor:'#f43f5e',borderWidth:2,borderRadius:4,hoverBackgroundColor:'rgba(244,63,94,0.5)'}]},options:{...CO(),plugins:{legend:{display:false},tooltip:{callbacks:{title:c=>`~${c[0].label} min`,label:c=>`${c.raw}`}}}}});
+function updateExpParams(){eL=parseFloat(document.getElementById('expLSlider').value);document.getElementById('expLVal').textContent=eL;resetExponencial();}
+function simExponencial(n){const mx=5/eL*2,st=mx/eBn;for(let i=0;i<n;i++){const v=-Math.log(1-Math.random())/eL;let bin=Math.floor(v/st);if(bin>=eBn)bin=eBn-1;eD[bin]++;eT++;}cE.update();document.getElementById('expCount').textContent=eT.toLocaleString();}
+function simExponencialAnim(t){let d=0;const b=t>500?50:10;function s(){const now=Math.min(b,t-d);simExponencial(now);d+=now;if(d<t)requestAnimationFrame(s);}requestAnimationFrame(s);}
+function resetExponencial(){eD=new Array(eBn).fill(0);eT=0;cE.data.labels=mEL();cE.data.datasets[0].data=eD;cE.update();document.getElementById('expCount').textContent='0';}
+let nM=68,nS=12;const nBn=30;let nD=new Array(nBn).fill(0),nT=0;function mNL(){const lo=nM-4*nS,hi=nM+4*nS,st=(hi-lo)/nBn;return Array.from({length:nBn},(_,i)=>(lo+st*i+st/2).toFixed(0));}
+const cN=new Chart(document.getElementById('chartNormal').getContext('2d'),{type:'bar',data:{labels:mNL(),datasets:[{data:nD,backgroundColor:'rgba(8,145,178,0.3)',borderColor:'#0891b2',borderWidth:2,borderRadius:4,hoverBackgroundColor:'rgba(8,145,178,0.5)'}]},options:{...CO(),plugins:{legend:{display:false},tooltip:{callbacks:{title:c=>`~${c[0].label}`,label:c=>`${c.raw}`}}}}});
+function updateNormParams(){nM=parseInt(document.getElementById('normMuSlider').value);nS=parseInt(document.getElementById('normSigmaSlider').value);document.getElementById('normMuVal').textContent=nM;document.getElementById('normSigmaVal').textContent=nS;resetNormal();}
+function gN(m,s){let u1=Math.random(),u2=Math.random();return m+s*Math.sqrt(-2*Math.log(u1))*Math.cos(2*Math.PI*u2);}
+function simNormal(n){const lo=nM-4*nS,hi=nM+4*nS,st=(hi-lo)/nBn;for(let i=0;i<n;i++){const v=gN(nM,nS);let bin=Math.floor((v-lo)/st);if(bin<0)bin=0;if(bin>=nBn)bin=nBn-1;nD[bin]++;nT++;}cN.update();document.getElementById('normCount').textContent=nT.toLocaleString();}
+function simNormalAnim(t){let d=0;const b=t>500?50:10;function s(){const now=Math.min(b,t-d);simNormal(now);d+=now;if(d<t)requestAnimationFrame(s);}requestAnimationFrame(s);}
+function resetNormal(){nD=new Array(nBn).fill(0);nT=0;cN.data.labels=mNL();cN.data.datasets[0].data=nD;cN.update();document.getElementById('normCount').textContent='0';}
+const secs=document.querySelectorAll('.chapter'),pills=document.querySelectorAll('.nav-pill');
+const obs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){pills.forEach(p=>p.classList.remove('active'));const pill=document.querySelector(`.nav-pill[data-section="${e.target.id}"]`);if(pill){pill.classList.add('active');pill.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});}}});},{threshold:0.15,rootMargin:'-80px 0px -50% 0px'});
+secs.forEach(s=>obs.observe(s));
+pills.forEach(p=>{p.addEventListener('click',e=>{e.preventDefault();const t=document.getElementById(p.dataset.section);if(t){const y=t.getBoundingClientRect().top+window.pageYOffset-document.getElementById('navBar').offsetHeight-20;window.scrollTo({top:y,behavior:'smooth'});}});});
+</script>
+</body>
+</html>
