@@ -1,0 +1,2356 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guía Interactiva: Analítica Inferencial para la Toma de Decisiones</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800&family=DM+Serif+Display&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            --bg: #faf9f7;
+            --surface: #ffffff;
+            --surface2: #f3f1ee;
+            --surface3: #e8e5e0;
+            --border: #ddd9d2;
+            --border-light: #ccc7be;
+            --text: #1a1816;
+            --text-muted: #5c5650;
+            --text-dim: #9b958d;
+            --ink: #2c2825;
+            --accent-main: #c05621;
+            --accent-main-dim: rgba(192, 86, 33, 0.08);
+            --accent-main-light: #e87f3e;
+            --accent-blue: #1d6fa5;
+            --accent-blue-dim: rgba(29, 111, 165, 0.08);
+            --accent-green: #2a7d5f;
+            --accent-green-dim: rgba(42, 125, 95, 0.08);
+            --accent-purple: #6d4aaa;
+            --accent-purple-dim: rgba(109, 74, 170, 0.08);
+            --accent-rose: #b5334a;
+            --accent-rose-dim: rgba(181, 51, 74, 0.08);
+            --accent-amber: #b8860b;
+            --accent-amber-dim: rgba(184, 134, 11, 0.08);
+            --accent-teal: #1a8a7d;
+            --accent-teal-dim: rgba(26, 138, 125, 0.08);
+            --radius: 14px;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.03);
+            --shadow-md: 0 4px 16px rgba(0,0,0,0.05), 0 2px 6px rgba(0,0,0,0.03);
+            --shadow-lg: 0 12px 40px rgba(0,0,0,0.08);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'DM Sans', -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.75;
+            overflow-x: hidden;
+            font-size: 16px;
+        }
+        ::-webkit-scrollbar { width: 7px; }
+        ::-webkit-scrollbar-track { background: var(--bg); }
+        ::-webkit-scrollbar-thumb { background: var(--border-light); border-radius: 10px; }
+        .container { max-width: 1080px; margin: 0 auto; padding: 0 28px; }
+        /* ===== HERO ===== */
+        .hero {
+            padding: 100px 0 80px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(175deg, #fef6ee 0%, #faf9f7 60%, #f0ede8 100%);
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -200px;
+            right: -200px;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(192,86,33,0.06) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: -150px;
+            left: -150px;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(29,111,165,0.05) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--accent-main-dim);
+            color: var(--accent-main);
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            padding: 8px 20px;
+            border-radius: 30px;
+            border: 1px solid rgba(192,86,33,0.12);
+            margin-bottom: 32px;
+        }
+        .hero h1 {
+            font-family: 'DM Serif Display', Georgia, serif;
+            font-size: clamp(2.8rem, 6vw, 4.8rem);
+            line-height: 1.08;
+            color: var(--ink);
+            margin-bottom: 24px;
+            font-weight: 400;
+        }
+        .hero h1 .highlight {
+            background: linear-gradient(135deg, var(--accent-main) 0%, #d4732e 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .hero p {
+            font-size: 1.15rem;
+            color: var(--text-muted);
+            max-width: 680px;
+            margin: 0 auto 36px;
+            line-height: 1.8;
+        }
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 48px;
+            margin-top: 16px;
+        }
+        .hero-stat {
+            text-align: center;
+        }
+        .hero-stat-number {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--accent-main);
+        }
+        .hero-stat-label {
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        /* ===== NAV ===== */
+        .nav-bar {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(250, 249, 247, 0.88);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border-bottom: 1px solid var(--border);
+            padding: 10px 0;
+        }
+        .nav-inner {
+            display: flex;
+            gap: 6px;
+            overflow-x: auto;
+            padding: 4px 0;
+            scrollbar-width: none;
+        }
+        .nav-inner::-webkit-scrollbar { display: none; }
+        .nav-pill {
+            flex-shrink: 0;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 12.5px;
+            font-weight: 700;
+            color: var(--text-dim);
+            background: transparent;
+            border: 1px solid transparent;
+            cursor: pointer;
+            transition: all .2s ease;
+            text-decoration: none;
+            white-space: nowrap;
+        }
+        .nav-pill:hover { color: var(--text-muted); background: var(--surface2); }
+        .nav-pill.active {
+            color: var(--accent-main);
+            background: var(--accent-main-dim);
+            border-color: rgba(192,86,33,0.12);
+        }
+        /* ===== CHAPTERS ===== */
+        .chapter {
+            padding: 80px 0 50px;
+            border-top: 1px solid var(--border);
+        }
+        .chapter:first-of-type { border-top: none; }
+        .chapter-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+            margin-bottom: 36px;
+        }
+        .chapter-num {
+            font-family: 'DM Serif Display', serif;
+            font-size: 4.5rem;
+            line-height: 0.85;
+            color: var(--surface3);
+            font-weight: 400;
+            flex-shrink: 0;
+            min-width: 80px;
+            text-align: right;
+        }
+        .chapter-info { flex: 1; }
+        .chapter-title {
+            font-family: 'DM Serif Display', serif;
+            font-size: 2rem;
+            color: var(--ink);
+            margin-bottom: 6px;
+            font-weight: 400;
+            line-height: 1.2;
+        }
+        .chapter-subtitle {
+            font-size: 1rem;
+            color: var(--text-muted);
+        }
+        /* ===== CARDS ===== */
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 28px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow-sm);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .card:hover {
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+        .card-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        .card-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+        @media(max-width: 900px) { .card-grid-3 { grid-template-columns: 1fr; } }
+        @media(max-width: 768px) { .card-grid { grid-template-columns: 1fr; } }
+        .card-accent {
+            border-left: 4px solid var(--accent-main);
+        }
+        .card-accent.blue { border-left-color: var(--accent-blue); }
+        .card-accent.green { border-left-color: var(--accent-green); }
+        .card-accent.purple { border-left-color: var(--accent-purple); }
+        .card-accent.rose { border-left-color: var(--accent-rose); }
+        .card-accent.amber { border-left-color: var(--accent-amber); }
+        .card-accent.teal { border-left-color: var(--accent-teal); }
+        .card h3 {
+            font-size: 1.1rem;
+            font-weight: 800;
+            margin-bottom: 10px;
+            color: var(--ink);
+        }
+        .card p, .card li {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+        /* ===== ICON BOX ===== */
+        .icon-box {
+            width: 44px;
+            height: 44px;
+            border-radius: 11px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.15rem;
+            margin-bottom: 14px;
+            flex-shrink: 0;
+        }
+        .icon-box.main { background: var(--accent-main-dim); color: var(--accent-main); }
+        .icon-box.blue { background: var(--accent-blue-dim); color: var(--accent-blue); }
+        .icon-box.green { background: var(--accent-green-dim); color: var(--accent-green); }
+        .icon-box.purple { background: var(--accent-purple-dim); color: var(--accent-purple); }
+        .icon-box.rose { background: var(--accent-rose-dim); color: var(--accent-rose); }
+        .icon-box.amber { background: var(--accent-amber-dim); color: var(--accent-amber); }
+        .icon-box.teal { background: var(--accent-teal-dim); color: var(--accent-teal); }
+        /* ===== TAGS ===== */
+        .tag {
+            display: inline-block;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            padding: 4px 10px;
+            border-radius: 6px;
+            margin-bottom: 10px;
+        }
+        .tag.main { background: var(--accent-main-dim); color: var(--accent-main); }
+        .tag.blue { background: var(--accent-blue-dim); color: var(--accent-blue); }
+        .tag.green { background: var(--accent-green-dim); color: var(--accent-green); }
+        .tag.purple { background: var(--accent-purple-dim); color: var(--accent-purple); }
+        .tag.rose { background: var(--accent-rose-dim); color: var(--accent-rose); }
+        .tag.amber { background: var(--accent-amber-dim); color: var(--accent-amber); }
+        /* ===== FORMULA BOX ===== */
+        .formula-box {
+            background: #fdfbf9;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 16px 22px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.92rem;
+            color: var(--accent-purple);
+            margin: 14px 0;
+            overflow-x: auto;
+            text-align: center;
+        }
+        /* ===== CALLOUT ===== */
+        .callout {
+            border-radius: var(--radius);
+            padding: 24px 28px;
+            margin: 24px 0;
+            position: relative;
+            display: flex;
+            gap: 16px;
+        }
+        .callout-icon {
+            font-size: 1.5rem;
+            flex-shrink: 0;
+            line-height: 1;
+            margin-top: 2px;
+        }
+        .callout h4 { font-size: 1rem; font-weight: 800; margin-bottom: 6px; }
+        .callout p { font-size: 0.93rem; line-height: 1.7; }
+        .callout.tip {
+            background: #fefce8;
+            border: 1px solid #fde68a;
+        }
+        .callout.tip h4 { color: #92400e; }
+        .callout.tip p { color: #78350f; }
+        .callout.danger {
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+        }
+        .callout.danger h4 { color: #9f1239; }
+        .callout.danger p { color: #881337; }
+        .callout.info {
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+        }
+        .callout.info h4 { color: #1e40af; }
+        .callout.info p { color: #1e3a5f; }
+        .callout.success {
+            background: #ecfdf5;
+            border: 1px solid #a7f3d0;
+        }
+        .callout.success h4 { color: #065f46; }
+        .callout.success p { color: #064e3b; }
+        /* ===== REAL WORLD EXAMPLE ===== */
+        .real-world {
+            background: linear-gradient(135deg, #fdfbf9 0%, #f7f3ee 100%);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 28px;
+            margin: 24px 0;
+        }
+        .real-world-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 14px;
+        }
+        .real-world-header .badge {
+            background: var(--accent-main);
+            color: #fff;
+            font-size: 10px;
+            font-weight: 800;
+            padding: 4px 10px;
+            border-radius: 6px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        .real-world-header h4 {
+            font-size: 1.05rem;
+            font-weight: 800;
+            color: var(--ink);
+        }
+        .real-world p { color: var(--text-muted); font-size: 0.95rem; }
+        /* ===== CODE BLOCKS ===== */
+        .code-block {
+            background: #1e1e1e;
+            border-radius: var(--radius);
+            overflow: hidden;
+            margin: 20px 0;
+            box-shadow: var(--shadow-md);
+        }
+        .code-header {
+            background: #2d2d2d;
+            padding: 10px 18px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .code-header span {
+            color: #8b8b8b;
+            font-size: 12px;
+            font-weight: 700;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .code-copy-btn {
+            background: #444;
+            border: none;
+            color: #ccc;
+            padding: 4px 12px;
+            border-radius: 6px;
+            font-size: 11px;
+            cursor: pointer;
+            font-family: inherit;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+        .code-copy-btn:hover { background: #555; color: #fff; }
+        .code-body {
+            padding: 18px 22px;
+            overflow-x: auto;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            line-height: 1.65;
+            color: #d4d4d4;
+            white-space: pre;
+            word-wrap: normal;
+        }
+        .code-body .comment { color: #6a9955; }
+        .code-body .keyword { color: #c586c0; }
+        .code-body .function { color: #dcdcaa; }
+        .code-body .string { color: #ce9178; }
+        .code-body .number { color: #b5cea8; }
+        .code-body .variable { color: #9cdcfe; }
+        .code-body .operator { color: #d4d4d4; }
+        /* ===== SIMULATION PANELS ===== */
+        .sim-panel {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            overflow: hidden;
+            margin-bottom: 32px;
+            box-shadow: var(--shadow-md);
+        }
+        .sim-header {
+            padding: 24px 28px 16px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            border-bottom: 1px solid var(--border);
+        }
+        .sim-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            flex-shrink: 0;
+        }
+        .sim-header-text h3 { font-size: 1.15rem; font-weight: 800; color: var(--ink); }
+        .sim-header-text p { font-size: 0.88rem; color: var(--text-muted); }
+        .sim-body {
+            padding: 24px 28px 28px;
+            display: grid;
+            grid-template-columns: 270px 1fr;
+            gap: 24px;
+        }
+        @media(max-width: 800px) { .sim-body { grid-template-columns: 1fr; } }
+        .sim-controls { display: flex; flex-direction: column; gap: 10px; }
+        .sim-btn {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 16px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            background: var(--surface2);
+            color: var(--text);
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.88rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all .15s ease;
+        }
+        .sim-btn:hover { background: var(--surface3); border-color: var(--border-light); }
+        .sim-btn:active { transform: scale(0.97); }
+        .sim-btn.primary {
+            background: var(--accent-main);
+            border-color: var(--accent-main);
+            color: #fff;
+        }
+        .sim-btn.primary:hover { filter: brightness(1.1); }
+        .sim-btn.primary.green { background: var(--accent-green); border-color: var(--accent-green); }
+        .sim-btn.primary.blue { background: var(--accent-blue); border-color: var(--accent-blue); }
+        .sim-btn.primary.rose { background: var(--accent-rose); border-color: var(--accent-rose); }
+        .sim-btn.primary.purple { background: var(--accent-purple); border-color: var(--accent-purple); }
+        .slider-group { margin: 6px 0; }
+        .slider-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+        .slider-label strong {
+            color: var(--text);
+            font-family: 'JetBrains Mono', monospace;
+        }
+        input[type="range"] {
+            width: 100%;
+            -webkit-appearance: none;
+            height: 5px;
+            border-radius: 3px;
+            background: var(--border);
+            outline: none;
+        }
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: var(--accent-main);
+            cursor: pointer;
+            border: 3px solid #fff;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.25);
+        }
+        input[type="range"].green::-webkit-slider-thumb { background: var(--accent-green); }
+        input[type="range"].blue::-webkit-slider-thumb { background: var(--accent-blue); }
+        input[type="range"].purple::-webkit-slider-thumb { background: var(--accent-purple); }
+        input[type="range"].rose::-webkit-slider-thumb { background: var(--accent-rose); }
+        .chart-wrap {
+            background: var(--surface2);
+            border-radius: 14px;
+            padding: 16px;
+            border: 1px solid var(--border);
+            min-height: 300px;
+            position: relative;
+            overflow: hidden;
+        }
+        .stat-box {
+            background: var(--surface3);
+            border-radius: 8px;
+            padding: 10px;
+            text-align: center;
+        }
+        .stat-box-label {
+            font-size: 0.7rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .stat-box-value {
+            font-size: 1.4rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 700;
+            color: var(--text);
+        }
+        /* ===== CI VISUALIZATION ===== */
+        .ci-container {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            height: 280px;
+            overflow-y: auto;
+            padding: 10px 20px;
+            position: relative;
+        }
+        .ci-true-line {
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--text);
+            z-index: 0;
+        }
+        .ci-bar-wrapper { position: relative; height: 12px; width: 100%; z-index: 1; }
+        .ci-bar {
+            position: absolute;
+            height: 7px;
+            top: 2.5px;
+            border-radius: 4px;
+            background: var(--accent-green);
+            transition: all 0.3s;
+        }
+        .ci-bar.miss { background: var(--accent-rose); }
+        .ci-dot {
+            position: absolute;
+            top: 50%;
+            width: 7px;
+            height: 7px;
+            background: #fff;
+            border-radius: 50%;
+            transform: translateY(-50%);
+            box-shadow: 0 1px 2px rgba(0,0,0,0.3);
+        }
+        /* ===== MATRIX ===== */
+        .matrix-grid {
+            display: grid;
+            grid-template-columns: auto 1fr 1fr;
+            gap: 8px;
+            width: 100%;
+            margin: 24px 0;
+        }
+        .matrix-cell {
+            padding: 20px 16px;
+            border-radius: 12px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+        }
+        .matrix-header {
+            background: var(--surface2);
+            color: var(--text);
+            font-weight: 800;
+            font-size: 0.9rem;
+            border: 1px solid var(--border);
+        }
+        .matrix-true { background: #ecfdf5; border: 1px solid var(--accent-green); }
+        .matrix-false { background: #fff1f2; border: 1px solid var(--accent-rose); }
+        /* ===== TRIVIA ===== */
+        .trivia-section {
+            background: #1a1816;
+            border-radius: 18px;
+            padding: 32px;
+            color: #fff;
+            margin: 32px 0;
+            box-shadow: var(--shadow-lg);
+        }
+        .trivia-section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 14px;
+            border-bottom: 1px solid #333;
+        }
+        .trivia-section-header h4 {
+            font-size: 1rem;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .trivia-section-header .score-display {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 700;
+            color: var(--accent-main-light);
+        }
+        .trivia-q-text {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 18px;
+            line-height: 1.5;
+        }
+        .trivia-opts { display: grid; gap: 10px; }
+        .trivia-opt-btn {
+            background: #2a2724;
+            border: 2px solid #3d3835;
+            color: #e5e0db;
+            padding: 14px 18px;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+            font-weight: 600;
+        }
+        .trivia-opt-btn:hover { background: #3d3835; border-color: #555; }
+        .trivia-opt-btn.correct { background: rgba(42,125,95,0.25); border-color: var(--accent-green); color: #6ee7b7; }
+        .trivia-opt-btn.wrong { background: rgba(181,51,74,0.25); border-color: var(--accent-rose); color: #fda4af; }
+        .trivia-feedback {
+            margin-top: 16px;
+            padding: 14px 18px;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            display: none;
+            line-height: 1.6;
+        }
+        .trivia-feedback.show { display: block; animation: fadeSlideIn 0.3s ease; }
+        .trivia-nav {
+            margin-top: 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .trivia-nav-btn {
+            background: var(--accent-main);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            display: none;
+            font-family: inherit;
+            font-size: 0.88rem;
+            transition: background 0.2s;
+        }
+        .trivia-nav-btn:hover { background: var(--accent-main-light); }
+        .trivia-dots {
+            display: flex;
+            gap: 6px;
+        }
+        .trivia-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #444;
+        }
+        .trivia-dot.done { background: var(--accent-green); }
+        .trivia-dot.active { background: var(--accent-main-light); }
+        /* ===== P-VALUE SCALE ===== */
+        .pvalue-container { position: relative; margin: 50px 20px 30px; }
+        .pvalue-track {
+            height: 10px;
+            border-radius: 5px;
+            background: linear-gradient(90deg, var(--accent-green), #e8c547, var(--accent-rose));
+            position: relative;
+        }
+        .pvalue-marker {
+            position: absolute;
+            top: -8px;
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background: var(--ink);
+            border: 3px solid #fff;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            transform: translateX(-50%);
+            transition: left 0.3s ease;
+            z-index: 2;
+        }
+        .pvalue-threshold {
+            position: absolute;
+            top: -40px;
+            transform: translateX(-50%);
+            background: var(--ink);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-weight: 800;
+            font-size: 11px;
+        }
+        .pvalue-threshold::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            border-top: 5px solid var(--ink);
+        }
+        /* ===== LGN Simulation ===== */
+        .lgn-chart-container {
+            position: relative;
+        }
+        /* ===== ANIMATIONS ===== */
+        @keyframes fadeSlideIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        /* ===== SECTION DIVIDER ===== */
+        .section-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.78rem;
+            font-weight: 800;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--text-dim);
+            margin-bottom: 20px;
+        }
+        .section-label::after {
+            content: '';
+            display: block;
+            width: 40px;
+            height: 1.5px;
+            background: var(--border-light);
+        }
+        /* ===== FOOTER ===== */
+        footer {
+            text-align: center;
+            padding: 60px 0 40px;
+            color: var(--text-dim);
+            font-size: 0.85rem;
+            border-top: 1px solid var(--border);
+            margin-top: 60px;
+        }
+        /* ===== PROSE ===== */
+        .prose { font-size: 1rem; color: var(--text-muted); line-height: 1.8; margin-bottom: 20px; }
+        .prose strong { color: var(--ink); font-weight: 700; }
+        .prose em { color: var(--accent-main); font-style: italic; }
+        /* ===== COMPARISON TABLE ===== */
+        .compare-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+            margin: 20px 0;
+        }
+        .compare-table th {
+            background: var(--surface2);
+            padding: 14px 18px;
+            text-align: left;
+            font-size: 0.85rem;
+            font-weight: 800;
+            color: var(--text);
+            border-bottom: 1px solid var(--border);
+        }
+        .compare-table td {
+            padding: 12px 18px;
+            font-size: 0.92rem;
+            color: var(--text-muted);
+            border-bottom: 1px solid var(--border);
+            background: var(--surface);
+        }
+        .compare-table tr:last-child td { border-bottom: none; }
+        /* ===== RESPONSIVE ===== */
+        @media(max-width: 600px) {
+            .hero { padding: 60px 0 50px; }
+            .hero-stats { gap: 24px; flex-wrap: wrap; }
+            .chapter-header { flex-direction: column; gap: 8px; }
+            .chapter-num { text-align: left; min-width: auto; }
+            .matrix-grid { grid-template-columns: 1fr; }
+            .trivia-section { padding: 22px; }
+        }
+    </style>
+</head>
+<body>
+<!-- =============================== HERO =============================== -->
+<div class="hero">
+    <div class="container">
+        <div class="hero-badge"><i class="fa-solid fa-graduation-cap"></i> UNIDAD 2 — Inteligencia de Negocios & Big Data</div>
+        <h1>Analítica Inferencial<br>para la <span class="highlight">Toma de Decisiones</span></h1>
+        <p>Domina el arte de pasar de simples datos muestrales a verdades poblacionales. Estima con intervalos, valida con hipótesis y toma decisiones como un profesional de datos.</p>
+        <div class="hero-stats">
+            <div class="hero-stat">
+                <div class="hero-stat-number">3</div>
+                <div class="hero-stat-label">Temas</div>
+            </div>
+            <div class="hero-stat">
+                <div class="hero-stat-number">5</div>
+                <div class="hero-stat-label">Simuladores</div>
+            </div>
+            <div class="hero-stat">
+                <div class="hero-stat-number">21</div>
+                <div class="hero-stat-label">Preguntas Trivia</div>
+            </div>
+            <div class="hero-stat">
+                <div class="hero-stat-number">10+</div>
+                <div class="hero-stat-label">Bloques de Código</div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- =============================== NAV =============================== -->
+<nav class="nav-bar" id="navBar">
+    <div class="container">
+        <div class="nav-inner">
+            <a href="#t1s1" class="nav-pill active" data-section="t1s1">1.1 Población vs Muestra</a>
+            <a href="#t1s2" class="nav-pill" data-section="t1s2">1.2 Muestreo & Error</a>
+            <a href="#t1s3" class="nav-pill" data-section="t1s3">1.3 Ley Grandes Números</a>
+            <a href="#t1s4" class="nav-pill" data-section="t1s4">1.4 Distribución Muestral</a>
+            <a href="#t1s5" class="nav-pill" data-section="t1s5">1.5 Teorema Límite Central</a>
+            <a href="#t2s1" class="nav-pill" data-section="t2s1">2.1 Intervalos de Confianza</a>
+            <a href="#t2s2" class="nav-pill" data-section="t2s2">2.2 IC en la Práctica</a>
+            <a href="#t3s1" class="nav-pill" data-section="t3s1">3.1 Pruebas de Hipótesis</a>
+            <a href="#t3s2" class="nav-pill" data-section="t3s2">3.2 Valor P & Decisión</a>
+            <a href="#t3s3" class="nav-pill" data-section="t3s3">3.3 Errores Tipo I & II</a>
+            <a href="#t3s4" class="nav-pill" data-section="t3s4">3.4 Pruebas con Python</a>
+            <a href="#final" class="nav-pill" data-section="final">🎮 Trivia Final</a>
+        </div>
+    </div>
+</nav>
+<div class="container">
+<!-- ════════════════════════════════════════════════════════════════════════
+     TEMA 1 — DISTRIBUCIONES MUESTRALES Y EL TEOREMA DEL LÍMITE CENTRAL
+     ════════════════════════════════════════════════════════════════════════ -->
+<!-- ===== 1.1 POBLACIÓN VS MUESTRA ===== -->
+<section class="chapter" id="t1s1">
+    <div class="chapter-header">
+        <div class="chapter-num">01</div>
+        <div class="chapter-info">
+            <div class="chapter-title">Población vs. Muestra</div>
+            <div class="chapter-subtitle">Parámetro vs. Estadístico — La base de toda inferencia</div>
+        </div>
+    </div>
+    <p class="prose">Antes de poder hacer afirmaciones sobre un grupo enorme a partir de un puñado de datos, necesitamos entender la relación entre el <strong>todo</strong> (la población) y la <strong>parte</strong> (la muestra). Este es el punto de partida de toda la analítica inferencial.</p>
+    <!-- ===== ILUSTRACIÓN POBLACIÓN vs MUESTRA ===== -->
+    <div style="display:flex; justify-content:center; margin: 36px 0;">
+        <svg id="popVsMuestra" viewBox="0 0 700 520" style="max-width:660px; width:100%;" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+                <clipPath id="popCircle"><circle cx="300" cy="195" r="175"/></clipPath>
+            </defs>
+            <!-- Background subtle -->
+            <rect width="700" height="520" fill="none"/>
+            <!-- POPULATION CIRCLE -->
+            <circle cx="300" cy="195" r="178" fill="none" stroke="#ddd9d2" stroke-width="2" stroke-dasharray="6,4"/>
+            <circle cx="300" cy="195" r="175" fill="#faf9f7" opacity="0.5"/>
+            <g id="popPeople" clip-path="url(#popCircle)"></g>
+            <!-- Population label -->
+            <text x="105" y="32" font-family="'DM Serif Display', serif" font-size="22" fill="#1a1816" font-weight="400">Población</text>
+            <text x="105" y="52" font-family="'DM Sans', sans-serif" font-size="12" fill="#9b958d" font-weight="600">(Universo completo — N grande)</text>
+            
+            <!-- Parameter labels -->
+            <rect x="355" y="26" width="120" height="30" rx="8" fill="#1d6fa5" opacity="0.1"/>
+            <text x="380" y="46" font-family="'JetBrains Mono', monospace" font-size="13" fill="#1d6fa5" font-weight="600">μ = parámetro</text>
+            <!-- ARROW -->
+            <path d="M370,340 C400,380 440,390 470,400" fill="none" stroke="#c05621" stroke-width="3" stroke-linecap="round"/>
+            <polygon points="465,393 475,403 462,402" fill="#c05621"/>
+            
+            <!-- Arrow label -->
+            <rect x="370" y="370" width="82" height="22" rx="6" fill="#c05621"/>
+            <text x="382" y="385" font-family="'DM Sans', sans-serif" font-size="10" fill="white" font-weight="800" letter-spacing="1">INFERENCIA</text>
+            <!-- SAMPLE CIRCLE -->
+            <circle cx="490" cy="430" r="58" fill="none" stroke="#c05621" stroke-width="2.5" stroke-dasharray="5,4"/>
+            <circle cx="490" cy="430" r="55" fill="rgba(255,250,245,0.7)"/>
+            <!-- Sample people -->
+            <g id="samplePeople"></g>
+            <!-- Sample label -->
+            <text x="560" y="418" font-family="'DM Serif Display', serif" font-size="18" fill="#1a1816" font-weight="400">Muestra</text>
+            <text x="560" y="436" font-family="'DM Sans', sans-serif" font-size="11" fill="#9b958d" font-weight="600">Seleccionada</text>
+            <text x="560" y="450" font-family="'DM Sans', sans-serif" font-size="11" fill="#9b958d" font-weight="600">aleatoriamente (n)</text>
+            
+            <!-- Statistic label -->
+            <rect x="560" y="458" width="110" height="26" rx="8" fill="#c05621" opacity="0.1"/>
+            <text x="577" y="476" font-family="'JetBrains Mono', monospace" font-size="12" fill="#c05621" font-weight="600">x̄ = estadístico</text>
+            <!-- Decorative: magnifying glass hint -->
+            <circle cx="500" cy="340" r="14" fill="none" stroke="#c05621" stroke-width="2" opacity="0.3"/>
+            <line x1="510" y1="350" x2="518" y2="358" stroke="#c05621" stroke-width="2" opacity="0.3" stroke-linecap="round"/>
+        </svg>
+    </div>
+    <script>
+    // Generate population people
+    (function() {
+        const colors = ['#e53935','#1e88e5','#43a047','#fb8c00','#8e24aa','#ffb300','#00acc1','#d81b60','#5e35b1','#f4511e'];
+        const popGroup = document.getElementById('popPeople');
+        const cx = 300, cy = 195, r = 168;
+        
+        for (let i = 0; i < 220; i++) {
+            const angle = Math.random() * Math.PI * 2;
+            const dist = Math.sqrt(Math.random()) * r;
+            const px = cx + dist * Math.cos(angle);
+            const py = cy + dist * Math.sin(angle);
+            const color = colors[Math.floor(Math.random() * colors.length)];
+            const sc = 0.8 + Math.random() * 0.45;
+            
+            const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+            g.setAttribute('transform', `translate(${px},${py}) scale(${sc})`);
+            g.setAttribute('fill', color);
+            g.innerHTML = '<circle cx="0" cy="-5" r="3.5"/><path d="M-4,0 Q-4,6 -3,9 L3,9 Q4,6 4,0 Z"/>';
+            popGroup.appendChild(g);
+        }
+        // Generate sample people (fewer, bigger, highlighted)
+        const sampleGroup = document.getElementById('samplePeople');
+        const sx = 490, sy = 430;
+        const sampleColors = ['#e53935','#1e88e5','#43a047','#fb8c00','#8e24aa','#ffb300'];
+        const samplePositions = [
+            [-20, -18], [14, -20], [-6, 8], [20, 6], [-22, 12], [6, -4]
+        ];
+        
+        samplePositions.forEach((pos, i) => {
+            const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+            g.setAttribute('transform', `translate(${sx + pos[0]},${sy + pos[1]}) scale(1.3)`);
+            g.setAttribute('fill', sampleColors[i]);
+            g.innerHTML = '<circle cx="0" cy="-7" r="5"/><path d="M-5.5,0 Q-5.5,9 -4.5,13 L4.5,13 Q5.5,9 5.5,0 Z"/>';
+            sampleGroup.appendChild(g);
+        });
+    })();
+    </script>
+    <div class="card card-accent">
+        <h3><i class="fa-solid fa-earth-americas" style="color:var(--accent-main)"></i> ¿Por qué no analizamos todo?</h3>
+        <p>En el mundo real es <strong>imposible o carísimo</strong> estudiar a todos los individuos. Si un banco tiene 10 millones de clientes, no va a llamar a cada uno para preguntarle su nivel de satisfacción. En vez de eso, extraemos una <em>muestra aleatoria</em> y usamos sus datos para inferir (adivinar de manera educada) cómo se comporta el universo total.</p>
+    </div>
+    <div class="card-grid" style="margin-top:16px;">
+        <div class="card">
+            <div class="icon-box blue"><i class="fa-solid fa-users"></i></div>
+            <h3>Población (Parámetro)</h3>
+            <p>Es el <strong>universo completo</strong> de individuos o elementos que nos interesa estudiar. La métrica que calculamos sobre la población se llama <strong>Parámetro</strong> y casi siempre es <em>desconocido</em>. Se representa con letras griegas.</p>
+            <div class="formula-box">μ = media poblacional &nbsp;&nbsp;|&nbsp;&nbsp; σ = desviación estándar poblacional</div>
+            <p style="margin-top:8px"><strong>Ejemplo:</strong> El salario promedio <em>real</em> de TODOS los 10 millones de clientes del banco. Es un número fijo que existe, pero que no conocemos.</p>
+        </div>
+        <div class="card">
+            <div class="icon-box amber"><i class="fa-solid fa-user-check"></i></div>
+            <h3>Muestra (Estadístico)</h3>
+            <p>Un <strong>subconjunto representativo</strong> seleccionado de la población. La métrica que calculamos sobre ella se llama <strong>Estadístico</strong> — es lo que obtenemos con Python o Excel. Se representan con letras latinas.</p>
+            <div class="formula-box">x̄ = media muestral &nbsp;&nbsp;|&nbsp;&nbsp; s = desviación estándar muestral</div>
+            <p style="margin-top:8px"><strong>Ejemplo:</strong> El salario promedio de los 5,000 clientes que seleccionamos al azar. Es nuestro mejor estimado del parámetro.</p>
+        </div>
+    </div>
+    <div class="real-world">
+        <div class="real-world-header">
+            <span class="badge">Mundo Real</span>
+            <h4>Encuestas Electorales</h4>
+        </div>
+        <p>Cuando ves en las noticias: <em>"El candidato A tiene el 52% de intención de voto con un margen de error de ±3%"</em>, ¡eso es inferencia estadística en acción! La encuestadora no habló con los 39 millones de votantes colombianos (la <strong>población</strong>), sino con una <strong>muestra</strong> de ~1,200 personas. El 52% es un <strong>estadístico</strong>, y lo usan para estimar el <strong>parámetro</strong> (el verdadero porcentaje de toda la población).</p>
+    </div>
+    <div class="real-world">
+        <div class="real-world-header">
+            <span class="badge">Mundo Real</span>
+            <h4>Control de Calidad en Fábricas</h4>
+        </div>
+        <p>Una fábrica de tornillos produce 500,000 unidades al día. ¿Van a revisar cada uno? Imposible. En su lugar, toman una <strong>muestra</strong> de 200 tornillos al azar cada hora y miden su diámetro. Si el promedio muestral (el <strong>estadístico</strong>) se desvía demasiado del diámetro ideal (el <strong>parámetro</strong>), detienen la producción.</p>
+    </div>
+    <table class="compare-table">
+        <thead>
+            <tr>
+                <th>Concepto</th>
+                <th>Población</th>
+                <th>Muestra</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td><strong>Definición</strong></td><td>Universo completo de interés</td><td>Subconjunto representativo</td></tr>
+            <tr><td><strong>Medida</strong></td><td>Parámetro (fijo, desconocido)</td><td>Estadístico (variable, conocido)</td></tr>
+            <tr><td><strong>Notación media</strong></td><td>μ (letra griega)</td><td>x̄ (letra latina)</td></tr>
+            <tr><td><strong>Notación desviación</strong></td><td>σ (sigma)</td><td>s</td></tr>
+            <tr><td><strong>¿Se puede calcular directamente?</strong></td><td>Casi nunca (muy costoso)</td><td>Sí — es lo que hacemos</td></tr>
+        </tbody>
+    </table>
+    <!-- CÓDIGO PYTHON -->
+    <div class="section-label">Código Python</div>
+    <div class="code-block">
+        <div class="code-header"><span>python — población_vs_muestra.py</span><button class="code-copy-btn" onclick="copyCode(this)">Copiar</button></div>
+        <div class="code-body"><span class="keyword">import</span> <span class="variable">pandas</span> <span class="keyword">as</span> <span class="variable">pd</span>
+<span class="keyword">import</span> <span class="variable">numpy</span> <span class="keyword">as</span> <span class="variable">np</span>
+<span class="comment"># Cargar el dataset completo (nuestra "población")</span>
+<span class="variable">df</span> = <span class="variable">pd</span>.<span class="function">read_csv</span>(<span class="string">'credit_risk_data.csv'</span>)
+<span class="comment"># Databricks: df = spark.table('credit_risk_data').toPandas()</span>
+<span class="comment"># 1. PARÁMETRO: Media poblacional (μ)</span>
+<span class="variable">mu</span> = <span class="variable">df</span>[<span class="string">'puntaje_credito'</span>].<span class="function">mean</span>()
+<span class="function">print</span>(<span class="string">f"Media POBLACIONAL (μ): <span class="variable">{mu:.2f}</span>"</span>)
+<span class="comment"># 2. MUESTRA: Extraer 500 clientes al azar</span>
+<span class="variable">muestra</span> = <span class="variable">df</span>.<span class="function">sample</span>(<span class="variable">n</span>=<span class="number">500</span>, <span class="variable">random_state</span>=<span class="number">42</span>)
+<span class="comment"># 3. ESTADÍSTICO: Media muestral (x̄)</span>
+<span class="variable">x_bar</span> = <span class="variable">muestra</span>[<span class="string">'puntaje_credito'</span>].<span class="function">mean</span>()
+<span class="function">print</span>(<span class="string">f"Media MUESTRAL  (x̄): <span class="variable">{x_bar:.2f}</span>"</span>)
+<span class="comment"># 4. ERROR DE MUESTREO</span>
+<span class="variable">error</span> = <span class="variable">x_bar</span> - <span class="variable">mu</span>
+<span class="function">print</span>(<span class="string">f"Error de muestreo: <span class="variable">{error:.2f}</span>"</span>)
+<span class="comment"># 💡 Ejecuta varias veces cambiando random_state y verás</span>
+<span class="comment">#    que x̄ cambia, pero siempre está "cerca" de μ</span></div>
+    </div>
+    <!-- TRIVIA SECCIÓN 1.1 -->
+    <div class="trivia-section" id="trivia-t1s1">
+        <div class="trivia-section-header">
+            <h4><i class="fa-solid fa-brain"></i> Mini-Trivia: Población vs Muestra</h4>
+            <span class="score-display" id="trivia-t1s1-score">0/3</span>
+        </div>
+        <div class="trivia-q-text" id="trivia-t1s1-q">Cargando...</div>
+        <div class="trivia-opts" id="trivia-t1s1-opts"></div>
+        <div class="trivia-feedback" id="trivia-t1s1-fb"></div>
+        <div class="trivia-nav">
+            <div class="trivia-dots" id="trivia-t1s1-dots"></div>
+            <button class="trivia-nav-btn" id="trivia-t1s1-next" onclick="triviaNext('t1s1')">Siguiente →</button>
+        </div>
+    </div>
+</section>
+<!-- ===== 1.2 MUESTREO ALEATORIO Y ERROR DE MUESTREO ===== -->
+<section class="chapter" id="t1s2">
+    <div class="chapter-header">
+        <div class="chapter-num">02</div>
+        <div class="chapter-info">
+            <div class="chapter-title">Muestreo Aleatorio y Error de Muestreo</div>
+            <div class="chapter-subtitle">La diferencia inevitable entre la muestra y la realidad</div>
+        </div>
+    </div>
+    <p class="prose">Como vimos en el código, la media de la muestra <strong>no es exactamente igual</strong> a la media de la población. ¿Es un error? No es un error humano — es algo completamente natural llamado <em>error de muestreo</em>.</p>
+    <div class="card-grid">
+        <div class="card card-accent blue">
+            <div class="icon-box blue"><i class="fa-solid fa-shuffle"></i></div>
+            <h3>Muestreo Aleatorio</h3>
+            <p>Es la técnica de seleccionar una muestra donde <strong>cada miembro de la población tiene la misma probabilidad de ser elegido</strong>. Es fundamental para garantizar que nuestra muestra no esté sesgada.</p>
+            <div class="callout danger" style="margin-top:12px;">
+                <div class="callout-icon">⚠️</div>
+                <div>
+                    <h4>Sesgo de selección</h4>
+                    <p>Si solo encuestamos a clientes que vienen a la sucursal bancaria del barrio rico, nuestras conclusiones sobre <em>todos</em> los clientes serán completamente sesgadas.</p>
+                </div>
+            </div>
+        </div>
+        <div class="card card-accent amber">
+            <div class="icon-box amber"><i class="fa-solid fa-scale-unbalanced"></i></div>
+            <h3>Error de Muestreo</h3>
+            <p>Es la <strong>diferencia inevitable</strong> entre el estadístico (x̄) y el parámetro (μ). No es un error humano, sino una consecuencia de la variabilidad natural. Si tomas otra muestra de 500 clientes, obtendrás una media <em>ligeramente diferente</em>.</p>
+            <div class="formula-box">Error de Muestreo = x̄ − μ</div>
+        </div>
+    </div>
+    <div class="callout tip">
+        <div class="callout-icon">🤔</div>
+        <div>
+            <h4>Pero espera… si no conozco μ, ¿cómo calculo ese error?</h4>
+            <p>¡Exacto! En la vida real <strong>nunca conocemos μ</strong> — si lo conociéramos, no necesitaríamos tomar muestras. Nosotros podemos calcularlo aquí porque estamos tratando nuestro dataset completo (credit_risk_data.csv) como si fuera la "población" para fines de aprendizaje. En un caso real, el error de muestreo <strong>existe pero es desconocido</strong>. Precisamente por eso se inventaron los <em>intervalos de confianza</em> (que veremos más adelante): son la herramienta que nos permite <strong>estimar qué tan grande podría ser ese error</strong>, sin necesidad de conocer μ.</p>
+        </div>
+    </div>
+    <div class="real-world">
+        <div class="real-world-header">
+            <span class="badge">Mundo Real</span>
+            <h4>Netflix y las Pruebas A/B</h4>
+        </div>
+        <p>Cuando Netflix quiere saber si un nuevo diseño de portada genera más clics, <strong>no</strong> lo muestra a sus 260 millones de usuarios. Le muestra la portada nueva a una muestra aleatoria (ej. 50,000 usuarios) y la vieja a otra muestra similar. Compara las tasas de clic. La diferencia entre muestras incluye un inevitable error de muestreo — por eso Netflix necesita herramientas estadísticas (como las que veremos más adelante) para determinar si la diferencia es "real" o simplemente azar.</p>
+    </div>
+    <div class="code-block">
+        <div class="code-header"><span>python — múltiples_muestras.py</span><button class="code-copy-btn" onclick="copyCode(this)">Copiar</button></div>
+        <div class="code-body"><span class="comment"># Demostrar que cada muestra da un estadístico diferente</span>
+<span class="keyword">import</span> <span class="variable">pandas</span> <span class="keyword">as</span> <span class="variable">pd</span>
+<span class="keyword">import</span> <span class="variable">numpy</span> <span class="keyword">as</span> <span class="variable">np</span>
+<span class="keyword">import</span> <span class="variable">matplotlib.pyplot</span> <span class="keyword">as</span> <span class="variable">plt</span>
+<span class="variable">df</span> = <span class="variable">pd</span>.<span class="function">read_csv</span>(<span class="string">'credit_risk_data.csv'</span>)
+<span class="comment"># Databricks: df = spark.table('credit_risk_data').toPandas()</span>
+<span class="variable">mu</span> = <span class="variable">df</span>[<span class="string">'puntaje_credito'</span>].<span class="function">mean</span>()
+<span class="comment"># Tomar 10 muestras diferentes de n=200</span>
+<span class="variable">medias</span> = []
+<span class="function">print</span>(<span class="string">f"Parámetro real (μ): <span class="variable">{mu:.2f}</span>"</span>)
+<span class="function">print</span>(<span class="string">"-" * 45</span>)
+<span class="keyword">for</span> <span class="variable">i</span> <span class="keyword">in</span> <span class="function">range</span>(<span class="number">10</span>):
+    <span class="variable">x_bar</span> = <span class="variable">df</span>[<span class="string">'puntaje_credito'</span>].<span class="function">sample</span>(<span class="variable">n</span>=<span class="number">200</span>).<span class="function">mean</span>()
+    <span class="variable">medias</span>.<span class="function">append</span>(<span class="variable">x_bar</span>)
+    <span class="variable">error</span> = <span class="variable">x_bar</span> - <span class="variable">mu</span>
+    <span class="function">print</span>(<span class="string">f"Muestra {i+1:2d}: x̄ = {x_bar:.2f}  |  Error = {error:+.2f}"</span>)
+<span class="comment"># Visualizar: cada punto es una media muestral</span>
+<span class="comment"># La línea roja es μ. Observa cómo los puntos "orbitan" alrededor.</span>
+<span class="variable">plt</span>.<span class="function">figure</span>(<span class="variable">figsize</span>=(<span class="number">10</span>, <span class="number">3</span>))
+<span class="variable">plt</span>.<span class="function">scatter</span>(<span class="variable">medias</span>, <span class="function">range</span>(<span class="number">1</span>, <span class="number">11</span>), <span class="variable">color</span>=<span class="string">'#c05621'</span>, <span class="variable">s</span>=<span class="number">100</span>, <span class="variable">zorder</span>=<span class="number">3</span>)
+<span class="variable">plt</span>.<span class="function">axvline</span>(<span class="variable">x</span>=<span class="variable">mu</span>, <span class="variable">color</span>=<span class="string">'red'</span>, <span class="variable">linestyle</span>=<span class="string">'--'</span>, <span class="variable">linewidth</span>=<span class="number">2</span>,
+            <span class="variable">label</span>=<span class="string">f'μ real = {mu:.2f}'</span>)
+<span class="comment"># Dibujar líneas horizontales del error de cada muestra</span>
+<span class="keyword">for</span> <span class="variable">i</span>, <span class="variable">m</span> <span class="keyword">in</span> <span class="function">enumerate</span>(<span class="variable">medias</span>):
+    <span class="variable">color</span> = <span class="string">'#2a7d5f'</span> <span class="keyword">if</span> <span class="function">abs</span>(<span class="variable">m</span> - <span class="variable">mu</span>) < <span class="number">5</span> <span class="keyword">else</span> <span class="string">'#b5334a'</span>
+    <span class="variable">plt</span>.<span class="function">hlines</span>(<span class="variable">i</span>+<span class="number">1</span>, <span class="variable">mu</span>, <span class="variable">m</span>, <span class="variable">colors</span>=<span class="variable">color</span>, <span class="variable">linewidth</span>=<span class="number">2</span>, <span class="variable">alpha</span>=<span class="number">0.6</span>)
+<span class="variable">plt</span>.<span class="function">xlabel</span>(<span class="string">'Puntaje de crédito promedio'</span>)
+<span class="variable">plt</span>.<span class="function">ylabel</span>(<span class="string">'# de muestra'</span>)
+<span class="variable">plt</span>.<span class="function">title</span>(<span class="string">'Cada muestra da un x̄ diferente (los errores son las líneas)'</span>)
+<span class="variable">plt</span>.<span class="function">legend</span>()
+<span class="variable">plt</span>.<span class="function">grid</span>(<span class="variable">axis</span>=<span class="string">'x'</span>, <span class="variable">alpha</span>=<span class="number">0.3</span>)
+<span class="variable">plt</span>.<span class="function">tight_layout</span>()
+<span class="variable">plt</span>.<span class="function">show</span>()</div>
+    </div>
+    <!-- TRIVIA 1.2 -->
+    <div class="trivia-section" id="trivia-t1s2">
+        <div class="trivia-section-header">
+            <h4><i class="fa-solid fa-brain"></i> Mini-Trivia: Muestreo y Error</h4>
+            <span class="score-display" id="trivia-t1s2-score">0/3</span>
+        </div>
+        <div class="trivia-q-text" id="trivia-t1s2-q">Cargando...</div>
+        <div class="trivia-opts" id="trivia-t1s2-opts"></div>
+        <div class="trivia-feedback" id="trivia-t1s2-fb"></div>
+        <div class="trivia-nav">
+            <div class="trivia-dots" id="trivia-t1s2-dots"></div>
+            <button class="trivia-nav-btn" id="trivia-t1s2-next" onclick="triviaNext('t1s2')">Siguiente →</button>
+        </div>
+    </div>
+</section>
+<!-- ===== 1.3 LEY DE LOS GRANDES NÚMEROS ===== -->
+<section class="chapter" id="t1s3">
+    <div class="chapter-header">
+        <div class="chapter-num">03</div>
+        <div class="chapter-info">
+            <div class="chapter-title">La Ley de los Grandes Números (LGN)</div>
+            <div class="chapter-subtitle">La estabilidad que surge del caos</div>
+        </div>
+    </div>
+    <div class="card card-accent amber">
+        <h3><i class="fa-solid fa-scale-balanced" style="color:var(--accent-amber)"></i> El Principio de Convergencia</h3>
+        <p>Aunque un evento individual es impredecible (¿sale 1 o 6 al lanzar un dado?), el comportamiento promedio de una multitud de eventos se vuelve <strong>sorprendentemente predecible</strong>. La LGN dice que a medida que el tamaño de tu muestra (<em>n</em>) crece, el valor de tu estadístico (x̄) se acerca cada vez más al parámetro verdadero (μ).</p>
+    </div>
+    <div class="callout info">
+        <div class="callout-icon">☕</div>
+        <div>
+            <h4>En palabras simples: pocos datos = no te fíes. Muchos datos = puedes confiar.</h4>
+            <p>Imagina que le preguntas a <strong>3 personas</strong> en la calle si les gusta el café. Puede que las 3 digan que no. ¿Eso significa que a nadie le gusta el café? No — simplemente tuviste mala suerte con esas 3. Pero si le preguntas a <strong>10,000 personas</strong>, ya no hay "mala suerte" que valga. Los que dicen sí y los que dicen no se van acomodando, y el porcentaje que obtienes se acerca mucho a la realidad de toda la población.</p>
+            <p style="margin-top:8px;">En términos prácticos: la LGN es la razón por la que <strong>más datos = mejor estimación</strong>. Te garantiza que si tomas una muestra lo suficientemente grande, tu estadístico (x̄) va a estar muy cerquita del parámetro real (μ).</p>
+        </div>
+    </div>
+    <div class="callout tip">
+        <div class="callout-icon">💡</div>
+        <div>
+            <h4>El "Efecto de Cancelación" del Azar</h4>
+            <p>Con una muestra enorme, los resultados extremos o raros se diluyen entre la gran cantidad de valores comunes. Una <strong>muestra pequeña</strong> es un bote en una tormenta (muy inestable). Una <strong>muestra grande</strong> es un transatlántico (muy estable).</p>
+        </div>
+    </div>
+    <div class="card-grid-3" style="margin: 20px 0;">
+        <div class="real-world" style="margin:0;">
+            <div class="real-world-header">
+                <span class="badge">Casinos</span>
+            </div>
+            <p>Un casino no sabe si TÚ ganarás esta noche, pero sabe que en promedio gana $0.05 por cada $1 apostado. Con miles de apuestas diarias, la LGN garantiza su ganancia.</p>
+        </div>
+        <div class="real-world" style="margin:0;">
+            <div class="real-world-header">
+                <span class="badge">Seguros</span>
+            </div>
+            <p>Una aseguradora no sabe si TÚ chocarás tu carro, pero sabe con precisión qué porcentaje de sus millones de clientes lo hará. Eso les permite calcular primas rentables.</p>
+        </div>
+        <div class="real-world" style="margin:0;">
+            <div class="real-world-header">
+                <span class="badge">Marketing</span>
+            </div>
+            <p>Si envías un email a 50 personas, la tasa de apertura puede ser 10% o 60% por azar. Pero si lo envías a 50,000, la tasa será predeciblemente estable (~25%).</p>
+        </div>
+    </div>
+    <!-- Simulación LGN - REDISEÑADA -->
+    <div class="sim-panel">
+        <div class="sim-header">
+            <div class="sim-icon" style="background:var(--accent-amber-dim);color:var(--accent-amber);"><i class="fa-solid fa-dice"></i></div>
+            <div class="sim-header-text">
+                <h3>Simulador Interactivo: Ley de los Grandes Números</h3>
+                <p>Lanza un dado, anota el resultado y mira cómo el promedio acumulado de todos tus lanzamientos converge a 3.5.</p>
+            </div>
+        </div>
+        <!-- Explicación visual del 3.5 -->
+        <div style="padding: 20px 28px 14px; background: #fefbf6; border-bottom: 1px solid var(--border);">
+            <div style="font-size:0.95rem; color:var(--text-muted); line-height:1.75;">
+                <strong style="color:var(--ink); font-size:1rem;">🎲 ¿Qué estamos haciendo aquí?</strong><br>
+                Imagina que lanzas un dado y anotas el resultado: 4. Lanzas de nuevo: 2. Otra vez: 6. Otra: 1...<br>
+                Después de cada lanzamiento, calculas el <strong>promedio de TODOS los resultados que llevas hasta ahora</strong>.<br><br>
+                
+                <strong style="color:var(--ink);">¿Hacia dónde debería converger ese promedio?</strong><br>
+                Un dado justo tiene 6 caras con igual probabilidad. Si lo lanzaras infinitas veces, saldrían la misma cantidad de 1s, 2s, 3s, 4s, 5s y 6s. El promedio de todos esos resultados sería:<br>
+                <span style="display:inline-block; margin:8px 0; font-family:'JetBrains Mono',monospace; background:#fff; padding:6px 14px; border-radius:8px; border:1px solid var(--border);">
+                    (1 + 2 + 3 + 4 + 5 + 6) ÷ 6 = <strong style="color:var(--accent-main); font-size:1.1em;">3.5</strong>
+                </span><br>
+                Esto se llama el <strong>valor esperado</strong>: el promedio teórico al que converge tu promedio real si lanzas suficientes veces.<br><br>
+                
+                <strong style="color:var(--ink);">¿Qué demuestra la LGN?</strong> Que con <strong style="color:var(--accent-rose);">pocos lanzamientos</strong> (5, 10) tu promedio puede ser cualquier cosa (2.3, 4.8...). Pero con <strong style="color:var(--accent-green);">muchos lanzamientos</strong> (500, 1000) se estabiliza inevitablemente en 3.5. ¡Pruébalo tú mismo!
+            </div>
+        </div>
+        <div class="sim-body">
+            <div class="sim-controls">
+                <!-- Últimos dados lanzados -->
+                <div style="background:var(--surface2); border-radius:10px; padding:12px; text-align:center; border:1px solid var(--border);">
+                    <div style="font-size:0.72rem; font-weight:800; text-transform:uppercase; letter-spacing:1px; color:var(--text-dim); margin-bottom:8px;">Últimos lanzamientos</div>
+                    <div id="lgnDiceVisual" style="display:flex; gap:4px; flex-wrap:wrap; justify-content:center; min-height:36px; align-items:center;">
+                        <span style="color:var(--text-dim); font-size:0.82rem;">Presiona un botón →</span>
+                    </div>
+                </div>
+                <button class="sim-btn primary" style="background:var(--accent-amber);border-color:var(--accent-amber);" onclick="runLGN(1)"><span>🎲 Lanzar 1 dado</span></button>
+                <button class="sim-btn primary" style="background:var(--accent-amber);border-color:var(--accent-amber);opacity:0.9;" onclick="runLGN(10)"><span>🎲 Lanzar 10 dados</span></button>
+                <button class="sim-btn" onclick="runLGN(100)"><span>Lanzar 100</span><span>🚀</span></button>
+                <button class="sim-btn" onclick="runLGN(1000)"><span>Lanzar 1,000</span><span>🔥</span></button>
+                <button class="sim-btn" onclick="resetLGN()">🗑️ Reiniciar</button>
+                <!-- Stats -->
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:8px;">
+                    <div class="stat-box">
+                        <div class="stat-box-label" style="color:var(--accent-amber);">Lanzamientos</div>
+                        <div class="stat-box-value" id="lgnCount">0</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-box-label" style="color:var(--accent-blue);">Promedio acumulado</div>
+                        <div class="stat-box-value" id="lgnMean">—</div>
+                    </div>
+                </div>
+                <!-- Distance indicator -->
+                <div id="lgnDistBox" style="background:var(--surface3); border-radius:8px; padding:10px; text-align:center; display:none;">
+                    <div style="font-size:0.72rem; font-weight:800; text-transform:uppercase; letter-spacing:1px; color:var(--text-dim);">Distancia al valor esperado (3.5)</div>
+                    <div id="lgnDist" style="font-size:1.2rem; font-family:'JetBrains Mono',monospace; font-weight:700;"></div>
+                </div>
+            </div>
+            <div class="chart-wrap">
+                <canvas id="chartLGN"></canvas>
+                <div style="position:absolute; bottom:12px; right:16px; background:rgba(255,255,255,0.92); padding:8px 12px; border-radius:8px; border:1px solid var(--border); font-size:0.78rem; line-height:1.5;">
+                    <span style="color:#b5334a;">— —</span> Valor esperado (3.5)<br>
+                    <span style="color:#c05621;">——</span> Tu promedio acumulado
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="code-block">
+        <div class="code-header"><span>python — ley_grandes_numeros.py</span><button class="code-copy-btn" onclick="copyCode(this)">Copiar</button></div>
+        <div class="code-body"><span class="keyword">import</span> <span class="variable">numpy</span> <span class="keyword">as</span> <span class="variable">np</span>
+<span class="keyword">import</span> <span class="variable">matplotlib.pyplot</span> <span class="keyword">as</span> <span class="variable">plt</span>
+<span class="comment"># Simulación de la LGN con lanzamientos de dado</span>
+<span class="variable">np</span>.<span class="variable">random</span>.<span class="function">seed</span>(<span class="number">42</span>)
+<span class="variable">n_lanzamientos</span> = <span class="number">5000</span>
+<span class="variable">dados</span> = <span class="variable">np</span>.<span class="variable">random</span>.<span class="function">randint</span>(<span class="number">1</span>, <span class="number">7</span>, <span class="variable">size</span>=<span class="variable">n_lanzamientos</span>)
+<span class="comment"># Calcular el promedio acumulativo</span>
+<span class="variable">promedios_acumulados</span> = <span class="variable">np</span>.<span class="function">cumsum</span>(<span class="variable">dados</span>) / <span class="variable">np</span>.<span class="function">arange</span>(<span class="number">1</span>, <span class="variable">n_lanzamientos</span> + <span class="number">1</span>)
+<span class="comment"># Graficar la convergencia</span>
+<span class="variable">plt</span>.<span class="function">figure</span>(<span class="variable">figsize</span>=(<span class="number">12</span>, <span class="number">5</span>))
+<span class="variable">plt</span>.<span class="function">plot</span>(<span class="variable">promedios_acumulados</span>, <span class="variable">color</span>=<span class="string">'#c05621'</span>, <span class="variable">linewidth</span>=<span class="number">1.5</span>)
+<span class="variable">plt</span>.<span class="function">axhline</span>(<span class="variable">y</span>=<span class="number">3.5</span>, <span class="variable">color</span>=<span class="string">'red'</span>, <span class="variable">linestyle</span>=<span class="string">'--'</span>,
+            <span class="variable">label</span>=<span class="string">'Media teórica (μ=3.5)'</span>, <span class="variable">linewidth</span>=<span class="number">2</span>)
+<span class="variable">plt</span>.<span class="function">fill_between</span>(<span class="function">range</span>(<span class="variable">n_lanzamientos</span>), <span class="number">3.4</span>, <span class="number">3.6</span>, <span class="variable">alpha</span>=<span class="number">0.1</span>, <span class="variable">color</span>=<span class="string">'red'</span>)
+<span class="variable">plt</span>.<span class="function">title</span>(<span class="string">'Ley de los Grandes Números: El promedio converge a 3.5'</span>)
+<span class="variable">plt</span>.<span class="function">xlabel</span>(<span class="string">'Número de lanzamientos'</span>)
+<span class="variable">plt</span>.<span class="function">ylabel</span>(<span class="string">'Promedio acumulado'</span>)
+<span class="variable">plt</span>.<span class="function">legend</span>()
+<span class="variable">plt</span>.<span class="function">grid</span>(<span class="keyword">True</span>, <span class="variable">alpha</span>=<span class="number">0.3</span>)
+<span class="variable">plt</span>.<span class="function">show</span>()
+<span class="comment"># Ahora con datos reales: convergencia del puntaje de crédito</span>
+<span class="keyword">import</span> <span class="variable">pandas</span> <span class="keyword">as</span> <span class="variable">pd</span>
+<span class="variable">df</span> = <span class="variable">pd</span>.<span class="function">read_csv</span>(<span class="string">'credit_risk_data.csv'</span>)
+<span class="comment"># Databricks: df = spark.table('credit_risk_data').toPandas()</span>
+<span class="variable">mu</span> = <span class="variable">df</span>[<span class="string">'puntaje_credito'</span>].<span class="function">mean</span>()
+<span class="variable">tamaños</span> = [<span class="number">10</span>, <span class="number">30</span>, <span class="number">50</span>, <span class="number">100</span>, <span class="number">300</span>, <span class="number">500</span>, <span class="number">1000</span>, <span class="number">5000</span>, <span class="number">10000</span>, <span class="number">50000</span>]
+<span class="variable">medias</span> = [<span class="variable">df</span>[<span class="string">'puntaje_credito'</span>].<span class="function">sample</span>(<span class="variable">n</span>=<span class="variable">n</span>).<span class="function">mean</span>() <span class="keyword">for</span> <span class="variable">n</span> <span class="keyword">in</span> <span class="variable">tamaños</span>]
+<span class="variable">plt</span>.<span class="function">figure</span>(<span class="variable">figsize</span>=(<span class="number">10</span>, <span class="number">5</span>))
+<span class="variable">plt</span>.<span class="function">plot</span>(<span class="variable">tamaños</span>, <span class="variable">medias</span>, <span class="string">'o-'</span>, <span class="variable">color</span>=<span class="string">'#1d6fa5'</span>)
+<span class="variable">plt</span>.<span class="function">axhline</span>(<span class="variable">y</span>=<span class="variable">mu</span>, <span class="variable">color</span>=<span class="string">'red'</span>, <span class="variable">linestyle</span>=<span class="string">'--'</span>, <span class="variable">label</span>=<span class="string">f'μ = {mu:.2f}'</span>)
+<span class="variable">plt</span>.<span class="function">xscale</span>(<span class="string">'log'</span>)
+<span class="variable">plt</span>.<span class="function">title</span>(<span class="string">'LGN: La media muestral converge a μ'</span>)
+<span class="variable">plt</span>.<span class="function">xlabel</span>(<span class="string">'Tamaño de muestra (n) — escala log'</span>)
+<span class="variable">plt</span>.<span class="function">ylabel</span>(<span class="string">'Media muestral (x̄)'</span>)
+<span class="variable">plt</span>.<span class="function">legend</span>(); <span class="variable">plt</span>.<span class="function">grid</span>(<span class="keyword">True</span>, <span class="variable">alpha</span>=<span class="number">0.3</span>); <span class="variable">plt</span>.<span class="function">show</span>()</div>
+    </div>
+    <div class="trivia-section" id="trivia-t1s3">
+        <div class="trivia-section-header">
+            <h4><i class="fa-solid fa-brain"></i> Mini-Trivia: Ley de los Grandes Números</h4>
+            <span class="score-display" id="trivia-t1s3-score">0/3</span>
+        </div>
+        <div class="trivia-q-text" id="trivia-t1s3-q">Cargando...</div>
+        <div class="trivia-opts" id="trivia-t1s3-opts"></div>
+        <div class="trivia-feedback" id="trivia-t1s3-fb"></div>
+        <div class="trivia-nav">
+            <div class="trivia-dots" id="trivia-t1s3-dots"></div>
+            <button class="trivia-nav-btn" id="trivia-t1s3-next" onclick="triviaNext('t1s3')">Siguiente →</button>
+        </div>
+    </div>
+</section>
+<!-- ===== 1.4 DISTRIBUCIÓN MUESTRAL ===== -->
+<section class="chapter" id="t1s4">
+    <div class="chapter-header">
+        <div class="chapter-num">04</div>
+        <div class="chapter-info">
+            <div class="chapter-title">La Distribución Muestral</div>
+            <div class="chapter-subtitle">La "Huella Digital del Azar" — La idea más importante de la inferencia</div>
+        </div>
+    </div>
+    <p class="prose">La LGN nos dijo que muestras grandes son mejores. Pero en la vida real a menudo estamos "atrapados" con <strong>una sola muestra</strong>. La pregunta crucial es: si tomara <em>otra</em> muestra, ¿qué tan diferente sería su resultado?</p>
+    <div class="card card-accent purple">
+        <h3><i class="fa-solid fa-industry" style="color:var(--accent-purple)"></i> El Experimento Mental: La "Fábrica de Muestras"</h3>
+        <p>Imagina una máquina que hace esto una y otra vez:</p>
+        <p>1️⃣ <strong>Extraer:</strong> Toma una muestra aleatoria de tamaño <em>n</em> (ej. 100 clientes).</p>
+        <p>2️⃣ <strong>Calcular:</strong> Calcula la media de puntaje de crédito de esa muestra. Anota el resultado.</p>
+        <p>3️⃣ <strong>Repetir:</strong> Devuelve esos clientes y repite el proceso 2,000 veces.</p>
+        <p style="margin-top:10px;">Al final tenemos <strong>2,000 medias muestrales</strong> diferentes. Si hacemos un histograma de esas medias, eso es la <em>Distribución Muestral de la Media</em>.</p>
+    </div>
+    <div class="callout info">
+        <div class="callout-icon">🗺️</div>
+        <div>
+            <h4>¿Por qué importa?</h4>
+            <p>La distribución muestral es el <strong>mapa</strong> que nos permite ubicar nuestra única muestra en el universo de todas las muestras posibles. Nos dice qué valores de x̄ son comunes, cuáles son raros y cómo se agrupan alrededor de la verdadera media μ.</p>
+        </div>
+    </div>
+    <div class="code-block">
+        <div class="code-header"><span>python — distribucion_muestral.py</span><button class="code-copy-btn" onclick="copyCode(this)">Copiar</button></div>
+        <div class="code-body"><span class="keyword">import</span> <span class="variable">pandas</span> <span class="keyword">as</span> <span class="variable">pd</span>, <span class="variable">numpy</span> <span class="keyword">as</span> <span class="variable">np</span>, <span class="variable">matplotlib.pyplot</span> <span class="keyword">as</span> <span class="variable">plt</span>
+<span class="keyword">import</span> <span class="variable">seaborn</span> <span class="keyword">as</span> <span class="variable">sns</span>
+<span class="variable">df</span> = <span class="variable">pd</span>.<span class="function">read_csv</span>(<span class="string">'credit_risk_data.csv'</span>)
+<span class="comment"># Databricks: df = spark.table('credit_risk_data').toPandas()</span>
+<span class="variable">mu</span> = <span class="variable">df</span>[<span class="string">'puntaje_credito'</span>].<span class="function">mean</span>()
+<span class="comment"># La "Fábrica de Muestras": tomar 2000 muestras de n=100</span>
+<span class="variable">n_muestras</span> = <span class="number">2000</span>
+<span class="variable">n_tamaño</span> = <span class="number">100</span>
+<span class="variable">medias</span> = [<span class="variable">df</span>[<span class="string">'puntaje_credito'</span>].<span class="function">sample</span>(<span class="variable">n</span>=<span class="variable">n_tamaño</span>).<span class="function">mean</span>()
+           <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="function">range</span>(<span class="variable">n_muestras</span>)]
+<span class="comment"># Visualizar la distribución muestral</span>
+<span class="variable">fig</span>, <span class="variable">axes</span> = <span class="variable">plt</span>.<span class="function">subplots</span>(<span class="number">1</span>, <span class="number">2</span>, <span class="variable">figsize</span>=(<span class="number">14</span>, <span class="number">5</span>))
+<span class="comment"># Izquierda: Distribución de la POBLACIÓN (puede ser rara)</span>
+<span class="variable">axes</span>[<span class="number">0</span>].<span class="function">hist</span>(<span class="variable">df</span>[<span class="string">'puntaje_credito'</span>], <span class="variable">bins</span>=<span class="number">50</span>, <span class="variable">color</span>=<span class="string">'#c05621'</span>, <span class="variable">alpha</span>=<span class="number">0.7</span>)
+<span class="variable">axes</span>[<span class="number">0</span>].<span class="function">set_title</span>(<span class="string">'Distribución de la POBLACIÓN'</span>)
+<span class="variable">axes</span>[<span class="number">0</span>].<span class="function">set_xlabel</span>(<span class="string">'Puntaje de Crédito'</span>)
+<span class="comment"># Derecha: Distribución MUESTRAL (¡campana!)</span>
+<span class="variable">axes</span>[<span class="number">1</span>].<span class="function">hist</span>(<span class="variable">medias</span>, <span class="variable">bins</span>=<span class="number">40</span>, <span class="variable">color</span>=<span class="string">'#6d4aaa'</span>, <span class="variable">alpha</span>=<span class="number">0.7</span>, <span class="variable">edgecolor</span>=<span class="string">'white'</span>)
+<span class="variable">axes</span>[<span class="number">1</span>].<span class="function">axvline</span>(<span class="variable">mu</span>, <span class="variable">color</span>=<span class="string">'red'</span>, <span class="variable">linestyle</span>=<span class="string">'--'</span>, <span class="variable">label</span>=<span class="string">f'μ = {mu:.2f}'</span>)
+<span class="variable">axes</span>[<span class="number">1</span>].<span class="function">set_title</span>(<span class="string">f'Distribución MUESTRAL de x̄ (n={n_tamaño})'</span>)
+<span class="variable">axes</span>[<span class="number">1</span>].<span class="function">set_xlabel</span>(<span class="string">'Media muestral (x̄)'</span>)
+<span class="variable">axes</span>[<span class="number">1</span>].<span class="function">legend</span>()
+<span class="variable">plt</span>.<span class="function">tight_layout</span>(); <span class="variable">plt</span>.<span class="function">show</span>()
+<span class="function">print</span>(<span class="string">f"Media de las 2000 medias muestrales: {np.mean(medias):.2f}"</span>)
+<span class="function">print</span>(<span class="string">f"Media poblacional real (μ): {mu:.2f}"</span>)</div>
+    </div>
+</section>
+<!-- ===== 1.5 TEOREMA DEL LÍMITE CENTRAL ===== -->
+<section class="chapter" id="t1s5">
+    <div class="chapter-header">
+        <div class="chapter-num">05</div>
+        <div class="chapter-info">
+            <div class="chapter-title">El Teorema del Límite Central (TLC)</div>
+            <div class="chapter-subtitle">La joya de la corona de la estadística</div>
+        </div>
+    </div>
+    <div class="card card-accent main">
+        <h3><i class="fa-solid fa-crown" style="color:var(--accent-main)"></i> El "Milagro" del TLC</h3>
+        <p>Si el tamaño de la muestra (<em>n</em>) es suficientemente grande (generalmente <strong>n &gt; 30</strong>), la distribución muestral de la media será aproximadamente una <strong>distribución Normal</strong> (campana de Gauss), <em>¡sin importar cómo sea la distribución original de la población!</em></p>
+        <div class="formula-box" style="margin-top:14px;">
+            X̄ ~ N(μ, σ/√n) &nbsp;&nbsp;cuando&nbsp;&nbsp; n → grande
+        </div>
+    </div>
+    <div class="callout tip">
+        <div class="callout-icon">💡</div>
+        <div>
+            <h4>¿Por qué es tan poderoso?</h4>
+            <p>Porque si sabemos que la distribución de las medias muestrales sigue una campana de Gauss, podemos usar <strong>todas las propiedades de la distribución normal</strong> para calcular probabilidades, construir intervalos de confianza y hacer pruebas de hipótesis. No importa si tus datos originales tienen forma de montaña, de U, o son completamente planos.</p>
+        </div>
+    </div>
+    <!-- Simulación TLC -->
+    <div class="sim-panel">
+        <div class="sim-header">
+            <div class="sim-icon" style="background:var(--accent-main-dim);color:var(--accent-main);"><i class="fa-solid fa-dice"></i></div>
+            <div class="sim-header-text">
+                <h3>Simulador TLC: Lanzamiento de Dados</h3>
+                <p>Un dado solo es uniforme (plano). ¡Mira cómo los promedios forman una campana!</p>
+            </div>
+        </div>
+        <div class="sim-body">
+            <div class="sim-controls">
+                <div class="slider-group">
+                    <div class="slider-label"><span>Dados por muestra (n)</span><strong id="tlcNVal">2</strong></div>
+                    <input type="range" min="1" max="50" value="2" id="tlcNSlider" oninput="updateTLCParams()">
+                </div>
+                <button class="sim-btn primary" onclick="simTLC(1)"><span>Tirar 1 vez</span><span>🎲</span></button>
+                <button class="sim-btn" onclick="simTLCAnim(100)"><span>Tirar 100 veces</span><span>🚀</span></button>
+                <button class="sim-btn" onclick="simTLCAnim(1000)"><span>Tirar 1,000 veces</span><span>🔥</span></button>
+                <button class="sim-btn" onclick="resetTLC()">Borrar</button>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px;">
+                    <div class="stat-box">
+                        <div class="stat-box-label" style="color:var(--accent-main);">Muestras</div>
+                        <div class="stat-box-value" id="tlcCount">0</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-box-label" style="color:var(--accent-blue);">Media obs.</div>
+                        <div class="stat-box-value" id="tlcObsMean">—</div>
+                    </div>
+                </div>
+            </div>
+            <div class="chart-wrap">
+                <canvas id="chartTLC"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="code-block">
+        <div class="code-header"><span>python — teorema_limite_central.py</span><button class="code-copy-btn" onclick="copyCode(this)">Copiar</button></div>
+        <div class="code-body"><span class="keyword">import</span> <span class="variable">numpy</span> <span class="keyword">as</span> <span class="variable">np</span>, <span class="variable">matplotlib.pyplot</span> <span class="keyword">as</span> <span class="variable">plt</span>
+<span class="comment"># Demostración visual del TLC con diferentes distribuciones</span>
+<span class="variable">np</span>.<span class="variable">random</span>.<span class="function">seed</span>(<span class="number">42</span>)
+<span class="variable">fig</span>, <span class="variable">axes</span> = <span class="variable">plt</span>.<span class="function">subplots</span>(<span class="number">3</span>, <span class="number">3</span>, <span class="variable">figsize</span>=(<span class="number">14</span>, <span class="number">10</span>))
+<span class="keyword">for</span> <span class="variable">row</span>, (<span class="variable">name</span>, <span class="variable">gen_func</span>) <span class="keyword">in</span> <span class="function">enumerate</span>([
+    (<span class="string">"Uniforme (Dado)"</span>, <span class="keyword">lambda</span> <span class="variable">n</span>: <span class="variable">np</span>.<span class="variable">random</span>.<span class="function">randint</span>(<span class="number">1</span>,<span class="number">7</span>,<span class="variable">n</span>)),
+    (<span class="string">"Exponencial (Sesgada)"</span>, <span class="keyword">lambda</span> <span class="variable">n</span>: <span class="variable">np</span>.<span class="variable">random</span>.<span class="function">exponential</span>(<span class="number">2</span>,<span class="variable">n</span>)),
+    (<span class="string">"Bimodal (2 picos)"</span>, <span class="keyword">lambda</span> <span class="variable">n</span>: <span class="variable">np</span>.<span class="function">concatenate</span>([
+        <span class="variable">np</span>.<span class="variable">random</span>.<span class="function">normal</span>(<span class="number">2</span>,<span class="number">0.5</span>,<span class="function">max</span>(<span class="number">1</span>,<span class="variable">n</span>//<span class="number">2</span>)),
+        <span class="variable">np</span>.<span class="variable">random</span>.<span class="function">normal</span>(<span class="number">8</span>,<span class="number">0.5</span>,<span class="function">max</span>(<span class="number">1</span>,<span class="variable">n</span>-<span class="variable">n</span>//<span class="number">2</span>))]))
+]):
+    <span class="keyword">for</span> <span class="variable">col</span>, <span class="variable">sample_n</span> <span class="keyword">in</span> <span class="function">enumerate</span>([<span class="number">1</span>, <span class="number">5</span>, <span class="number">30</span>]):
+        <span class="variable">medias</span> = [<span class="function">gen_func</span>(<span class="variable">sample_n</span>).<span class="function">mean</span>() <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="function">range</span>(<span class="number">2000</span>)]
+        <span class="variable">axes</span>[<span class="variable">row</span>,<span class="variable">col</span>].<span class="function">hist</span>(<span class="variable">medias</span>, <span class="variable">bins</span>=<span class="number">35</span>, <span class="variable">color</span>=<span class="string">'#c05621'</span>, <span class="variable">alpha</span>=<span class="number">0.7</span>)
+        <span class="variable">axes</span>[<span class="variable">row</span>,<span class="variable">col</span>].<span class="function">set_title</span>(<span class="string">f'{name}\nn={sample_n}'</span>, <span class="variable">fontsize</span>=<span class="number">10</span>)
+<span class="variable">plt</span>.<span class="function">suptitle</span>(<span class="string">'TLC: Con n=30, ¡TODO se vuelve campana!'</span>, <span class="variable">fontsize</span>=<span class="number">14</span>, <span class="variable">fontweight</span>=<span class="string">'bold'</span>)
+<span class="variable">plt</span>.<span class="function">tight_layout</span>(); <span class="variable">plt</span>.<span class="function">show</span>()</div>
+    </div>
+    <div class="trivia-section" id="trivia-t1s5">
+        <div class="trivia-section-header">
+            <h4><i class="fa-solid fa-brain"></i> Mini-Trivia: TLC y Distribución Muestral</h4>
+            <span class="score-display" id="trivia-t1s5-score">0/3</span>
+        </div>
+        <div class="trivia-q-text" id="trivia-t1s5-q">Cargando...</div>
+        <div class="trivia-opts" id="trivia-t1s5-opts"></div>
+        <div class="trivia-feedback" id="trivia-t1s5-fb"></div>
+        <div class="trivia-nav">
+            <div class="trivia-dots" id="trivia-t1s5-dots"></div>
+            <button class="trivia-nav-btn" id="trivia-t1s5-next" onclick="triviaNext('t1s5')">Siguiente →</button>
+        </div>
+    </div>
+</section>
+<!-- ════════════════════════════════════════════════════════════════════════
+     TEMA 2 — ESTIMACIÓN POR INTERVALOS DE CONFIANZA
+     ════════════════════════════════════════════════════════════════════════ -->
+<section class="chapter" id="t2s1">
+    <div class="chapter-header">
+        <div class="chapter-num">06</div>
+        <div class="chapter-info">
+            <div class="chapter-title">Intervalos de Confianza</div>
+            <div class="chapter-subtitle">Por qué adivinar un solo número siempre sale mal</div>
+        </div>
+    </div>
+    <p class="prose">Si un gerente pregunta <em>"¿cuál es el puntaje de crédito promedio de nuestros clientes?"</em>, responder con un solo número (648.53) es ser <strong>precisos pero probablemente incorrectos</strong>. Los intervalos de confianza resuelven esto: en vez de un punto, damos un <strong>rango de valores plausibles</strong>.</p>
+    <div class="card-grid">
+        <div class="card">
+            <span class="tag amber">La Lanza</span>
+            <h3>Estimación Puntual</h3>
+            <p>Dar un solo número: <em>"El promedio es 648.53"</em>. Es como lanzar una <strong>lanza al agua</strong>. Tienes que ser increíblemente preciso para darle al pez. Casi siempre te equivocas por un poco. No dice nada sobre cuánta incertidumbre tienes.</p>
+        </div>
+        <div class="card">
+            <span class="tag blue">La Red</span>
+            <h3>Estimación por Intervalo</h3>
+            <p>Dar un rango: <em>"Está entre 635 y 652"</em>. Es como lanzar una <strong>red de pesca</strong>. Asumes un margen de error, pero garantizas con una probabilidad alta que atrapaste la verdad poblacional dentro del rango.</p>
+        </div>
+    </div>
+    <div class="callout danger">
+        <div class="callout-icon">⚠️</div>
+        <div>
+            <h4>El Mito del 95% de Confianza — ¡Cuidado!</h4>
+            <p><strong>Error común:</strong> "Hay un 95% de probabilidad de que μ esté dentro de mi intervalo".<br>
+            <strong>Realidad:</strong> μ es un número fijo (no se mueve, no tiene probabilidad). La confianza del 95% significa que <strong>si repites el estudio 100 veces, 95 de las redes (intervalos) atraparán a μ</strong> y 5 fallarán. Es la confianza en el <em>método</em>, no en un intervalo particular.</p>
+        </div>
+    </div>
+    <div class="section-label">Anatomía del Intervalo</div>
+    <div class="card card-accent green">
+        <h3>La Fórmula Intuitiva</h3>
+        <div class="formula-box" style="font-size:1.05rem;">
+            Intervalo = Estimación Puntual ± Margen de Error
+        </div>
+        <div class="formula-box">
+            Margen de Error = (Valor Crítico) × (Error Estándar)
+        </div>
+        <p style="margin-top:14px;">
+            <strong>Estimación Puntual:</strong> Tu mejor estimado (x̄).<br>
+            <strong>Error Estándar (EE):</strong> Mide la variabilidad típica de x̄. Se calcula como: EE = s / √n.<br>
+            <strong>Valor Crítico (z):</strong> Cuántos errores estándar necesitas para alcanzar tu nivel de confianza. Para 95% → z = 1.96.
+        </p>
+    </div>
+    <table class="compare-table">
+        <thead><tr><th>Nivel de Confianza</th><th>Valor Crítico (z*)</th><th>Significado</th></tr></thead>
+        <tbody>
+            <tr><td>90%</td><td>1.645</td><td>Red más angosta — arriesgas más</td></tr>
+            <tr><td>95%</td><td>1.960</td><td>El estándar de la industria</td></tr>
+            <tr><td>99%</td><td>2.576</td><td>Red más ancha — muy conservador</td></tr>
+        </tbody>
+    </table>
+    <!-- Simulación Intervalos -->
+    <div class="sim-panel">
+        <div class="sim-header">
+            <div class="sim-icon" style="background:var(--accent-green-dim);color:var(--accent-green);"><i class="fa-solid fa-water"></i></div>
+            <div class="sim-header-text">
+                <h3>Simulador de Redes de Pesca</h3>
+                <p>Lanza múltiples intervalos. La línea negra es la VERDAD (μ). ¿Cuántas redes la atrapan?</p>
+            </div>
+        </div>
+        <div class="sim-body">
+            <div class="sim-controls">
+                <div class="slider-group">
+                    <div class="slider-label"><span>Confianza</span><strong id="ciConfVal">95%</strong></div>
+                    <input type="range" min="50" max="99" value="95" class="green" id="ciConfSlider" oninput="updateCIParams()">
+                </div>
+                <div class="slider-group">
+                    <div class="slider-label"><span>Tamaño n</span><strong id="ciNVal">30</strong></div>
+                    <input type="range" min="10" max="100" value="30" class="green" id="ciNSlider" oninput="updateCIParams()">
+                </div>
+                <button class="sim-btn primary green" onclick="generateCIs()"><span>Lanzar 20 redes</span><span>🎣</span></button>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px;">
+                    <div class="stat-box" style="border:1px solid var(--accent-green);">
+                        <div class="stat-box-label" style="color:var(--accent-green);">Atrapados</div>
+                        <div class="stat-box-value" id="ciHitCount" style="color:var(--accent-green);">0</div>
+                    </div>
+                    <div class="stat-box" style="border:1px solid var(--accent-rose);">
+                        <div class="stat-box-label" style="color:var(--accent-rose);">Fallados</div>
+                        <div class="stat-box-value" id="ciMissCount" style="color:var(--accent-rose);">0</div>
+                    </div>
+                </div>
+            </div>
+            <div class="chart-wrap" style="display:flex;flex-direction:column;padding:0;">
+                <div style="text-align:center;font-size:0.8rem;font-weight:bold;padding:8px;border-bottom:1px solid var(--border);">Espacio de Valores — Línea negra = μ verdadero</div>
+                <div class="ci-container" id="ciContainer">
+                    <div class="ci-true-line"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="trivia-section" id="trivia-t2s1">
+        <div class="trivia-section-header">
+            <h4><i class="fa-solid fa-brain"></i> Mini-Trivia: Intervalos de Confianza</h4>
+            <span class="score-display" id="trivia-t2s1-score">0/3</span>
+        </div>
+        <div class="trivia-q-text" id="trivia-t2s1-q">Cargando...</div>
+        <div class="trivia-opts" id="trivia-t2s1-opts"></div>
+        <div class="trivia-feedback" id="trivia-t2s1-fb"></div>
+        <div class="trivia-nav">
+            <div class="trivia-dots" id="trivia-t2s1-dots"></div>
+            <button class="trivia-nav-btn" id="trivia-t2s1-next" onclick="triviaNext('t2s1')">Siguiente →</button>
+        </div>
+    </div>
+</section>
+<!-- ===== 2.2 IC EN LA PRÁCTICA ===== -->
+<section class="chapter" id="t2s2">
+    <div class="chapter-header">
+        <div class="chapter-num">07</div>
+        <div class="chapter-info">
+            <div class="chapter-title">Intervalos de Confianza en la Práctica</div>
+            <div class="chapter-subtitle">Para medias y proporciones con Python</div>
+        </div>
+    </div>
+    <div class="card-grid">
+        <div class="card card-accent blue">
+            <h3>IC para una Media</h3>
+            <p>Se usa para estimar el <strong>valor promedio</strong> de una variable cuantitativa.</p>
+            <div class="formula-box">IC = x̄ ± z* × (s / √n)</div>
+            <p style="margin-top:8px;"><strong>Ejemplo:</strong> Estimar el ingreso promedio de todos los clientes del banco.</p>
+        </div>
+        <div class="card card-accent green">
+            <h3>IC para una Proporción</h3>
+            <p>Se usa para estimar el <strong>porcentaje</strong> de una población con cierta característica.</p>
+            <div class="formula-box">IC = p̂ ± z* × √(p̂(1−p̂) / n)</div>
+            <p style="margin-top:8px;"><strong>Ejemplo:</strong> Estimar la tasa de morosidad de todos los clientes.</p>
+        </div>
+    </div>
+    <div class="code-block">
+        <div class="code-header"><span>python — intervalos_confianza.py</span><button class="code-copy-btn" onclick="copyCode(this)">Copiar</button></div>
+        <div class="code-body"><span class="keyword">import</span> <span class="variable">scipy.stats</span> <span class="keyword">as</span> <span class="variable">st</span>
+<span class="keyword">import</span> <span class="variable">numpy</span> <span class="keyword">as</span> <span class="variable">np</span>, <span class="variable">pandas</span> <span class="keyword">as</span> <span class="variable">pd</span>
+<span class="variable">df</span> = <span class="variable">pd</span>.<span class="function">read_csv</span>(<span class="string">'credit_risk_data.csv'</span>)
+<span class="comment"># Databricks: df = spark.table('credit_risk_data').toPandas()</span>
+<span class="variable">muestra</span> = <span class="variable">df</span>.<span class="function">sample</span>(<span class="variable">n</span>=<span class="number">500</span>, <span class="variable">random_state</span>=<span class="number">101</span>)
+<span class="comment"># ═══ IC PARA UNA MEDIA ═══</span>
+<span class="variable">x_bar</span> = <span class="variable">muestra</span>[<span class="string">'puntaje_credito'</span>].<span class="function">mean</span>()
+<span class="variable">s</span> = <span class="variable">muestra</span>[<span class="string">'puntaje_credito'</span>].<span class="function">std</span>()
+<span class="variable">n</span> = <span class="function">len</span>(<span class="variable">muestra</span>)
+<span class="variable">ee</span> = <span class="variable">s</span> / <span class="variable">np</span>.<span class="function">sqrt</span>(<span class="variable">n</span>)
+<span class="variable">ic_media</span> = <span class="variable">st</span>.<span class="variable">norm</span>.<span class="function">interval</span>(<span class="number">0.95</span>, <span class="variable">loc</span>=<span class="variable">x_bar</span>, <span class="variable">scale</span>=<span class="variable">ee</span>)
+<span class="function">print</span>(<span class="string">"═══ INTERVALO DE CONFIANZA PARA LA MEDIA ═══"</span>)
+<span class="function">print</span>(<span class="string">f"Media muestral (x̄):        {x_bar:.2f}"</span>)
+<span class="function">print</span>(<span class="string">f"Error estándar:             {ee:.2f}"</span>)
+<span class="function">print</span>(<span class="string">f"IC 95%: ({ic_media[0]:.2f}, {ic_media[1]:.2f})"</span>)
+<span class="function">print</span>(<span class="string">f"Margen de error:            ±{1.96*ee:.2f}"</span>)
+<span class="comment"># ═══ IC PARA UNA PROPORCIÓN ═══</span>
+<span class="variable">p_hat</span> = (<span class="variable">muestra</span>[<span class="string">'estado_pago'</span>] == <span class="string">'No Pagado'</span>).<span class="function">mean</span>()
+<span class="variable">ee_prop</span> = <span class="variable">np</span>.<span class="function">sqrt</span>((<span class="variable">p_hat</span> * (<span class="number">1</span> - <span class="variable">p_hat</span>)) / <span class="variable">n</span>)
+<span class="variable">ic_prop</span> = <span class="variable">st</span>.<span class="variable">norm</span>.<span class="function">interval</span>(<span class="number">0.95</span>, <span class="variable">loc</span>=<span class="variable">p_hat</span>, <span class="variable">scale</span>=<span class="variable">ee_prop</span>)
+<span class="function">print</span>(<span class="string">"\n═══ INTERVALO DE CONFIANZA PARA LA PROPORCIÓN ═══"</span>)
+<span class="function">print</span>(<span class="string">f"Proporción muestral (p̂):   {p_hat:.2%}"</span>)
+<span class="function">print</span>(<span class="string">f"IC 95%: ({ic_prop[0]:.2%}, {ic_prop[1]:.2%})"</span>)
+<span class="comment"># ═══ EFECTO DEL TAMAÑO DE MUESTRA ═══</span>
+<span class="function">print</span>(<span class="string">"\n═══ ¿CÓMO AFECTA n AL ANCHO DEL IC? ═══"</span>)
+<span class="keyword">for</span> <span class="variable">n_test</span> <span class="keyword">in</span> [<span class="number">30</span>, <span class="number">100</span>, <span class="number">500</span>, <span class="number">2000</span>, <span class="number">10000</span>]:
+    <span class="variable">m</span> = <span class="variable">df</span>[<span class="string">'puntaje_credito'</span>].<span class="function">sample</span>(<span class="variable">n</span>=<span class="variable">n_test</span>)
+    <span class="variable">ic</span> = <span class="variable">st</span>.<span class="variable">norm</span>.<span class="function">interval</span>(<span class="number">0.95</span>, <span class="variable">loc</span>=<span class="variable">m</span>.<span class="function">mean</span>(), <span class="variable">scale</span>=<span class="variable">m</span>.<span class="function">std</span>()/<span class="variable">np</span>.<span class="function">sqrt</span>(<span class="variable">n_test</span>))
+    <span class="variable">ancho</span> = <span class="variable">ic</span>[<span class="number">1</span>] - <span class="variable">ic</span>[<span class="number">0</span>]
+    <span class="function">print</span>(<span class="string">f"n={n_test:>5}: IC ancho = {ancho:.2f}"</span>)</div>
+    </div>
+    <div class="callout success">
+        <div class="callout-icon">✅</div>
+        <div>
+            <h4>Tres Factores que Controlan el Ancho del IC</h4>
+            <p><strong>1. Nivel de Confianza ↑ → Intervalo más ancho</strong> (más seguridad = red más grande).<br>
+            <strong>2. Tamaño de Muestra (n) ↑ → Intervalo más estrecho</strong> (más datos = más precisión).<br>
+            <strong>3. Variabilidad (s) ↑ → Intervalo más ancho</strong> (datos más dispersos = más incertidumbre).</p>
+        </div>
+    </div>
+</section>
+<!-- ════════════════════════════════════════════════════════════════════════
+     TEMA 3 — PRUEBAS DE HIPÓTESIS
+     ════════════════════════════════════════════════════════════════════════ -->
+<section class="chapter" id="t3s1">
+    <div class="chapter-header">
+        <div class="chapter-num">08</div>
+        <div class="chapter-info">
+            <div class="chapter-title">Pruebas de Hipótesis</div>
+            <div class="chapter-subtitle">El juicio de los datos — Inocente hasta demostrar lo contrario</div>
+        </div>
+    </div>
+    <p class="prose">Los intervalos de confianza responden: <em>"¿En qué rango está la verdad?"</em>. Las pruebas de hipótesis van más allá: nos permiten <strong>tomar una decisión</strong>. Su lógica es idéntica a un juicio penal: el acusado es <em>inocente hasta que se demuestre lo contrario</em>.</p>
+    <div class="card-grid">
+        <div class="card card-accent blue">
+            <div class="icon-box blue"><i class="fa-solid fa-shield-halved"></i></div>
+            <h3>Hipótesis Nula (H₀)</h3>
+            <p><strong>El statu quo / Presunción de inocencia.</strong></p>
+            <p style="margin-top:8px;">Representa que "no hay cambio", "no hay diferencia" o "no hay efecto". Siempre contiene un signo de igualdad (=). Es lo que intentamos <em>refutar</em>.</p>
+            <p style="margin-top:8px;"><strong>Tribunal:</strong> El acusado es inocente.</p>
+            <p><strong>Negocio:</strong> La nueva web NO vende más que la vieja.</p>
+        </div>
+        <div class="card card-accent rose">
+            <div class="icon-box rose"><i class="fa-solid fa-bolt"></i></div>
+            <h3>Hipótesis Alternativa (Hₐ)</h3>
+            <p><strong>La acusación del fiscal.</strong></p>
+            <p style="margin-top:8px;">Es lo que tú (como analista) intentas probar con los datos. "¡Sí hay diferencia!", "¡La campaña aumentó las ventas!". Nunca contiene igualdad.</p>
+            <p style="margin-top:8px;"><strong>Tribunal:</strong> El acusado es culpable.</p>
+            <p><strong>Negocio:</strong> La nueva web SÍ vende más.</p>
+        </div>
+    </div>
+    <div class="callout info">
+        <div class="callout-icon">⚖️</div>
+        <div>
+            <h4>Regla de Oro</h4>
+            <p>Nunca "probamos" que H₀ es verdadera. Solo podemos: <strong>(a)</strong> rechazar H₀ porque la evidencia es abrumadora, o <strong>(b)</strong> no rechazar H₀ porque no tenemos suficiente evidencia. "No culpable" NO es lo mismo que "inocente".</p>
+        </div>
+    </div>
+    <div class="real-world">
+        <div class="real-world-header">
+            <span class="badge">Mundo Real</span>
+            <h4>Prueba A/B en Spotify</h4>
+        </div>
+        <p>Spotify quiere saber si un botón verde genera más suscripciones que uno azul. H₀: No hay diferencia entre los colores. Hₐ: El verde genera más suscripciones. Muestran cada versión a 100,000 usuarios aleatorios y miden la tasa de conversión. Si la diferencia es estadísticamente significativa, rechazan H₀ y adoptan el verde.</p>
+    </div>
+    <div class="trivia-section" id="trivia-t3s1">
+        <div class="trivia-section-header">
+            <h4><i class="fa-solid fa-brain"></i> Mini-Trivia: Hipótesis</h4>
+            <span class="score-display" id="trivia-t3s1-score">0/3</span>
+        </div>
+        <div class="trivia-q-text" id="trivia-t3s1-q">Cargando...</div>
+        <div class="trivia-opts" id="trivia-t3s1-opts"></div>
+        <div class="trivia-feedback" id="trivia-t3s1-fb"></div>
+        <div class="trivia-nav">
+            <div class="trivia-dots" id="trivia-t3s1-dots"></div>
+            <button class="trivia-nav-btn" id="trivia-t3s1-next" onclick="triviaNext('t3s1')">Siguiente →</button>
+        </div>
+    </div>
+</section>
+<!-- ===== 3.2 VALOR P ===== -->
+<section class="chapter" id="t3s2">
+    <div class="chapter-header">
+        <div class="chapter-num">09</div>
+        <div class="chapter-info">
+            <div class="chapter-title">El Veredicto: El Valor P</div>
+            <div class="chapter-subtitle">Midiendo la rareza de la evidencia</div>
+        </div>
+    </div>
+    <div class="card card-accent purple">
+        <h3><i class="fa-solid fa-magnifying-glass-chart" style="color:var(--accent-purple)"></i> ¿Qué es el p-value?</h3>
+        <p>Responde a esta pregunta: <em>"Si H₀ fuera cierta (el acusado es inocente), ¿cuál es la probabilidad de haber encontrado evidencia tan extrema como la de mi muestra?"</em></p>
+        <p style="margin-top:10px;"><strong>p-value alto (ej. 0.40):</strong> "Nada raro. Encontraríamos esta evidencia el 40% de las veces por azar. No rechazamos H₀."</p>
+        <p><strong>p-value bajo (ej. 0.01):</strong> "¡Extremadamente raro! Solo un 1% de chances. La presunción de inocencia no es sostenible. ¡Rechazamos H₀!"</p>
+    </div>
+    <div class="callout tip">
+        <div class="callout-icon">🔑</div>
+        <div>
+            <h4>La Regla de Decisión Dorada</h4>
+            <p><strong>Si p-value &lt; α → Rechazamos H₀.</strong> (If the p is low, the null must go!)<br>
+            <strong>Si p-value ≥ α → No rechazamos H₀.</strong> (If the p is high, let the null fly!)</p>
+        </div>
+    </div>
+    <!-- P-Value Interactive -->
+    <div class="card" style="padding:36px;">
+        <h3 style="text-align:center;">Escala Interactiva del Valor P (α = 0.05)</h3>
+        <div class="pvalue-container">
+            <div class="pvalue-track">
+                <div class="pvalue-marker" id="pvalMarker" style="left:20%;"></div>
+                <div class="pvalue-threshold" style="left:95%;">α = 0.05</div>
+            </div>
+        </div>
+        <div style="display:flex;justify-content:space-between;margin:10px 20px 30px;font-size:0.82rem;font-weight:700;">
+            <span style="color:var(--accent-green);">← p alto (NO rechazas H₀)</span>
+            <span style="color:var(--accent-rose);">p bajo (RECHAZAS H₀) →</span>
+        </div>
+        <div style="text-align:center;">
+            <input type="range" min="0" max="100" value="20" id="pvalSlider" style="width:60%;">
+            <div id="pvalText" style="margin-top:14px;font-family:'JetBrains Mono',monospace;font-size:1.3rem;font-weight:800;color:var(--accent-green);">p = 0.800</div>
+            <div id="pvalDecision" style="font-size:1.05rem;font-weight:700;margin-top:6px;">El statu quo se mantiene.</div>
+        </div>
+    </div>
+    <div class="trivia-section" id="trivia-t3s2">
+        <div class="trivia-section-header">
+            <h4><i class="fa-solid fa-brain"></i> Mini-Trivia: Valor P</h4>
+            <span class="score-display" id="trivia-t3s2-score">0/3</span>
+        </div>
+        <div class="trivia-q-text" id="trivia-t3s2-q">Cargando...</div>
+        <div class="trivia-opts" id="trivia-t3s2-opts"></div>
+        <div class="trivia-feedback" id="trivia-t3s2-fb"></div>
+        <div class="trivia-nav">
+            <div class="trivia-dots" id="trivia-t3s2-dots"></div>
+            <button class="trivia-nav-btn" id="trivia-t3s2-next" onclick="triviaNext('t3s2')">Siguiente →</button>
+        </div>
+    </div>
+</section>
+<!-- ===== 3.3 ERRORES TIPO I Y II ===== -->
+<section class="chapter" id="t3s3">
+    <div class="chapter-header">
+        <div class="chapter-num">10</div>
+        <div class="chapter-info">
+            <div class="chapter-title">Errores Tipo I y Tipo II</div>
+            <div class="chapter-subtitle">Ningún tribunal es perfecto</div>
+        </div>
+    </div>
+    <p class="prose">Así como en un juicio real se puede condenar a un inocente o dejar libre a un culpable, nuestras decisiones estadísticas también pueden ser erróneas.</p>
+    <div class="matrix-grid">
+        <div></div>
+        <div class="matrix-cell matrix-header">H₀ es CIERTA<br><small>(Inocente)</small></div>
+        <div class="matrix-cell matrix-header">H₀ es FALSA<br><small>(Culpable)</small></div>
+        <div class="matrix-cell matrix-header" style="text-align:right;">No Rechazar H₀<br><small>(Liberar)</small></div>
+        <div class="matrix-cell matrix-true">
+            <i class="fa-solid fa-circle-check" style="font-size:22px;color:var(--accent-green);"></i>
+            <strong>Correcto ✅</strong>
+            <small style="color:var(--text-muted);">Liberaste a un inocente</small>
+        </div>
+        <div class="matrix-cell matrix-false">
+            <i class="fa-solid fa-user-ninja" style="font-size:22px;color:var(--accent-rose);"></i>
+            <strong style="color:var(--accent-rose);">Error Tipo II (β)</strong>
+            <small style="color:var(--text-muted);">Dejaste ir al culpable</small>
+        </div>
+        <div class="matrix-cell matrix-header" style="text-align:right;">Rechazar H₀<br><small>(Condenar)</small></div>
+        <div class="matrix-cell matrix-false">
+            <i class="fa-solid fa-triangle-exclamation" style="font-size:22px;color:var(--accent-rose);"></i>
+            <strong style="color:var(--accent-rose);">Error Tipo I (α)</strong>
+            <small style="color:var(--text-muted);">Condenaste a un inocente</small>
+        </div>
+        <div class="matrix-cell matrix-true">
+            <i class="fa-solid fa-bolt" style="font-size:22px;color:var(--accent-green);"></i>
+            <strong>Correcto ✅ (Potencia)</strong>
+            <small style="color:var(--text-muted);">¡Atrapaste al culpable!</small>
+        </div>
+    </div>
+    <div class="card-grid" style="margin-top:20px;">
+        <div class="real-world" style="margin:0;">
+            <div class="real-world-header"><span class="badge" style="background:var(--accent-rose);">Error Tipo I</span></div>
+            <p><strong>Alarma de incendios suena por una tostada.</strong> Evacuaste a todos (rechazaste H₀: "no hay incendio"), pero era una falsa alarma. Perdiste tiempo y dinero.</p>
+            <p style="margin-top:8px;"><strong>En negocio:</strong> Lanzas una campaña costosa porque tu prueba A/B dijo que el nuevo diseño era mejor, pero NO lo era. Perdiste dinero.</p>
+        </div>
+        <div class="real-world" style="margin:0;">
+            <div class="real-world-header"><span class="badge" style="background:var(--accent-purple);">Error Tipo II</span></div>
+            <p><strong>La alarma de incendios NO suena durante un incendio real.</strong> No rechazaste H₀ ("no hay incendio") cuando debiste hacerlo. Consecuencias graves.</p>
+            <p style="margin-top:8px;"><strong>En negocio:</strong> Descartaste un fármaco que SÍ funcionaba porque tu ensayo no detectó el efecto. Perdiste una oportunidad.</p>
+        </div>
+    </div>
+    <div class="callout info">
+        <div class="callout-icon">⚡</div>
+        <div>
+            <h4>Potencia de una Prueba (1 − β)</h4>
+            <p>Es la probabilidad de <strong>detectar correctamente un efecto real</strong>. Queremos pruebas con alta potencia. Se aumenta con: muestras más grandes, efectos más grandes, o niveles α más altos (pero esto aumenta el riesgo de Error Tipo I).</p>
+        </div>
+    </div>
+    <div class="trivia-section" id="trivia-t3s3">
+        <div class="trivia-section-header">
+            <h4><i class="fa-solid fa-brain"></i> Mini-Trivia: Errores</h4>
+            <span class="score-display" id="trivia-t3s3-score">0/3</span>
+        </div>
+        <div class="trivia-q-text" id="trivia-t3s3-q">Cargando...</div>
+        <div class="trivia-opts" id="trivia-t3s3-opts"></div>
+        <div class="trivia-feedback" id="trivia-t3s3-fb"></div>
+        <div class="trivia-nav">
+            <div class="trivia-dots" id="trivia-t3s3-dots"></div>
+            <button class="trivia-nav-btn" id="trivia-t3s3-next" onclick="triviaNext('t3s3')">Siguiente →</button>
+        </div>
+    </div>
+</section>
+<!-- ===== 3.4 PRUEBAS CON PYTHON ===== -->
+<section class="chapter" id="t3s4">
+    <div class="chapter-header">
+        <div class="chapter-num">11</div>
+        <div class="chapter-info">
+            <div class="chapter-title">Pruebas de Hipótesis con Python</div>
+            <div class="chapter-subtitle">Prueba t para medias y Chi-cuadrado para categóricas</div>
+        </div>
+    </div>
+    <div class="section-label">Prueba t para Muestras Independientes</div>
+    <p class="prose">Se usa para comparar las medias de dos grupos que no tienen relación. Pregunta de negocio: ¿Existe una diferencia significativa en el puntaje de crédito promedio entre clientes que pagaron y los que no?</p>
+    <div class="card card-accent blue" style="margin-bottom:8px;">
+        <p><strong>H₀:</strong> μ_pagado = μ_no_pagado (No hay diferencia)</p>
+        <p><strong>Hₐ:</strong> μ_pagado ≠ μ_no_pagado (Sí hay diferencia)</p>
+    </div>
+    <div class="code-block">
+        <div class="code-header"><span>python — prueba_t_independiente.py</span><button class="code-copy-btn" onclick="copyCode(this)">Copiar</button></div>
+        <div class="code-body"><span class="keyword">import</span> <span class="variable">scipy.stats</span> <span class="keyword">as</span> <span class="variable">st</span>
+<span class="keyword">import</span> <span class="variable">pandas</span> <span class="keyword">as</span> <span class="variable">pd</span>
+<span class="variable">df</span> = <span class="variable">pd</span>.<span class="function">read_csv</span>(<span class="string">'credit_risk_data.csv'</span>)
+<span class="comment"># Databricks: df = spark.table('credit_risk_data').toPandas()</span>
+<span class="comment"># Separar los dos grupos</span>
+<span class="variable">pagado</span> = <span class="variable">df</span>[<span class="variable">df</span>[<span class="string">'estado_pago'</span>] == <span class="string">'Pagado'</span>][<span class="string">'puntaje_credito'</span>]
+<span class="variable">no_pagado</span> = <span class="variable">df</span>[<span class="variable">df</span>[<span class="string">'estado_pago'</span>] == <span class="string">'No Pagado'</span>][<span class="string">'puntaje_credito'</span>]
+<span class="function">print</span>(<span class="string">f"Media Pagado:    {pagado.mean():.2f}"</span>)
+<span class="function">print</span>(<span class="string">f"Media No Pagado: {no_pagado.mean():.2f}"</span>)
+<span class="comment"># Prueba t de Welch (no asume varianzas iguales)</span>
+<span class="variable">t_stat</span>, <span class="variable">p_value</span> = <span class="variable">st</span>.<span class="function">ttest_ind</span>(<span class="variable">pagado</span>, <span class="variable">no_pagado</span>, <span class="variable">equal_var</span>=<span class="keyword">False</span>)
+<span class="function">print</span>(<span class="string">f"\nEstadístico t: {t_stat:.4f}"</span>)
+<span class="function">print</span>(<span class="string">f"Valor p:       {p_value:.6f}"</span>)
+<span class="variable">alpha</span> = <span class="number">0.05</span>
+<span class="keyword">if</span> <span class="variable">p_value</span> < <span class="variable">alpha</span>:
+    <span class="function">print</span>(<span class="string">"\n✅ RECHAZAMOS H₀: Hay diferencia significativa."</span>)
+    <span class="function">print</span>(<span class="string">"El puntaje de crédito SÍ difiere entre grupos."</span>)
+<span class="keyword">else</span>:
+    <span class="function">print</span>(<span class="string">"\n❌ NO rechazamos H₀: No hay evidencia suficiente."</span>)</div>
+    </div>
+    <div class="section-label" style="margin-top:30px;">Prueba Chi-Cuadrado (χ²) de Independencia</div>
+    <p class="prose">Se usa para determinar si existe una relación entre dos variables <strong>categóricas</strong>. Pregunta: ¿El propósito del préstamo está relacionado con si el cliente paga o no?</p>
+    <div class="card card-accent green" style="margin-bottom:8px;">
+        <p><strong>H₀:</strong> Propósito del préstamo y estado de pago son independientes (sin relación)</p>
+        <p><strong>Hₐ:</strong> Propósito del préstamo y estado de pago son dependientes (sí hay relación)</p>
+    </div>
+    <div class="code-block">
+        <div class="code-header"><span>python — prueba_chi_cuadrado.py</span><button class="code-copy-btn" onclick="copyCode(this)">Copiar</button></div>
+        <div class="code-body"><span class="keyword">import</span> <span class="variable">scipy.stats</span> <span class="keyword">as</span> <span class="variable">st</span>
+<span class="keyword">import</span> <span class="variable">pandas</span> <span class="keyword">as</span> <span class="variable">pd</span>
+<span class="keyword">import</span> <span class="variable">seaborn</span> <span class="keyword">as</span> <span class="variable">sns</span>, <span class="variable">matplotlib.pyplot</span> <span class="keyword">as</span> <span class="variable">plt</span>
+<span class="variable">df</span> = <span class="variable">pd</span>.<span class="function">read_csv</span>(<span class="string">'credit_risk_data.csv'</span>)
+<span class="comment"># Databricks: df = spark.table('credit_risk_data').toPandas()</span>
+<span class="comment"># Tabla de contingencia</span>
+<span class="variable">tabla</span> = <span class="variable">pd</span>.<span class="function">crosstab</span>(<span class="variable">df</span>[<span class="string">'proposito_prestamo'</span>], <span class="variable">df</span>[<span class="string">'estado_pago'</span>])
+<span class="function">print</span>(<span class="string">"Tabla de Contingencia:"</span>)
+<span class="function">print</span>(<span class="variable">tabla</span>)
+<span class="comment"># Test Chi-cuadrado</span>
+<span class="variable">chi2</span>, <span class="variable">p_val</span>, <span class="variable">dof</span>, <span class="variable">expected</span> = <span class="variable">st</span>.<span class="function">chi2_contingency</span>(<span class="variable">tabla</span>)
+<span class="function">print</span>(<span class="string">f"\nEstadístico χ²: {chi2:.2f}"</span>)
+<span class="function">print</span>(<span class="string">f"Grados de libertad: {dof}"</span>)
+<span class="function">print</span>(<span class="string">f"Valor p: {p_val:.6f}"</span>)
+<span class="keyword">if</span> <span class="variable">p_val</span> < <span class="number">0.05</span>:
+    <span class="function">print</span>(<span class="string">"✅ RECHAZAMOS H₀: Hay asociación significativa."</span>)
+<span class="keyword">else</span>:
+    <span class="function">print</span>(<span class="string">"❌ NO rechazamos H₀."</span>)
+<span class="comment"># Visualizar residuos (dónde está la asociación)</span>
+<span class="variable">residuos</span> = <span class="variable">tabla</span> - <span class="variable">expected</span>
+<span class="variable">sns</span>.<span class="function">heatmap</span>(<span class="variable">residuos</span>, <span class="variable">annot</span>=<span class="keyword">True</span>, <span class="variable">fmt</span>=<span class="string">".0f"</span>, <span class="variable">cmap</span>=<span class="string">"RdBu_r"</span>, <span class="variable">center</span>=<span class="number">0</span>)
+<span class="variable">plt</span>.<span class="function">title</span>(<span class="string">"Residuos: Observado − Esperado"</span>)
+<span class="variable">plt</span>.<span class="function">show</span>()</div>
+    </div>
+</section>
+<!-- ===== TRIVIA FINAL ===== -->
+<section class="chapter" id="final">
+    <div class="chapter-header">
+        <div class="chapter-num">🎮</div>
+        <div class="chapter-info">
+            <div class="chapter-title">Trivia Final Integrada</div>
+            <div class="chapter-subtitle">Pon a prueba todo lo que aprendiste — 5 preguntas desafiantes</div>
+        </div>
+    </div>
+    <div class="trivia-section" id="trivia-final" style="padding:40px;">
+        <div class="trivia-section-header">
+            <h4 style="font-size:1.1rem;"><i class="fa-solid fa-trophy" style="color:var(--accent-main-light);"></i> Desafío Final</h4>
+            <span class="score-display" id="trivia-final-score">0/5</span>
+        </div>
+        <div class="trivia-q-text" id="trivia-final-q" style="font-size:1.2rem;">Cargando...</div>
+        <div class="trivia-opts" id="trivia-final-opts"></div>
+        <div class="trivia-feedback" id="trivia-final-fb"></div>
+        <div class="trivia-nav">
+            <div class="trivia-dots" id="trivia-final-dots"></div>
+            <button class="trivia-nav-btn" id="trivia-final-next" onclick="triviaNext('final')">Siguiente →</button>
+        </div>
+    </div>
+</section>
+</div><!-- end container -->
+<footer>
+    <p><i class="fa-solid fa-code"></i> Guía Interactiva — Especialización en Inteligencia de Negocios y Big Data · UNAC</p>
+</footer>
+<!-- ═══════════════════════════════════════════════════════════════
+     JAVASCRIPT
+     ═══════════════════════════════════════════════════════════════ -->
+<script>
+Chart.defaults.font.family = "'DM Sans', sans-serif";
+Chart.defaults.color = '#9b958d';
+// ═══════════ COPY CODE ═══════════
+function copyCode(btn) {
+    const code = btn.closest('.code-block').querySelector('.code-body').innerText;
+    navigator.clipboard.writeText(code).then(() => {
+        btn.textContent = '¡Copiado!';
+        setTimeout(() => btn.textContent = 'Copiar', 2000);
+    });
+}
+// ═══════════ LGN SIMULATOR (REDESIGNED) ═══════════
+const diceEmojis = ['', '⚀', '⚁', '⚂', '⚃', '⚄', '⚅'];
+let lgnData = [];
+let lgnChart;
+(function initLGN() {
+    const ctx = document.getElementById('chartLGN').getContext('2d');
+    lgnChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: [],
+            datasets: [{
+                label: 'Tu promedio acumulado',
+                data: [],
+                borderColor: '#c05621',
+                borderWidth: 2.5,
+                pointRadius: 0,
+                fill: false,
+                tension: 0.1
+            }, {
+                label: 'Valor esperado (3.5)',
+                data: [],
+                borderColor: '#b5334a',
+                borderWidth: 2,
+                borderDash: [6, 4],
+                pointRadius: 0,
+                fill: false
+            }]
+        },
+        options: {
+            responsive: true, maintainAspectRatio: false,
+            animation: { duration: 100 },
+            scales: {
+                x: { title: { display: true, text: 'Número de lanzamientos' }, grid: { display: false } },
+                y: { title: { display: true, text: 'Promedio acumulado de todos los resultados' }, min: 1, max: 6,
+                    ticks: { callback: v => v === 3.5 ? '→ 3.5 ←' : v }
+                }
+            },
+            plugins: { legend: { display: false } }
+        }
+    });
+})();
+function runLGN(count) {
+    const newRolls = [];
+    for (let i = 0; i < count; i++) {
+        const val = Math.floor(Math.random() * 6) + 1;
+        lgnData.push(val);
+        newRolls.push(val);
+    }
+    // Update dice visual (show last rolls, max 12)
+    const visualEl = document.getElementById('lgnDiceVisual');
+    const showRolls = newRolls.slice(-12);
+    visualEl.innerHTML = showRolls.map(v =>
+        `<span style="font-size:1.6rem;" title="Salió ${v}">${diceEmojis[v]}</span>`
+    ).join('');
+    if (count > 12) {
+        visualEl.innerHTML += `<span style="font-size:0.75rem;color:var(--text-dim);margin-left:4px;">+${count - 12} más</span>`;
+    }
+    updateLGNChart();
+}
+function resetLGN() {
+    lgnData = [];
+    lgnChart.data.labels = [];
+    lgnChart.data.datasets[0].data = [];
+    lgnChart.data.datasets[1].data = [];
+    lgnChart.update();
+    document.getElementById('lgnCount').textContent = '0';
+    document.getElementById('lgnMean').textContent = '—';
+    document.getElementById('lgnDiceVisual').innerHTML = '<span style="color:var(--text-dim); font-size:0.82rem;">Presiona un botón →</span>';
+    document.getElementById('lgnDistBox').style.display = 'none';
+}
+function updateLGNChart() {
+    let sum = 0;
+    const avgs = lgnData.map((v, i) => { sum += v; return sum / (i + 1); });
+    // Sample points for performance
+    const step = Math.max(1, Math.floor(avgs.length / 300));
+    const labels = [], d1 = [], d2 = [];
+    for (let i = 0; i < avgs.length; i += step) {
+        labels.push(i + 1);
+        d1.push(avgs[i]);
+        d2.push(3.5);
+    }
+    lgnChart.data.labels = labels;
+    lgnChart.data.datasets[0].data = d1;
+    lgnChart.data.datasets[1].data = d2;
+    lgnChart.update();
+    const currentAvg = avgs[avgs.length - 1];
+    const dist = Math.abs(currentAvg - 3.5);
+    document.getElementById('lgnCount').textContent = lgnData.length.toLocaleString();
+    document.getElementById('lgnMean').textContent = currentAvg.toFixed(3);
+    // Distance indicator
+    const distBox = document.getElementById('lgnDistBox');
+    distBox.style.display = 'block';
+    const distEl = document.getElementById('lgnDist');
+    distEl.textContent = dist.toFixed(3);
+    if (dist < 0.05) {
+        distEl.style.color = 'var(--accent-green)';
+        distEl.textContent += ' ✨ ¡Casi exacto!';
+    } else if (dist < 0.2) {
+        distEl.style.color = 'var(--accent-amber)';
+        distEl.textContent += ' — Muy cerca';
+    } else {
+        distEl.style.color = 'var(--accent-rose)';
+        distEl.textContent += ' — Sigue lanzando...';
+    }
+}
+// ═══════════ TLC SIMULATOR ═══════════
+let tlcN = 2;
+const tlcBins = 30;
+let tlcData = new Array(tlcBins).fill(0);
+let tlcTotal = 0;
+let tlcAllMeans = [];
+const ctxTLC = document.getElementById('chartTLC').getContext('2d');
+const chartTLC = new Chart(ctxTLC, {
+    type: 'bar',
+    data: {
+        labels: Array.from({length: tlcBins}, (_, i) => (1 + (5/(tlcBins-1)) * i).toFixed(1)),
+        datasets: [{
+            label: 'Frecuencia',
+            data: tlcData,
+            backgroundColor: 'rgba(192, 86, 33, 0.55)',
+            borderColor: '#c05621',
+            borderWidth: 1,
+            borderRadius: 3
+        }]
+    },
+    options: {
+        responsive: true, maintainAspectRatio: false, animation: { duration: 50 },
+        scales: {
+            x: { title: { display: true, text: 'Promedio de los Dados' }, grid: { display: false } },
+            y: { title: { display: true, text: 'Frecuencia' }, beginAtZero: true }
+        },
+        plugins: { legend: { display: false } }
+    }
+});
+function updateTLCParams() {
+    tlcN = parseInt(document.getElementById('tlcNSlider').value);
+    document.getElementById('tlcNVal').textContent = tlcN;
+    resetTLC();
+}
+function simTLC(iters) {
+    for (let i = 0; i < iters; i++) {
+        let sum = 0;
+        for (let d = 0; d < tlcN; d++) sum += Math.floor(Math.random() * 6) + 1;
+        const mean = sum / tlcN;
+        tlcAllMeans.push(mean);
+        let bin = Math.floor(((mean - 1) / 5) * tlcBins);
+        if (bin >= tlcBins) bin = tlcBins - 1;
+        if (bin < 0) bin = 0;
+        tlcData[bin]++;
+        tlcTotal++;
+    }
+    chartTLC.update();
+    document.getElementById('tlcCount').textContent = tlcTotal.toLocaleString();
+    if (tlcAllMeans.length > 0) {
+        const avg = tlcAllMeans.reduce((a,b)=>a+b,0)/tlcAllMeans.length;
+        document.getElementById('tlcObsMean').textContent = avg.toFixed(3);
+    }
+}
+function simTLCAnim(total) {
+    let done = 0;
+    const batch = total > 500 ? 50 : 10;
+    function step() {
+        const now = Math.min(batch, total - done);
+        simTLC(now);
+        done += now;
+        if (done < total) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+}
+function resetTLC() {
+    tlcData.fill(0);
+    tlcTotal = 0;
+    tlcAllMeans = [];
+    chartTLC.update();
+    document.getElementById('tlcCount').textContent = '0';
+    document.getElementById('tlcObsMean').textContent = '—';
+}
+// ═══════════ CI SIMULATOR ═══════════
+let ciConf = 0.95, ciN = 30, ciHits = 0, ciMisses = 0;
+function getZ(conf) {
+    if (conf >= 0.99) return 2.576;
+    if (conf >= 0.98) return 2.326;
+    if (conf >= 0.95) return 1.96;
+    if (conf >= 0.90) return 1.645;
+    if (conf >= 0.80) return 1.28;
+    if (conf >= 0.70) return 1.04;
+    if (conf >= 0.60) return 0.84;
+    return 0.67;
+}
+function updateCIParams() {
+    ciConf = parseInt(document.getElementById('ciConfSlider').value) / 100;
+    ciN = parseInt(document.getElementById('ciNSlider').value);
+    document.getElementById('ciConfVal').textContent = Math.round(ciConf * 100) + '%';
+    document.getElementById('ciNVal').textContent = ciN;
+    document.getElementById('ciContainer').innerHTML = '<div class="ci-true-line"></div>';
+    ciHits = 0; ciMisses = 0;
+    updateCICounters();
+}
+function generateCIs() {
+    const container = document.getElementById('ciContainer');
+    const trueMean = 50;
+    const stdDev = 15;
+    const stdErr = stdDev / Math.sqrt(ciN);
+    const z = getZ(ciConf);
+    const me = z * stdErr;
+    if (container.children.length > 80) {
+        container.innerHTML = '<div class="ci-true-line"></div>';
+        ciHits = 0; ciMisses = 0;
+    }
+    for (let i = 0; i < 20; i++) {
+        let u1 = Math.random(), u2 = Math.random();
+        let rn = Math.sqrt(-2 * Math.log(u1)) * Math.cos(2 * Math.PI * u2);
+        let sm = trueMean + rn * stdErr;
+        let lo = sm - me, hi = sm + me;
+        let hit = (trueMean >= lo && trueMean <= hi);
+        if (hit) ciHits++; else ciMisses++;
+        const w = document.createElement('div');
+        w.className = 'ci-bar-wrapper';
+        const b = document.createElement('div');
+        b.className = `ci-bar ${hit ? '' : 'miss'}`;
+        b.style.left = `${lo}%`;
+        b.style.width = `${hi - lo}%`;
+        const d = document.createElement('div');
+        d.className = 'ci-dot';
+        d.style.left = `${(sm - lo) / (hi - lo) * 100}%`;
+        b.appendChild(d);
+        w.appendChild(b);
+        container.appendChild(w);
+    }
+    container.scrollTop = container.scrollHeight;
+    updateCICounters();
+}
+function updateCICounters() {
+    document.getElementById('ciHitCount').textContent = ciHits;
+    document.getElementById('ciMissCount').textContent = ciMisses;
+}
+// ═══════════ P-VALUE SLIDER ═══════════
+const pvalSlider = document.getElementById('pvalSlider');
+const pvalMarker = document.getElementById('pvalMarker');
+const pvalText = document.getElementById('pvalText');
+const pvalDecision = document.getElementById('pvalDecision');
+pvalSlider.addEventListener('input', (e) => {
+    let val = parseInt(e.target.value);
+    let p;
+    if (val <= 70) {
+        p = 1.0 - (val / 70) * 0.95;
+    } else {
+        p = 0.05 - ((val - 70) / 30) * 0.05;
+    }
+    pvalMarker.style.left = `${val}%`;
+    pvalText.textContent = `p = ${p.toFixed(3)}`;
+    if (p < 0.05) {
+        pvalText.style.color = 'var(--accent-rose)';
+        pvalDecision.innerHTML = "¡Evidencia Extrema! <span style='color:#fb7185;'>RECHAZAMOS H₀</span>";
+    } else {
+        pvalText.style.color = '#6ee7b7';
+        pvalDecision.innerHTML = "Evidencia insuficiente. <span style='color:#94a3b8;'>NO rechazamos H₀</span>";
+    }
+});
+pvalSlider.dispatchEvent(new Event('input'));
+// ═══════════ TRIVIA ENGINE ═══════════
+const allTrivia = {
+    t1s1: [
+        { q: "Si μ = 648.53 es el puntaje promedio de TODOS los clientes, μ es un...", o: ["Estadístico", "Parámetro", "Error de muestreo", "Intervalo"], a: 1, e: "μ es una medida de la población completa, por lo tanto es un Parámetro. Los parámetros se representan con letras griegas." },
+        { q: "¿Por qué preferimos tomar una muestra en vez de estudiar toda la población?", o: ["Porque la muestra es más precisa", "Porque estudiar toda la población es imposible o muy costoso", "Porque el parámetro no existe", "Porque los estadísticos son siempre iguales a los parámetros"], a: 1, e: "Estudiar a toda la población suele ser imposible o extremadamente costoso. La muestra es nuestra alternativa práctica." },
+        { q: "x̄ = 648.5 calculado sobre 500 clientes es un...", o: ["Parámetro", "Error estándar", "Estadístico", "Nivel de confianza"], a: 2, e: "x̄ es la media calculada sobre la muestra, por lo tanto es un Estadístico. Se usa para estimar el parámetro μ." }
+    ],
+    t1s2: [
+        { q: "El error de muestreo es:", o: ["Un error humano al recolectar datos", "La diferencia natural entre x̄ y μ", "Un sesgo en la selección de la muestra", "Un error en la fórmula estadística"], a: 1, e: "El error de muestreo es la diferencia inevitable entre el estadístico (x̄) y el parámetro (μ). No es un error humano." },
+        { q: "¿Cuál técnica garantiza que cada miembro tiene la misma probabilidad de ser elegido?", o: ["Muestreo por conveniencia", "Muestreo aleatorio simple", "Muestreo por cuotas", "Censo"], a: 1, e: "El muestreo aleatorio simple garantiza que cada individuo tiene la misma probabilidad de ser seleccionado, evitando sesgos." },
+        { q: "Si tomas dos muestras diferentes de n=200, ¿tendrán exactamente la misma media?", o: ["Sí, siempre", "No, por el error de muestreo", "Solo si vienen de la misma población", "Depende de la desviación estándar"], a: 1, e: "No. Cada muestra dará un x̄ ligeramente diferente — eso es el error de muestreo en acción." }
+    ],
+    t1s3: [
+        { q: "La Ley de los Grandes Números dice que al aumentar n...", o: ["La varianza poblacional disminuye", "El estadístico x̄ converge a μ", "La distribución se vuelve uniforme", "El error estándar aumenta"], a: 1, e: "La LGN establece que a medida que n crece, x̄ se acerca cada vez más al verdadero parámetro μ." },
+        { q: "¿Cuál industria depende directamente de la LGN para su modelo de negocio?", o: ["Restaurantes de comida rápida", "Aseguradoras y casinos", "Empresas de tecnología", "Supermercados"], a: 1, e: "Aseguradoras y casinos dependen de la LGN. No saben qué pasará con UN cliente/jugador, pero saben con precisión qué porcentaje de MUCHOS tendrá un siniestro/perderá." },
+        { q: "Si lanzas un dado 10 veces obtienes promedio 4.8. Con 10,000 lanzamientos el promedio será:", o: ["Exactamente 3.5", "Más cercano a 3.5", "También 4.8", "Imposible de predecir"], a: 1, e: "Con 10,000 lanzamientos, por la LGN, el promedio se acercará mucho a 3.5 (la media teórica), aunque no será exactamente ese valor." }
+    ],
+    t1s5: [
+        { q: "El TLC establece que la distribución de las medias muestrales será aproximadamente Normal cuando:", o: ["La población es Normal", "n > 30 (generalmente)", "La muestra no tiene outliers", "σ es conocido"], a: 1, e: "El TLC funciona cuando n es suficientemente grande (generalmente n > 30), sin importar la forma de la distribución original." },
+        { q: "¿Qué forma tiene la distribución de un SOLO dado de 6 caras?", o: ["Normal (campana)", "Uniforme (plana)", "Exponencial (sesgada)", "Bimodal (dos picos)"], a: 1, e: "Un dado tiene distribución uniforme: cada resultado (1-6) tiene la misma probabilidad de 1/6." },
+        { q: "Si la desviación estándar de la población es σ, el Error Estándar de x̄ es:", o: ["σ × n", "σ / n", "σ / √n", "√σ / n"], a: 2, e: "EE = σ / √n. A mayor n, menor el error estándar, lo que significa que x̄ es más preciso." }
+    ],
+    t2s1: [
+        { q: "Si aumentas n (tamaño de muestra), el intervalo de confianza:", o: ["Se hace más ancho", "Se hace más estrecho", "No cambia", "Cambia su nivel de confianza"], a: 1, e: "Más datos → menor error estándar → la 'red' es más estrecha y precisa." },
+        { q: "'95% de confianza' significa que:", o: ["Hay 95% de probabilidad de que μ esté en ESTE intervalo", "95 de cada 100 intervalos construidos con este método contendrán μ", "El 95% de los datos caen en el intervalo", "La muestra es 95% precisa"], a: 1, e: "La confianza se refiere al MÉTODO, no a un intervalo particular. Si repitieras 100 veces, ~95 intervalos capturarían a μ." },
+        { q: "Para el mismo nivel de confianza, ¿qué produce un intervalo más ancho?", o: ["Más datos (n grande)", "Menos variabilidad (s pequeño)", "Datos más dispersos (s grande)", "Un z* más pequeño"], a: 2, e: "Mayor variabilidad (s grande) produce un error estándar más grande y por tanto un intervalo más ancho." }
+    ],
+    t3s1: [
+        { q: "La Hipótesis Nula (H₀) siempre contiene:", o: ["El signo ≠", "Un signo de igualdad (=)", "Solo valores negativos", "La palabra 'diferente'"], a: 1, e: "H₀ siempre representa el statu quo con un signo de igualdad: 'no hay diferencia', 'no hay efecto'." },
+        { q: "¿Cuál es la H₀ correcta si comparamos el ingreso de Casados vs Solteros?", o: ["Los casados ganan más", "Los ingresos son diferentes", "No hay diferencia en el ingreso promedio", "Los solteros ganan menos"], a: 2, e: "H₀ siempre dice 'no hay diferencia': μ_casados = μ_solteros." },
+        { q: "En una prueba de hipótesis, podemos:", o: ["Probar que H₀ es verdadera", "Rechazar H₀ o no rechazarla", "Aceptar H₀", "Probar tanto H₀ como Hₐ"], a: 1, e: "Nunca 'probamos' ni 'aceptamos' H₀. Solo podemos rechazarla (evidencia fuerte) o no rechazarla (evidencia insuficiente)." }
+    ],
+    t3s2: [
+        { q: "Un p-value de 0.01 con α = 0.05 significa:", o: ["No rechazamos H₀", "Rechazamos H₀", "Necesitamos más datos", "El efecto es grande"], a: 1, e: "p = 0.01 < α = 0.05 → Rechazamos H₀. La evidencia es extremadamente rara bajo la hipótesis nula." },
+        { q: "Un p-value de 0.35 con α = 0.05 significa:", o: ["Rechazamos H₀ parcialmente", "No rechazamos H₀", "Aceptamos Hₐ", "Error Tipo I"], a: 1, e: "p = 0.35 > α = 0.05 → No rechazamos H₀. La evidencia es perfectamente compatible con el azar." },
+        { q: "El p-value mide:", o: ["La probabilidad de que H₀ sea verdadera", "Cuán rara es la evidencia SI H₀ fuera cierta", "La probabilidad de error Tipo II", "El tamaño del efecto"], a: 1, e: "El p-value responde: 'Si H₀ fuera cierta, ¿qué tan probable sería ver evidencia tan extrema?'. NO mide la probabilidad de que H₀ sea verdadera." }
+    ],
+    t3s3: [
+        { q: "Lanzar una costosa campaña porque la prueba A/B dijo que funcionaba, pero NO era así. ¿Qué error es?", o: ["Error Tipo I (Falso Positivo)", "Error Tipo II (Falso Negativo)", "Error de Muestreo", "Error Estándar"], a: 0, e: "Rechazaste H₀ (no hay efecto) cuando era verdadera. Condenaste a un 'inocente'. Error Tipo I." },
+        { q: "Descartar un fármaco efectivo porque el ensayo clínico no detectó el efecto es:", o: ["Error Tipo I", "Error Tipo II", "Decisión correcta", "Potencia alta"], a: 1, e: "No rechazaste H₀ cuando era falsa (el fármaco sí funcionaba). Dejaste libre a un 'culpable'. Error Tipo II." },
+        { q: "La Potencia de una prueba (1 − β) es:", o: ["La probabilidad de Error Tipo I", "La probabilidad de detectar un efecto real", "El nivel de significancia", "El margen de error"], a: 1, e: "La potencia mide la capacidad del test para detectar correctamente un efecto cuando realmente existe." }
+    ],
+    final: [
+        { q: "Un investigador obtiene IC 95% = (645, 655) para el puntaje de crédito. ¿Qué afirmación es CORRECTA?", o: ["Hay 95% de probabilidad de que μ esté entre 645 y 655", "Si repitiéramos 100 veces, ~95 intervalos contendrían μ", "El 95% de los clientes tiene puntaje entre 645 y 655", "La muestra tiene error del 5%"], a: 1, e: "La interpretación correcta es sobre el MÉTODO: 95 de cada 100 intervalos así construidos contendrían a μ." },
+        { q: "¿Por qué el TLC es tan importante para la inferencia estadística?", o: ["Elimina la necesidad de muestras", "Garantiza que la muestra es representativa", "Permite usar la distribución Normal sin importar la forma de la población", "Reduce el error de muestreo a cero"], a: 2, e: "El TLC es poderoso porque nos permite aplicar propiedades de la Normal para hacer inferencias, sin importar cómo se distribuya la población original." },
+        { q: "En un test t para dos grupos, ¿qué indica un estadístico t con valor absoluto MUY grande?", o: ["Los grupos son idénticos", "La diferencia entre medias es grande relativa a la variabilidad", "Hay un error en los cálculos", "La muestra es demasiado pequeña"], a: 1, e: "Un |t| grande significa que la diferencia observada entre las medias es muy grande comparada con lo que esperaríamos por azar." },
+        { q: "Si reduces α de 0.05 a 0.01, ¿qué ocurre?", o: ["Menos Error Tipo I, más Error Tipo II", "Menos Error Tipo II, más Error Tipo I", "Ambos errores disminuyen", "No cambia nada"], a: 0, e: "Al ser más exigente (α más bajo), rechazas H₀ menos frecuentemente. Esto reduce los falsos positivos (Tipo I) pero aumenta los falsos negativos (Tipo II)." },
+        { q: "¿Qué prueba usarías para determinar si 'género' y 'estado de pago' están relacionados?", o: ["Prueba t de medias", "Prueba Chi-cuadrado (χ²)", "Intervalo de confianza para la media", "Ley de los Grandes Números"], a: 1, e: "Ambas variables son categóricas (género: M/F; estado de pago: Pagado/No Pagado), por lo que usamos la prueba Chi-cuadrado de independencia." }
+    ]
+};
+// Trivia state per section
+const triviaState = {};
+function initTrivia(id) {
+    const qs = allTrivia[id];
+    triviaState[id] = { idx: 0, score: 0, answered: false };
+    renderTrivia(id);
+}
+function renderTrivia(id) {
+    const st = triviaState[id];
+    const qs = allTrivia[id];
+    const q = qs[st.idx];
+    document.getElementById(`trivia-${id}-q`).textContent = q.q;
+    document.getElementById(`trivia-${id}-score`).textContent = `${st.score}/${qs.length}`;
+    
+    const optsEl = document.getElementById(`trivia-${id}-opts`);
+    optsEl.innerHTML = '';
+    q.o.forEach((opt, i) => {
+        const letters = ['a', 'b', 'c', 'd'];
+        const btn = document.createElement('button');
+        btn.className = 'trivia-opt-btn';
+        btn.textContent = `${letters[i]}) ${opt}`;
+        btn.onclick = () => checkTrivia(id, i);
+        optsEl.appendChild(btn);
+    });
+    document.getElementById(`trivia-${id}-fb`).className = 'trivia-feedback';
+    document.getElementById(`trivia-${id}-next`).style.display = 'none';
+    st.answered = false;
+    // dots
+    const dotsEl = document.getElementById(`trivia-${id}-dots`);
+    dotsEl.innerHTML = '';
+    qs.forEach((_, i) => {
+        const d = document.createElement('div');
+        d.className = `trivia-dot ${i < st.idx ? 'done' : ''} ${i === st.idx ? 'active' : ''}`;
+        dotsEl.appendChild(d);
+    });
+}
+function checkTrivia(id, chosen) {
+    const st = triviaState[id];
+    if (st.answered) return;
+    st.answered = true;
+    const qs = allTrivia[id];
+    const q = qs[st.idx];
+    const btns = document.querySelectorAll(`#trivia-${id}-opts .trivia-opt-btn`);
+    const fb = document.getElementById(`trivia-${id}-fb`);
+    if (chosen === q.a) {
+        btns[chosen].classList.add('correct');
+        st.score++;
+        document.getElementById(`trivia-${id}-score`).textContent = `${st.score}/${qs.length}`;
+        fb.innerHTML = `<strong>¡Correcto! 🎉</strong><br>${q.e}`;
+        fb.style.backgroundColor = 'rgba(42,125,95,0.2)';
+        fb.style.color = '#6ee7b7';
+    } else {
+        btns[chosen].classList.add('wrong');
+        btns[q.a].classList.add('correct');
+        fb.innerHTML = `<strong>No es correcto 😅</strong><br>${q.e}`;
+        fb.style.backgroundColor = 'rgba(181,51,74,0.2)';
+        fb.style.color = '#fda4af';
+    }
+    fb.classList.add('show');
+    const nextBtn = document.getElementById(`trivia-${id}-next`);
+    nextBtn.style.display = 'block';
+    nextBtn.textContent = st.idx === qs.length - 1 ? '✅ Finalizar' : 'Siguiente →';
+}
+function triviaNext(id) {
+    const st = triviaState[id];
+    const qs = allTrivia[id];
+    st.idx++;
+    if (st.idx < qs.length) {
+        renderTrivia(id);
+    } else {
+        const container = document.getElementById(`trivia-${id}`);
+        const pct = Math.round(st.score / qs.length * 100);
+        let emoji = pct === 100 ? '🏆' : pct >= 60 ? '👏' : '💪';
+        document.getElementById(`trivia-${id}-q`).innerHTML = `${emoji} Resultado: <span style="color:var(--accent-main-light);font-size:1.5em;">${st.score}/${qs.length}</span> (${pct}%)`;
+        document.getElementById(`trivia-${id}-opts`).innerHTML = pct === 100
+            ? '<p style="color:#6ee7b7;">¡Perfecto! Dominas este tema.</p>'
+            : '<p style="color:#94a3b8;">Revisa los conceptos y vuelve a intentar.</p>';
+        document.getElementById(`trivia-${id}-fb`).style.display = 'none';
+        document.getElementById(`trivia-${id}-next`).style.display = 'none';
+    }
+}
+// Init all trivias
+Object.keys(allTrivia).forEach(id => initTrivia(id));
+// ═══════════ NAVIGATION ═══════════
+const secs = document.querySelectorAll('.chapter');
+const pills = document.querySelectorAll('.nav-pill');
+const obs = new IntersectionObserver(es => {
+    es.forEach(e => {
+        if (e.isIntersecting) {
+            pills.forEach(p => p.classList.remove('active'));
+            const pill = document.querySelector(`.nav-pill[data-section="${e.target.id}"]`);
+            if (pill) {
+                pill.classList.add('active');
+                pill.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+            }
+        }
+    });
+}, { threshold: 0.15, rootMargin: '-80px 0px -50% 0px' });
+secs.forEach(s => obs.observe(s));
+pills.forEach(p => {
+    p.addEventListener('click', e => {
+        e.preventDefault();
+        const t = document.getElementById(p.dataset.section);
+        if (t) {
+            const y = t.getBoundingClientRect().top + window.pageYOffset - document.getElementById('navBar').offsetHeight - 20;
+            window.scrollTo({ top: y, behavior: 'smooth' });
+        }
+    });
+});
+</script>
+</body>
+</html>
