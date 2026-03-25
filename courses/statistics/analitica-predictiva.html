@@ -1293,83 +1293,26 @@ sns.<span class="function">set_palette</span>(<span class="string">'husl'</span>
 plt.<span class="function">rcParams</span>[<span class="string">'figure.figsize'</span>] = (<span class="number">10</span>, <span class="number">6</span>)</div>
     </div>
 
-    <div class="callout danger">
-        <div class="callout-icon">&#9888;&#65039;</div>
+    <div class="callout info">
+        <div class="callout-icon">&#128218;</div>
         <div>
             <h4>En Databricks: instalar statsmodels primero</h4>
-            <p><code>statsmodels</code> no viene preinstalado en Databricks. Ejecuta esta celda <strong>antes</strong> de los imports. Solo es necesario hacerlo una vez por sesion:</p>
+            <p>Ejecuta <code>%pip install statsmodels</code> en una celda aparte antes de los imports.</p>
         </div>
-    </div>
-
-    <div class="code-block">
-        <div class="code-header">
-            <span>python &mdash; paso_0_instalar_databricks.py</span>
-            <button class="code-copy-btn" onclick="copyCode(this)">Copiar</button>
-        </div>
-        <div class="code-body"><span class="comment"># Ejecutar SOLO en Databricks (en una celda aparte, antes de los imports)</span>
-%pip install statsmodels</div>
     </div>
 
     <h3 style="margin-top:24px;">Paso 2: Cargar los Datos</h3>
-    <p>Dependiendo de tu entorno de trabajo, hay diferentes formas de cargar el dataset:</p>
-
     <div class="code-block">
         <div class="code-header">
-            <span>python &mdash; paso_2a_cargar_csv.py</span>
+            <span>python &mdash; paso_2_cargar_datos.py</span>
             <button class="code-copy-btn" onclick="copyCode(this)">Copiar</button>
         </div>
-        <div class="code-body"><span class="comment"># ====================================</span>
-<span class="comment"># OPCION A: Desde archivo CSV local</span>
-<span class="comment"># (Google Colab, Jupyter Notebook, VS Code)</span>
-<span class="comment"># ====================================</span>
-
-<span class="comment"># Si el archivo esta en la misma carpeta</span>
+        <div class="code-body"><span class="comment"># Cargar el dataset completo (nuestra "poblacion")</span>
 <span class="variable">df</span> = pd.<span class="function">read_csv</span>(<span class="string">'credit_risk_data.csv'</span>)
+<span class="comment"># Databricks: df = spark.table('credit_risk_data').toPandas()</span>
 
-<span class="comment"># Si el archivo esta en otra ruta</span>
-<span class="comment"># df = pd.read_csv('/ruta/a/tu/archivo/credit_risk_data.csv')</span>
-
-<span class="comment"># En Google Colab: subir archivo primero</span>
-<span class="comment"># from google.colab import files</span>
-<span class="comment"># files.upload()  # Selecciona el CSV</span>
-<span class="comment"># df = pd.read_csv('credit_risk_data.csv')</span></div>
-    </div>
-
-    <div class="code-block">
-        <div class="code-header">
-            <span>python &mdash; paso_2b_cargar_databricks.py</span>
-            <button class="code-copy-btn" onclick="copyCode(this)">Copiar</button>
-        </div>
-        <div class="code-body"><span class="comment"># ====================================</span>
-<span class="comment"># OPCION B: Desde Databricks</span>
-<span class="comment"># ====================================</span>
-
-<span class="comment"># --- Paso B.1: Leer el CSV con Spark ---</span>
-<span class="comment"># Si el archivo esta en un Volumen de Unity Catalog:</span>
-<span class="variable">df_spark</span> = spark.read.csv(
-    <span class="string">'/Volumes/mi_catalogo/mi_esquema/mi_volumen/credit_risk_data.csv'</span>,
-    header=<span class="keyword">True</span>,
-    inferSchema=<span class="keyword">True</span>
-)
-
-<span class="comment"># Verificar que se leyo correctamente</span>
-<span class="keyword">print</span>(<span class="string">f"Registros: {df_spark.count():,}"</span>)
-df_spark.<span class="function">printSchema</span>()
-df_spark.<span class="function">show</span>(<span class="number">5</span>)
-
-<span class="comment"># --- Paso B.2: Convertir de Spark DataFrame a Pandas ---</span>
-<span class="variable">df</span> = df_spark.<span class="function">toPandas</span>()
-<span class="keyword">print</span>(<span class="string">f"DataFrame de Pandas: {df.shape}"</span>)
-
-<span class="comment"># ---- Alternativas de lectura en Databricks ----</span>
-<span class="comment"># Si los datos ya estan como tabla en el catalogo:</span>
-<span class="comment"># df_spark = spark.table('mi_catalogo.mi_esquema.credit_risk_data')</span>
-<span class="comment"># df = df_spark.toPandas()</span>
-<span class="comment">#</span>
-<span class="comment"># Si el CSV esta en DBFS (legacy):</span>
-<span class="comment"># df_spark = spark.read.csv('/FileStore/tables/credit_risk_data.csv',</span>
-<span class="comment">#                          header=True, inferSchema=True)</span>
-<span class="comment"># df = df_spark.toPandas()</span></div>
+<span class="keyword">print</span>(<span class="string">f"Dataset cargado: {df.shape[0]:,} filas x {df.shape[1]} columnas"</span>)
+<span class="keyword">print</span>(df.<span class="function">head</span>(<span class="number">3</span>))</div>
     </div>
 
     <h3 style="margin-top:24px;">Paso 3: Explorar el Dataset</h3>
