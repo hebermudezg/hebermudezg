@@ -1,89 +1,67 @@
 # CLAUDE.md
 
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+
 ## Project Overview
 
-Personal portfolio and educational website for **Heber E. Bermúdez** — a Data Engineer, Data Architect, and AI Engineer. This is a static HTML/CSS/JS site with no build system or backend.
+Personal portfolio and educational website for **Heber E. Bermúdez** — Data Engineer, Data Architect & AI Engineer. Static HTML/CSS/JS site with no build system or backend.
 
 **Live site:** Deployed via GitHub Pages from the `master` branch.
 
-## Repository Structure
+## Development
 
-```
-/
-├── index.html              # Main portfolio page (primary file)
-├── pyhon.html              # Python course overview (note: intentional filename)
-├── sql.html                # SQL course overview
-├── README.md               # GitHub profile README
-├── courses/
-│   └── python/
-│       └── pyhon.html      # Detailed Python course content
-├── css/
-│   ├── style.css           # Main site styles
-│   ├── style-courses.css   # Course page styles
-│   ├── style-1.css … style-4.css   # Menu effect variants
-│   └── style1.css … style4.css     # Legacy/alternate style iterations
-├── js/
-│   └── javascript.js       # Minimal JS (mobile menu, AOS init)
-├── templates/
-│   ├── menus.html           # Menu navigation examples
-│   └── index copy.html      # Previous version backup
-├── img/                     # Images: profile photos, logos, project assets
-├── fonts/                   # Font directory (currently empty)
-└── documents/
-    └── Heber Bermudez.pdf   # Resume/CV
-```
+**No build process.** Edit HTML/CSS/JS files directly and commit. All dependencies load via CDN — no package manager needed. No test suite or linter configured.
 
-## Tech Stack
+To preview locally, open `index.html` in a browser.
 
-- **HTML5** — Semantic markup, no templating engine
-- **CSS3** — Custom properties for theming, media queries for responsiveness
-- **Tailwind CSS** — Loaded via CDN in `index.html`
-- **Vanilla JavaScript** — No frameworks
-- **Font Awesome 6.5.1** — Icons (CDN)
-- **Google Fonts** — Inter, JetBrains Mono (CDN)
-- **AOS** — Animate On Scroll library (CDN)
+## Architecture
 
-## Development Workflow
+### Page types
 
-**No build process.** Edit HTML/CSS/JS files directly and commit.
+1. **`index.html` (portfolio)** — The primary page. All styles are inlined in a `<style>` block within the file. Uses Tailwind CSS (CDN), AOS animations, Font Awesome icons, and Google Fonts (Inter, JetBrains Mono). Sections: nav, hero (`#home`), teaching (`#teaching`), research (`#research`), projects (`#projects`), contact (`#contact`), footer.
 
-- All dependencies are loaded via CDN — no `npm install` or package manager needed
-- No `.gitignore` exists; `.DS_Store` and `.Rhistory` are tracked
-- No test suite or linter configured
-- To preview locally, open `index.html` in a browser
+2. **Course pages (`pyhon.html`, `sql.html`, `courses/python/pyhon.html`)** — Lightweight HTML pages linking to external resources (GitHub notebooks, Medium articles). These use external CSS from `css/` (e.g., `style-courses.css`), not inlined styles.
 
-## Key Conventions
+3. **Templates (`templates/`)** — Experimental/backup files, not part of the live site.
 
-### Design System (index.html)
+### CSS split
+
+- `index.html`: all styles are **inlined** — do not create external CSS files for it
+- Course pages: use external stylesheets from `css/`
+- `css/style-1.css` through `style-4.css` and `style1.css` through `style4.css`: menu effect variants and legacy iterations used by templates
+
+### Design system (index.html)
 
 CSS custom properties define the theme:
 - Primary color: `--primary: #2563eb` (blue)
 - Fonts: Inter (body), JetBrains Mono (code)
 - Responsive breakpoint: 768px for mobile
 
-Reusable CSS classes: `.card`, `.btn-primary`, `.btn-secondary`, `.skill-pill`, `.project-card`, `.nav-link`
+Key classes: `.card`, `.btn-primary`, `.btn-secondary`, `.skill-pill`, `.project-card`, `.nav-link`, `.social-icon`, `.section-card`
 
-### File Naming
+### JavaScript
 
-- HTML pages use lowercase: `index.html`, `sql.html`
-- CSS uses kebab-case: `style-courses.css`
-- Images use underscores: `python_logo1.png`, `bash_linux_logo1.png`
+Minimal — `js/javascript.js` exists but the main page uses inline `<script>` at the bottom of `index.html` for: mobile menu toggle, AOS initialization, and smooth scroll behavior.
 
-### Content Language
+## Conventions
 
+### File naming
+- HTML: lowercase (`index.html`, `sql.html`)
+- CSS: kebab-case (`style-courses.css`)
+- Images: underscores (`python_logo1.png`)
+
+### Content language
 - Site content is in **English**
-- Some image filenames are in Spanish (e.g., `madre-solterea.webp`)
+- Some image filenames are in Spanish
 
-## Commit Message Style
-
-- **Imperative mood**, action-first: `Add`, `Remove`, `Simplify`, `Enhance`, `Redesign`
-- Mention scope explicitly: `Add project links to README`, `Reorganize hero section and projects layout`
+### Commit messages
+- Imperative mood, action-first: `Add`, `Remove`, `Simplify`, `Enhance`, `Redesign`
+- Mention scope explicitly: `Add project links to README`
 - No ticket numbers or conventional commit prefixes
 - Keep messages concise (one line)
 
 ## Important Notes
 
-- The filename `pyhon.html` (missing "t") is intentional/established — do not rename without explicit request
-- All styles for `index.html` are inlined in a `<style>` block within the file itself, not in external CSS files
-- The external CSS files in `css/` are used by course pages and template experiments
-- When adding new pages, follow the existing pattern: standalone HTML with CDN dependencies
+- The filename `pyhon.html` (missing "t") is **intentional** — do not rename without explicit request
+- New pages should follow the existing pattern: standalone HTML with CDN dependencies
+- `README.md` serves as the GitHub profile README, not project documentation

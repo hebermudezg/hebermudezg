@@ -1,0 +1,2408 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guía Interactiva: Analítica Predictiva y Machine Learning</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800&family=DM+Serif+Display&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            --bg: #faf9f7;
+            --surface: #ffffff;
+            --surface2: #f3f1ee;
+            --surface3: #e8e5e0;
+            --border: #ddd9d2;
+            --border-light: #ccc7be;
+            --text: #1a1816;
+            --text-muted: #5c5650;
+            --text-dim: #9b958d;
+            --ink: #2c2825;
+            --accent-main: #c05621;
+            --accent-main-dim: rgba(192, 86, 33, 0.08);
+            --accent-main-light: #e87f3e;
+            --accent-blue: #1d6fa5;
+            --accent-blue-dim: rgba(29, 111, 165, 0.08);
+            --accent-green: #2a7d5f;
+            --accent-green-dim: rgba(42, 125, 95, 0.08);
+            --accent-purple: #6d4aaa;
+            --accent-purple-dim: rgba(109, 74, 170, 0.08);
+            --accent-rose: #b5334a;
+            --accent-rose-dim: rgba(181, 51, 74, 0.08);
+            --accent-amber: #b8860b;
+            --accent-amber-dim: rgba(184, 134, 11, 0.08);
+            --accent-teal: #1a8a7d;
+            --accent-teal-dim: rgba(26, 138, 125, 0.08);
+            --radius: 14px;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.03);
+            --shadow-md: 0 4px 16px rgba(0,0,0,0.05), 0 2px 6px rgba(0,0,0,0.03);
+            --shadow-lg: 0 12px 40px rgba(0,0,0,0.08);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'DM Sans', -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.75;
+            overflow-x: hidden;
+            font-size: 16px;
+        }
+        ::-webkit-scrollbar { width: 7px; }
+        ::-webkit-scrollbar-track { background: var(--bg); }
+        ::-webkit-scrollbar-thumb { background: var(--border-light); border-radius: 10px; }
+        .container { max-width: 1080px; margin: 0 auto; padding: 0 28px; }
+
+        /* ===== HERO ===== */
+        .hero {
+            padding: 100px 0 80px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(175deg, #fef6ee 0%, #faf9f7 60%, #f0ede8 100%);
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -200px; right: -200px;
+            width: 600px; height: 600px;
+            background: radial-gradient(circle, rgba(192,86,33,0.06) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: -150px; left: -150px;
+            width: 500px; height: 500px;
+            background: radial-gradient(circle, rgba(29,111,165,0.05) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--accent-main-dim);
+            color: var(--accent-main);
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            padding: 8px 20px;
+            border-radius: 30px;
+            border: 1px solid rgba(192,86,33,0.12);
+            margin-bottom: 32px;
+        }
+        .hero h1 {
+            font-family: 'DM Serif Display', Georgia, serif;
+            font-size: clamp(2.8rem, 6vw, 4.8rem);
+            line-height: 1.08;
+            color: var(--ink);
+            margin-bottom: 24px;
+            font-weight: 400;
+        }
+        .hero h1 .highlight {
+            background: linear-gradient(135deg, var(--accent-main) 0%, #d4732e 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .hero p {
+            font-size: 1.15rem;
+            color: var(--text-muted);
+            max-width: 680px;
+            margin: 0 auto 36px;
+            line-height: 1.8;
+        }
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 48px;
+            margin-top: 16px;
+        }
+        .hero-stat { text-align: center; }
+        .hero-stat-number {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--accent-main);
+        }
+        .hero-stat-label {
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* ===== NAV ===== */
+        .nav-bar {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(250, 249, 247, 0.88);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border-bottom: 1px solid var(--border);
+            padding: 10px 0;
+        }
+        .nav-inner {
+            display: flex;
+            gap: 6px;
+            overflow-x: auto;
+            padding: 4px 0;
+            scrollbar-width: none;
+        }
+        .nav-inner::-webkit-scrollbar { display: none; }
+        .nav-pill {
+            flex-shrink: 0;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 12.5px;
+            font-weight: 700;
+            color: var(--text-dim);
+            background: transparent;
+            border: 1px solid transparent;
+            cursor: pointer;
+            transition: all .2s ease;
+            text-decoration: none;
+            white-space: nowrap;
+        }
+        .nav-pill:hover { color: var(--text-muted); background: var(--surface2); }
+        .nav-pill.active {
+            color: var(--accent-main);
+            background: var(--accent-main-dim);
+            border-color: rgba(192,86,33,0.12);
+        }
+
+        /* ===== CHAPTERS ===== */
+        .chapter {
+            padding: 80px 0 50px;
+            border-top: 1px solid var(--border);
+        }
+        .chapter:first-of-type { border-top: none; }
+        .chapter-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+            margin-bottom: 36px;
+        }
+        .chapter-num {
+            font-family: 'DM Serif Display', serif;
+            font-size: 4.5rem;
+            line-height: 0.85;
+            color: var(--surface3);
+            font-weight: 400;
+            flex-shrink: 0;
+            min-width: 80px;
+            text-align: right;
+        }
+        .chapter-info { flex: 1; }
+        .chapter-title {
+            font-family: 'DM Serif Display', serif;
+            font-size: 2rem;
+            color: var(--ink);
+            margin-bottom: 6px;
+            font-weight: 400;
+            line-height: 1.2;
+        }
+        .chapter-subtitle {
+            font-size: 1rem;
+            color: var(--text-muted);
+        }
+
+        /* ===== CARDS ===== */
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 28px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow-sm);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .card:hover {
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+        .card-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        .card-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+        @media(max-width: 900px) { .card-grid-3 { grid-template-columns: 1fr; } }
+        @media(max-width: 768px) { .card-grid { grid-template-columns: 1fr; } }
+        .card-accent { border-left: 4px solid var(--accent-main); }
+        .card-accent.blue { border-left-color: var(--accent-blue); }
+        .card-accent.green { border-left-color: var(--accent-green); }
+        .card-accent.purple { border-left-color: var(--accent-purple); }
+        .card-accent.rose { border-left-color: var(--accent-rose); }
+        .card-accent.amber { border-left-color: var(--accent-amber); }
+        .card-accent.teal { border-left-color: var(--accent-teal); }
+        .card h3 {
+            font-size: 1.1rem;
+            font-weight: 800;
+            margin-bottom: 10px;
+            color: var(--ink);
+        }
+        .card p, .card li {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+
+        /* ===== ICON BOX ===== */
+        .icon-box {
+            width: 44px; height: 44px;
+            border-radius: 11px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.15rem;
+            margin-bottom: 14px;
+            flex-shrink: 0;
+        }
+        .icon-box.main { background: var(--accent-main-dim); color: var(--accent-main); }
+        .icon-box.blue { background: var(--accent-blue-dim); color: var(--accent-blue); }
+        .icon-box.green { background: var(--accent-green-dim); color: var(--accent-green); }
+        .icon-box.purple { background: var(--accent-purple-dim); color: var(--accent-purple); }
+        .icon-box.rose { background: var(--accent-rose-dim); color: var(--accent-rose); }
+        .icon-box.amber { background: var(--accent-amber-dim); color: var(--accent-amber); }
+        .icon-box.teal { background: var(--accent-teal-dim); color: var(--accent-teal); }
+
+        /* ===== TAGS ===== */
+        .tag {
+            display: inline-block;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            padding: 4px 10px;
+            border-radius: 6px;
+            margin-bottom: 10px;
+        }
+        .tag.main { background: var(--accent-main-dim); color: var(--accent-main); }
+        .tag.blue { background: var(--accent-blue-dim); color: var(--accent-blue); }
+        .tag.green { background: var(--accent-green-dim); color: var(--accent-green); }
+        .tag.purple { background: var(--accent-purple-dim); color: var(--accent-purple); }
+        .tag.rose { background: var(--accent-rose-dim); color: var(--accent-rose); }
+        .tag.amber { background: var(--accent-amber-dim); color: var(--accent-amber); }
+        .tag.teal { background: var(--accent-teal-dim); color: var(--accent-teal); }
+
+        /* ===== FORMULA BOX ===== */
+        .formula-box {
+            background: #fdfbf9;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 16px 22px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.92rem;
+            color: var(--accent-purple);
+            margin: 14px 0;
+            overflow-x: auto;
+            text-align: center;
+        }
+
+        /* ===== CALLOUT ===== */
+        .callout {
+            border-radius: var(--radius);
+            padding: 24px 28px;
+            margin: 24px 0;
+            position: relative;
+            display: flex;
+            gap: 16px;
+        }
+        .callout-icon { font-size: 1.5rem; flex-shrink: 0; line-height: 1; margin-top: 2px; }
+        .callout h4 { font-size: 1rem; font-weight: 800; margin-bottom: 6px; }
+        .callout p { font-size: 0.93rem; line-height: 1.7; }
+        .callout.tip { background: #fefce8; border: 1px solid #fde68a; }
+        .callout.tip h4 { color: #92400e; }
+        .callout.tip p { color: #78350f; }
+        .callout.danger { background: #fef2f2; border: 1px solid #fecaca; }
+        .callout.danger h4 { color: #9f1239; }
+        .callout.danger p { color: #881337; }
+        .callout.info { background: #eff6ff; border: 1px solid #bfdbfe; }
+        .callout.info h4 { color: #1e40af; }
+        .callout.info p { color: #1e3a5f; }
+        .callout.success { background: #ecfdf5; border: 1px solid #a7f3d0; }
+        .callout.success h4 { color: #065f46; }
+        .callout.success p { color: #064e3b; }
+
+        /* ===== REAL WORLD EXAMPLE ===== */
+        .real-world {
+            background: linear-gradient(135deg, #fdfbf9 0%, #f7f3ee 100%);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 28px;
+            margin: 24px 0;
+        }
+        .real-world-header {
+            display: flex; align-items: center; gap: 10px; margin-bottom: 14px;
+        }
+        .real-world-header .badge {
+            background: var(--accent-main);
+            color: #fff;
+            font-size: 10px; font-weight: 800;
+            padding: 4px 10px; border-radius: 6px;
+            letter-spacing: 1px; text-transform: uppercase;
+        }
+        .real-world-header h4 { font-size: 1.05rem; font-weight: 800; color: var(--ink); }
+        .real-world p { color: var(--text-muted); font-size: 0.95rem; }
+
+        /* ===== CODE BLOCKS ===== */
+        .code-block {
+            background: #1e1e1e;
+            border-radius: var(--radius);
+            overflow: hidden;
+            margin: 20px 0;
+            box-shadow: var(--shadow-md);
+        }
+        .code-header {
+            background: #2d2d2d;
+            padding: 10px 18px;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .code-header span {
+            color: #8b8b8b;
+            font-size: 12px; font-weight: 700;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .code-copy-btn {
+            background: #444; border: none; color: #ccc;
+            padding: 4px 12px; border-radius: 6px;
+            font-size: 11px; cursor: pointer;
+            font-family: inherit; font-weight: 600;
+            transition: background 0.2s;
+        }
+        .code-copy-btn:hover { background: #555; color: #fff; }
+        .code-body {
+            padding: 18px 22px;
+            overflow-x: auto;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px; line-height: 1.65;
+            color: #d4d4d4;
+            white-space: pre;
+            word-wrap: normal;
+        }
+        .code-body .comment { color: #6a9955; }
+        .code-body .keyword { color: #c586c0; }
+        .code-body .function { color: #dcdcaa; }
+        .code-body .string { color: #ce9178; }
+        .code-body .number { color: #b5cea8; }
+        .code-body .variable { color: #9cdcfe; }
+        .code-body .operator { color: #d4d4d4; }
+
+        /* ===== SIMULATION PANELS ===== */
+        .sim-panel {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            overflow: hidden;
+            margin-bottom: 32px;
+            box-shadow: var(--shadow-md);
+        }
+        .sim-header {
+            padding: 24px 28px 16px;
+            display: flex; align-items: center; gap: 14px;
+            border-bottom: 1px solid var(--border);
+            background: var(--surface2);
+        }
+        .sim-icon {
+            width: 50px; height: 50px;
+            border-radius: 14px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.4rem; flex-shrink: 0;
+        }
+        .sim-header-text h3 { font-size: 1.1rem; font-weight: 800; color: var(--ink); margin-bottom: 4px; }
+        .sim-header-text p { font-size: 0.85rem; color: var(--text-muted); }
+        .sim-body {
+            display: grid;
+            grid-template-columns: 270px 1fr;
+            gap: 24px;
+            padding: 20px 28px;
+        }
+        @media(max-width: 800px) { .sim-body { grid-template-columns: 1fr; } }
+        .sim-controls { display: flex; flex-direction: column; gap: 10px; }
+        .sim-btn {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 12px 16px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            background: var(--surface);
+            color: var(--text);
+            font-size: 0.85rem; font-weight: 700;
+            cursor: pointer;
+            transition: all .15s ease;
+            font-family: inherit;
+        }
+        .sim-btn:hover { background: var(--surface3); border-color: var(--border-light); }
+        .sim-btn:active { transform: scale(0.97); }
+        .sim-btn.primary { background: var(--accent-main); border-color: var(--accent-main); color: #fff; }
+        .sim-btn.primary:hover { filter: brightness(1.1); }
+        .sim-btn.primary.green { background: var(--accent-green); border-color: var(--accent-green); }
+        .sim-btn.primary.blue { background: var(--accent-blue); border-color: var(--accent-blue); }
+        .sim-btn.primary.purple { background: var(--accent-purple); border-color: var(--accent-purple); }
+        .slider-group { margin: 6px 0; }
+        .slider-label {
+            display: flex; justify-content: space-between; align-items: center;
+            font-size: 0.85rem; font-weight: 700; color: var(--text); margin-bottom: 8px;
+        }
+        input[type="range"] {
+            width: 100%; height: 6px;
+            -webkit-appearance: none;
+            background: var(--surface3);
+            border-radius: 3px;
+            outline: none;
+        }
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px; height: 18px;
+            border-radius: 50%;
+            background: var(--accent-main);
+            cursor: pointer;
+            border: 2px solid #fff;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+        }
+        input[type="range"].green::-webkit-slider-thumb { background: var(--accent-green); }
+        input[type="range"].blue::-webkit-slider-thumb { background: var(--accent-blue); }
+        input[type="range"].purple::-webkit-slider-thumb { background: var(--accent-purple); }
+        .chart-wrap {
+            background: var(--surface2);
+            border-radius: 14px;
+            padding: 16px;
+            border: 1px solid var(--border);
+            min-height: 300px;
+            position: relative;
+            overflow: hidden;
+        }
+        .stat-box {
+            background: var(--surface3);
+            border-radius: 8px;
+            padding: 10px;
+            text-align: center;
+        }
+        .stat-box-label {
+            font-size: 0.7rem; font-weight: 800;
+            text-transform: uppercase; letter-spacing: 1px;
+            color: var(--text-dim);
+        }
+        .stat-box-value {
+            font-size: 1.4rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        /* ===== TRIVIA ===== */
+        .trivia-section {
+            background: #1a1816;
+            border-radius: 18px;
+            padding: 32px;
+            color: #fff;
+            margin: 32px 0;
+            box-shadow: var(--shadow-lg);
+        }
+        .trivia-section-header {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 20px;
+        }
+        .trivia-section-header h4 {
+            font-size: 1.1rem; font-weight: 800;
+            display: flex; align-items: center; gap: 10px;
+        }
+        .score-display {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.2rem; font-weight: 700;
+            color: var(--accent-main-light);
+        }
+        .trivia-q-text {
+            font-size: 1.05rem;
+            font-weight: 600;
+            margin-bottom: 18px;
+            line-height: 1.6;
+            color: #e5e0db;
+        }
+        .trivia-opts { display: flex; flex-direction: column; gap: 10px; }
+        .trivia-opt-btn {
+            background: #2a2724;
+            border: 2px solid #3d3835;
+            color: #e5e0db;
+            padding: 14px 18px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+            font-size: 0.95rem;
+            font-weight: 600;
+            text-align: left;
+        }
+        .trivia-opt-btn:hover { background: #3d3835; border-color: #555; }
+        .trivia-opt-btn.correct { background: rgba(42,125,95,0.25); border-color: var(--accent-green); color: #6ee7b7; }
+        .trivia-opt-btn.wrong { background: rgba(181,51,74,0.25); border-color: var(--accent-rose); color: #fda4af; }
+        .trivia-feedback {
+            margin-top: 16px;
+            padding: 14px 18px;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .trivia-feedback.show { opacity: 1; }
+        .trivia-nav {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-top: 18px;
+        }
+        .trivia-dots { display: flex; gap: 6px; }
+        .trivia-dot {
+            width: 8px; height: 8px;
+            border-radius: 50%;
+            background: #444;
+            transition: background 0.2s;
+        }
+        .trivia-dot.done { background: var(--accent-green); }
+        .trivia-dot.active { background: var(--accent-main-light); }
+        .trivia-nav-btn {
+            background: var(--accent-main);
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: inherit;
+            transition: filter 0.2s;
+            display: none;
+        }
+        .trivia-nav-btn:hover { filter: brightness(1.15); }
+
+        /* ===== CONFUSION MATRIX ===== */
+        .cm-grid {
+            display: grid;
+            grid-template-columns: auto 1fr 1fr;
+            grid-template-rows: auto 1fr 1fr;
+            gap: 4px;
+            max-width: 320px;
+            margin: 16px auto;
+        }
+        .cm-cell {
+            padding: 16px;
+            border-radius: 8px;
+            text-align: center;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+        .cm-label {
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.7rem; font-weight: 800;
+            text-transform: uppercase; letter-spacing: 1px;
+            color: var(--text-dim);
+        }
+        .cm-tp { background: rgba(42,125,95,0.15); color: var(--accent-green); }
+        .cm-tn { background: rgba(29,111,165,0.15); color: var(--accent-blue); }
+        .cm-fp { background: rgba(184,134,11,0.15); color: var(--accent-amber); }
+        .cm-fn { background: rgba(181,51,74,0.15); color: var(--accent-rose); }
+
+        /* ===== NEURON VISUAL ===== */
+        .neuron-visual {
+            display: flex; align-items: center; justify-content: center;
+            gap: 30px; padding: 20px; flex-wrap: wrap;
+        }
+        .neuron-inputs { display: flex; flex-direction: column; gap: 12px; }
+        .neuron-input-row {
+            display: flex; align-items: center; gap: 8px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+        }
+        .neuron-circle {
+            width: 80px; height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent-purple), #8b5cf6);
+            display: flex; align-items: center; justify-content: center;
+            color: #fff; font-weight: 800; font-size: 0.9rem;
+            box-shadow: 0 4px 20px rgba(109,74,170,0.3);
+        }
+        .neuron-output {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.2rem; font-weight: 700;
+            padding: 12px 20px;
+            border-radius: 10px;
+            background: var(--surface2);
+            border: 2px solid var(--border);
+        }
+
+        /* ===== FOOTER ===== */
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-dim);
+            font-size: 0.85rem;
+            border-top: 1px solid var(--border);
+            margin-top: 60px;
+        }
+
+        /* ===== STEP LIST ===== */
+        .step-list { counter-reset: steps; list-style: none; padding: 0; }
+        .step-list li {
+            counter-increment: steps;
+            padding: 12px 0 12px 48px;
+            position: relative;
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+        .step-list li::before {
+            content: counter(steps);
+            position: absolute;
+            left: 0; top: 10px;
+            width: 32px; height: 32px;
+            border-radius: 8px;
+            background: var(--accent-main-dim);
+            color: var(--accent-main);
+            font-weight: 800;
+            font-size: 0.85rem;
+            display: flex; align-items: center; justify-content: center;
+        }
+
+        /* ===== COMPARISON TABLE ===== */
+        .compare-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+            margin: 16px 0;
+        }
+        .compare-table th {
+            background: var(--surface2);
+            padding: 12px 16px;
+            font-size: 0.8rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-dim);
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+        .compare-table td {
+            padding: 12px 16px;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            border-bottom: 1px solid var(--border);
+        }
+        .compare-table tr:last-child td { border-bottom: none; }
+
+        @media(max-width: 768px) {
+            .hero-stats { gap: 24px; flex-wrap: wrap; }
+            .chapter-header { flex-direction: column; gap: 10px; }
+            .chapter-num { text-align: left; font-size: 3rem; min-width: auto; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ==================== HERO ==================== -->
+<section class="hero">
+    <div class="container">
+        <div class="hero-badge"><i class="fa-solid fa-chart-line"></i> UNIDAD 3</div>
+        <h1>Analítica <span class="highlight">Predictiva</span><br>& Machine Learning</h1>
+        <p>De detectives a arquitectos de predicciones. Construiremos modelos capaces de anticipar el futuro a partir de datos, desde la correlación hasta las redes neuronales.</p>
+        <div class="hero-stats">
+            <div class="hero-stat">
+                <div class="hero-stat-number">5</div>
+                <div class="hero-stat-label">Temas</div>
+            </div>
+            <div class="hero-stat">
+                <div class="hero-stat-number">6</div>
+                <div class="hero-stat-label">Simuladores</div>
+            </div>
+            <div class="hero-stat">
+                <div class="hero-stat-number">7</div>
+                <div class="hero-stat-label">Trivias</div>
+            </div>
+            <div class="hero-stat">
+                <div class="hero-stat-number">20K</div>
+                <div class="hero-stat-label">Observaciones</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== NAV ==================== -->
+<nav class="nav-bar" id="navBar">
+    <div class="container">
+        <div class="nav-inner">
+            <a href="#t1s1" class="nav-pill active" data-section="t1s1">1.1 Correlacion vs Causalidad</a>
+            <a href="#t1s2" class="nav-pill" data-section="t1s2">1.2 Pearson & Simulador</a>
+            <a href="#t1s3" class="nav-pill" data-section="t1s3">1.3 Regresion Lineal & OLS</a>
+            <a href="#t1s4" class="nav-pill" data-section="t1s4">1.4 Modelo en Python</a>
+            <a href="#t2s1" class="nav-pill" data-section="t2s1">2.1 Regresion Multiple</a>
+            <a href="#t2s2" class="nav-pill" data-section="t2s2">2.2 Metricas & Diagnostico</a>
+            <a href="#t3s1" class="nav-pill" data-section="t3s1">3.1 Regresion Logistica</a>
+            <a href="#t3s2" class="nav-pill" data-section="t3s2">3.2 Sigmoide & Umbral</a>
+            <a href="#t3s3" class="nav-pill" data-section="t3s3">3.3 Modelo & Metricas</a>
+            <a href="#t4s1" class="nav-pill" data-section="t4s1">4.1 Arboles & Random Forest</a>
+            <a href="#t4s2" class="nav-pill" data-section="t4s2">4.2 KNN, SVM & Boosting</a>
+            <a href="#t5s1" class="nav-pill" data-section="t5s1">5.1 La Neurona Artificial</a>
+            <a href="#t5s2" class="nav-pill" data-section="t5s2">5.2 Redes Multicapa</a>
+            <a href="#final" class="nav-pill" data-section="final">Trivia Final</a>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+
+<!-- ============================================================ -->
+<!--  TEMA 1: CORRELACION Y REGRESION LINEAL SIMPLE               -->
+<!-- ============================================================ -->
+
+<!-- 1.1 Correlacion vs Causalidad -->
+<section class="chapter" id="t1s1">
+    <div class="chapter-header">
+        <div class="chapter-num">01</div>
+        <div class="chapter-info">
+            <div class="tag main">TEMA 1 &middot; FUNDAMENTOS</div>
+            <h2 class="chapter-title">Correlacion vs. Causalidad</h2>
+            <p class="chapter-subtitle">La regla de oro del analisis de datos: que dos variables se muevan juntas NO significa que una cause a la otra.</p>
+        </div>
+    </div>
+
+    <p>En la Unidad 2, fuimos <strong>detectives</strong>: usamos muestras para inferir verdades sobre la poblacion. Ahora evolucionamos a <strong>arquitectos de predicciones</strong>. Usaremos el dataset <code>credit_analysis_data.csv</code> con informacion financiera de <strong>20,000 solicitantes de credito</strong> para construir modelos capaces de <strong>predecir su comportamiento futuro</strong>.</p>
+
+    <div class="callout danger" style="margin-top:24px;">
+        <div class="callout-icon">&#9888;&#65039;</div>
+        <div>
+            <h4>Correlacion NO implica Causalidad</h4>
+            <p>Este es el error mas comun y peligroso en analisis de datos. Que dos variables fluctuen juntas solo describe una <strong>asociacion</strong>, no una relacion causa-efecto.</p>
+        </div>
+    </div>
+
+    <div class="card-grid" style="margin-top:20px;">
+        <div class="card card-accent">
+            <div class="icon-box main"><i class="fa-solid fa-link"></i></div>
+            <h3>Correlacion</h3>
+            <p>Medida estadistica que indica que dos variables fluctuan de manera conjunta. Si una sube, la otra tiende a subir (positiva) o a bajar (negativa). Simplemente describe una <strong>asociacion</strong>.</p>
+        </div>
+        <div class="card card-accent blue">
+            <div class="icon-box blue"><i class="fa-solid fa-arrow-right"></i></div>
+            <h3>Causalidad</h3>
+            <p>Un evento (la causa) produce directamente otro (el efecto). Establecer causalidad requiere un <strong>diseno experimental controlado</strong>, no solo datos observacionales.</p>
+        </div>
+    </div>
+
+    <div class="real-world">
+        <div class="real-world-header">
+            <span class="badge">CASO CLASICO</span>
+            <h4>Helados y Ataques de Tiburon</h4>
+        </div>
+        <p>Imagina que analizas datos de una ciudad costera y descubres una fuerte correlacion positiva: <strong>los dias que se venden mas helados, tambien hay mas ataques de tiburon.</strong></p>
+        <ul style="margin-top:12px; padding-left:20px;">
+            <li><strong>Conclusion erronea (causalidad):</strong> "Comer helado provoca ataques de tiburon!"</li>
+            <li><strong>La verdad (correlacion espuria):</strong> Existe una tercera variable oculta, una <strong>variable de confusion</strong>: <strong>el buen tiempo (verano)</strong>. Cuando hace calor, mas gente va a la playa (mas ataques) y mas gente compra helados.</li>
+        </ul>
+    </div>
+
+    <div class="card" style="margin-top:20px;">
+        <h3><i class="fa-solid fa-database" style="color:var(--accent-blue);margin-right:8px;"></i> Nuestro Dataset: credit_analysis_data.csv</h3>
+        <p>A lo largo de esta unidad trabajaremos con este dataset de 20,000 registros:</p>
+        <div class="compare-table" style="margin-top:12px;">
+            <table class="compare-table">
+                <thead>
+                    <tr>
+                        <th>Variable</th>
+                        <th>Tipo</th>
+                        <th>Descripcion</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td><code>edad</code></td><td>Numerica</td><td>Edad del solicitante</td></tr>
+                    <tr><td><code>experiencia_laboral</code></td><td>Numerica</td><td>Anos de experiencia laboral</td></tr>
+                    <tr><td><code>ingresos_anuales</code></td><td>Numerica</td><td>Ingresos anuales en COP</td></tr>
+                    <tr><td><code>puntaje_credito</code></td><td>Numerica</td><td>Score crediticio del cliente</td></tr>
+                    <tr><td><code>monto_prestamo</code></td><td>Numerica</td><td>Monto del prestamo solicitado</td></tr>
+                    <tr><td><code>estado_pago</code></td><td>Categorica</td><td>Pagado / No Pagado</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- TRIVIA 1 -->
+    <div class="trivia-section" id="trivia-t1s1">
+        <div class="trivia-section-header">
+            <h4><i class="fa-solid fa-brain"></i> Mini-Trivia: Correlacion vs Causalidad</h4>
+            <span class="score-display" id="trivia-t1s1-score">0/3</span>
+        </div>
+        <div class="trivia-q-text" id="trivia-t1s1-q">Cargando...</div>
+        <div class="trivia-opts" id="trivia-t1s1-opts"></div>
+        <div class="trivia-feedback" id="trivia-t1s1-fb"></div>
+        <div class="trivia-nav">
+            <div class="trivia-dots" id="trivia-t1s1-dots"></div>
+            <button class="trivia-nav-btn" id="trivia-t1s1-next" onclick="triviaNext('t1s1')">Siguiente &rarr;</button>
+        </div>
+    </div>
+</section>
+
+<!-- 1.2 Coeficiente de Pearson + Simulador -->
+<section class="chapter" id="t1s2">
+    <div class="chapter-header">
+        <div class="chapter-num">02</div>
+        <div class="chapter-info">
+            <div class="tag blue">TEMA 1 &middot; CORRELACION</div>
+            <h2 class="chapter-title">Coeficiente de Pearson (r)</h2>
+            <p class="chapter-subtitle">Midiendo la fuerza y direccion de la relacion lineal entre dos variables.</p>
+        </div>
+    </div>
+
+    <p>El <strong>Coeficiente de Correlacion de Pearson</strong>, denotado como <em>r</em>, es la herramienta mas comun para medir la <strong>fuerza y direccion de una relacion lineal</strong> entre dos variables cuantitativas. Es un numero que va de <strong>-1 a +1</strong>.</p>
+
+    <div class="card-grid-3" style="margin:20px 0;">
+        <div class="card card-accent green" style="text-align:center;">
+            <h3 style="color:var(--accent-green);">r = +1</h3>
+            <p>Correlacion positiva <strong>perfecta</strong>. Todos los puntos en una linea ascendente.</p>
+        </div>
+        <div class="card card-accent" style="text-align:center;">
+            <h3 style="color:var(--text-dim);">r = 0</h3>
+            <p><strong>Sin correlacion</strong> lineal. Los puntos forman una nube sin patron.</p>
+        </div>
+        <div class="card card-accent rose" style="text-align:center;">
+            <h3 style="color:var(--accent-rose);">r = -1</h3>
+            <p>Correlacion negativa <strong>perfecta</strong>. Todos los puntos en una linea descendente.</p>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3>Guia de Interpretacion de la Fuerza</h3>
+        <table class="compare-table">
+            <thead><tr><th>Valor de |r|</th><th>Interpretacion</th></tr></thead>
+            <tbody>
+                <tr><td><code>0.0 a 0.3</code></td><td>Correlacion <strong>debil</strong></td></tr>
+                <tr><td><code>0.3 a 0.7</code></td><td>Correlacion <strong>moderada</strong></td></tr>
+                <tr><td><code>0.7 a 1.0</code></td><td>Correlacion <strong>fuerte</strong></td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="formula-box">
+        r = &Sigma;(x&#7522; - x&#772;)(y&#7522; - y&#772;) / &radic;[&Sigma;(x&#7522; - x&#772;)&sup2; &middot; &Sigma;(y&#7522; - y&#772;)&sup2;]
+    </div>
+
+    <div class="real-world">
+        <div class="real-world-header">
+            <span class="badge">NUESTRO CASO</span>
+            <h4>Experiencia Laboral vs Ingresos Anuales</h4>
+        </div>
+        <p>Al analizar la relacion entre <strong>experiencia_laboral</strong> y <strong>ingresos_anuales</strong> en nuestro dataset, el calculo del coeficiente de Pearson arroja <strong>r = 0.805</strong>. Esto confirma una <strong>asociacion lineal positiva muy fuerte</strong>: a mas experiencia, mayores ingresos.</p>
+    </div>
+
+    <!-- SIMULADOR DE CORRELACION -->
+    <div class="sim-panel">
+        <div class="sim-header">
+            <div class="sim-icon" style="background:var(--accent-blue-dim);color:var(--accent-blue);"><i class="fa-solid fa-chart-scatter-bubble"></i></div>
+            <div class="sim-header-text">
+                <h3>Simulador: Explorador de Correlacion</h3>
+                <p>Ajusta el valor de r y observa como cambia la dispersion de los puntos.</p>
+            </div>
+        </div>
+        <div class="sim-body">
+            <div class="sim-controls">
+                <div class="slider-group">
+                    <div class="slider-label">
+                        <span>Correlacion objetivo (r)</span>
+                        <strong id="corrTargetVal">0.80</strong>
+                    </div>
+                    <input type="range" class="blue" min="-100" max="100" value="80" id="corrSlider" oninput="updateCorrSim()">
+                </div>
+                <div class="slider-group">
+                    <div class="slider-label">
+                        <span>Numero de puntos</span>
+                        <strong id="corrNVal">100</strong>
+                    </div>
+                    <input type="range" class="blue" min="20" max="500" value="100" id="corrNSlider" oninput="updateCorrSim()">
+                </div>
+                <button class="sim-btn primary blue" onclick="generateCorr()"><span>Generar datos</span><span>&#128202;</span></button>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+                    <div class="stat-box">
+                        <div class="stat-box-label">r observado</div>
+                        <div class="stat-box-value" id="corrObsR">&mdash;</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-box-label">Fuerza</div>
+                        <div class="stat-box-value" id="corrStrength" style="font-size:0.9rem;">&mdash;</div>
+                    </div>
+                </div>
+            </div>
+            <div class="chart-wrap">
+                <canvas id="chartCorr"></canvas>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 1.3 Regresion Lineal Simple & OLS -->
+<section class="chapter" id="t1s3">
+    <div class="chapter-header">
+        <div class="chapter-num">03</div>
+        <div class="chapter-info">
+            <div class="tag main">TEMA 1 &middot; REGRESION</div>
+            <h2 class="chapter-title">Regresion Lineal Simple & Minimos Cuadrados (OLS)</h2>
+            <p class="chapter-subtitle">Nuestro primer modelo predictivo: una linea recta que traza el futuro.</p>
+        </div>
+    </div>
+
+    <p>Un <strong>modelo predictivo</strong> es, en esencia, un <strong>mapa simplificado de la realidad</strong>. Pasamos de describir el pasado <strong>(analitica descriptiva)</strong> a predecir el futuro <strong>(analitica predictiva)</strong>.</p>
+
+    <div class="card-grid" style="margin:20px 0;">
+        <div class="card card-accent">
+            <h3>Variable Dependiente (Y)</h3>
+            <p>Lo que queremos predecir. Es nuestro <strong>objetivo</strong>. En nuestro caso: <code>ingresos_anuales</code>.</p>
+        </div>
+        <div class="card card-accent blue">
+            <h3>Variable Independiente (X)</h3>
+            <p>Lo que usamos como "pista" para predecir Y. Nuestro <strong>predictor</strong>: <code>experiencia_laboral</code>.</p>
+        </div>
+    </div>
+
+    <h3 style="margin-top:32px; font-size:1.2rem;">La Ecuacion del Modelo</h3>
+    <div class="formula-box" style="font-size:1.1rem;">
+        y = &beta;&#8320; + &beta;&#8321; &middot; x + &epsilon;
+    </div>
+
+    <div class="card-grid" style="margin:16px 0;">
+        <div class="card">
+            <h3>&beta;&#8320; (Intercepto)</h3>
+            <p>El "punto de partida". Valor estimado de Y cuando X es cero. Posiciona la linea correctamente en el espacio.</p>
+        </div>
+        <div class="card">
+            <h3>&beta;&#8321; (Pendiente)</h3>
+            <p>El corazon del modelo. Nos dice <strong>cuanto cambia Y por cada unidad de aumento en X</strong>. Es el "efecto" cuantificado.</p>
+        </div>
+    </div>
+
+    <div class="card card-accent purple">
+        <h3>&epsilon; (Error / Residuo)</h3>
+        <p>Representa todo lo que nuestro modelo no puede capturar: la aleatoriedad inherente, errores de medicion y el efecto de <strong>todas las demas variables</strong> que no hemos incluido. Es la distancia vertical entre un punto real y la linea.</p>
+    </div>
+
+    <h3 style="margin-top:32px; font-size:1.2rem;">Minimos Cuadrados Ordinarios (OLS)</h3>
+    <p>En un diagrama de dispersion, podriamos dibujar infinitas lineas rectas. OLS encuentra la linea que hace que la <strong>suma de las distancias al cuadrado</strong> (los residuos&#178;) sea lo mas pequena posible.</p>
+
+    <div class="callout tip">
+        <div class="callout-icon">&#128161;</div>
+        <div>
+            <h4>Analogia de los Resortes</h4>
+            <p>Imagina que cada punto de dato esta conectado a la linea por un resorte vertical. OLS elige la linea que minimiza la <strong>energia total de los resortes</strong> (la suma de los cuadrados de sus longitudes). Se elevan al cuadrado para que errores positivos y negativos no se cancelen y para penalizar mas los errores grandes.</p>
+        </div>
+    </div>
+
+    <!-- SIMULADOR OLS -->
+    <div class="sim-panel">
+        <div class="sim-header">
+            <div class="sim-icon" style="background:var(--accent-main-dim);color:var(--accent-main);"><i class="fa-solid fa-ruler-combined"></i></div>
+            <div class="sim-header-text">
+                <h3>Simulador: Minimos Cuadrados Ordinarios (OLS)</h3>
+                <p>Genera datos, mira la linea de mejor ajuste y los residuos al cuadrado en tiempo real.</p>
+            </div>
+        </div>
+        <div class="sim-body">
+            <div class="sim-controls">
+                <div class="slider-group">
+                    <div class="slider-label">
+                        <span>Ruido (dispersion)</span>
+                        <strong id="olsNoiseVal">30</strong>
+                    </div>
+                    <input type="range" min="5" max="80" value="30" id="olsNoiseSlider">
+                </div>
+                <div class="slider-group">
+                    <div class="slider-label">
+                        <span>Puntos</span>
+                        <strong id="olsNVal">40</strong>
+                    </div>
+                    <input type="range" min="10" max="100" value="40" id="olsNSlider">
+                </div>
+                <button class="sim-btn primary" onclick="generateOLS()"><span>Generar & Ajustar</span><span>&#128200;</span></button>
+                <button class="sim-btn" id="olsResidBtn" onclick="toggleResiduals()"><span>Mostrar residuos</span><span>&#128315;</span></button>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+                    <div class="stat-box">
+                        <div class="stat-box-label">&beta;&#8320; (Intercepto)</div>
+                        <div class="stat-box-value" id="olsBeta0" style="font-size:1.1rem;">&mdash;</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-box-label">&beta;&#8321; (Pendiente)</div>
+                        <div class="stat-box-value" id="olsBeta1" style="font-size:1.1rem;">&mdash;</div>
+                    </div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-box-label">Suma Residuos&#178; (SSE)</div>
+                    <div class="stat-box-value" id="olsSSE">&mdash;</div>
+                </div>
+            </div>
+            <div class="chart-wrap">
+                <canvas id="chartOLS"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- TRIVIA 2 -->
+    <div class="trivia-section" id="trivia-t1s3">
+        <div class="trivia-section-header">
+            <h4><i class="fa-solid fa-brain"></i> Mini-Trivia: Regresion Lineal & OLS</h4>
+            <span class="score-display" id="trivia-t1s3-score">0/3</span>
+        </div>
+        <div class="trivia-q-text" id="trivia-t1s3-q">Cargando...</div>
+        <div class="trivia-opts" id="trivia-t1s3-opts"></div>
+        <div class="trivia-feedback" id="trivia-t1s3-fb"></div>
+        <div class="trivia-nav">
+            <div class="trivia-dots" id="trivia-t1s3-dots"></div>
+            <button class="trivia-nav-btn" id="trivia-t1s3-next" onclick="triviaNext('t1s3')">Siguiente &rarr;</button>
+        </div>
+    </div>
+</section>
+
+<!-- 1.4 Construccion del Modelo en Python -->
+<section class="chapter" id="t1s4">
+    <div class="chapter-header">
+        <div class="chapter-num">04</div>
+        <div class="chapter-info">
+            <div class="tag green">TEMA 1 &middot; PYTHON</div>
+            <h2 class="chapter-title">Construccion e Interpretacion del Modelo en Python</h2>
+            <p class="chapter-subtitle">Pregunta de Negocio: &iquest;Podemos predecir los ingresos_anuales si conocemos la experiencia_laboral?</p>
+        </div>
+    </div>
+
+    <p>Usaremos la biblioteca <strong>statsmodels</strong> porque su resumen de resultados es muy completo y pedagogico.</p>
+
+    <div class="code-block">
+        <div class="code-header">
+            <span>python &mdash; regresion_simple.py</span>
+            <button class="code-copy-btn" onclick="copyCode(this)">Copiar</button>
+        </div>
+        <div class="code-body"><span class="comment"># Definir nuestras variables X (independiente) e Y (dependiente)</span>
+<span class="variable">Y</span> = df[<span class="string">'ingresos_anuales'</span>]
+<span class="variable">X</span> = df[<span class="string">'experiencia_laboral'</span>]
+
+<span class="comment"># statsmodels requiere que anadamos una constante (el intercepto beta_0)</span>
+<span class="variable">X</span> = sm.<span class="function">add_constant</span>(X)
+
+<span class="comment"># Crear y ajustar (entrenar) el modelo de Minimos Cuadrados Ordinarios (OLS)</span>
+<span class="variable">modelo_simple</span> = sm.<span class="function">OLS</span>(Y, X).<span class="function">fit</span>()
+
+<span class="comment"># Imprimir el resumen completo del modelo</span>
+<span class="keyword">print</span>(modelo_simple.<span class="function">summary</span>())</div>
+    </div>
+
+    <h3 style="margin-top:28px;">Analisis de los Resultados</h3>
+
+    <div class="card-grid" style="margin:16px 0;">
+        <div class="card card-accent green">
+            <h3>R-squared: 0.648</h3>
+            <p>El <strong>64.8%</strong> de la variabilidad en los ingresos_anuales es explicada por la experiencia_laboral. Para un modelo de una sola variable, es excelente.</p>
+        </div>
+        <div class="card card-accent blue">
+            <h3>Prob (F-statistic): 0.000</h3>
+            <p>La relacion encontrada es <strong>estadisticamente muy significativa</strong> y no se debe al azar.</p>
+        </div>
+    </div>
+
+    <div class="card card-accent">
+        <h3>Coeficientes del Modelo</h3>
+        <ul style="padding-left:20px; margin-top:8px;">
+            <li><strong>const (&beta;&#8320;) = $31,970,000 COP:</strong> Ingreso anual base estimado para una persona con cero anos de experiencia.</li>
+            <li><strong>experiencia_laboral (&beta;&#8321;) = $2,098,000 COP:</strong> <em>"Por cada ano adicional de experiencia laboral, esperamos que los ingresos anuales aumenten, en promedio, en $2,098,000 COP."</em></li>
+        </ul>
+    </div>
+
+    <div class="formula-box">
+        ingresos_anuales = 31,970,000 + 2,098,000 &middot; experiencia_laboral + &epsilon;
+    </div>
+</section>
+
+<!-- ============================================================ -->
+<!--  TEMA 2: REGRESION LINEAL MULTIPLE                           -->
+<!-- ============================================================ -->
+
+<!-- 2.1 Regresion Multiple -->
+<section class="chapter" id="t2s1">
+    <div class="chapter-header">
+        <div class="chapter-num">05</div>
+        <div class="chapter-info">
+            <div class="tag purple">TEMA 2 &middot; MULTIPLE</div>
+            <h2 class="chapter-title">Regresion Lineal Multiple</h2>
+            <p class="chapter-subtitle">De un GPS con una sola ruta a uno que considera multiples factores simultaneamente.</p>
+        </div>
+    </div>
+
+    <p>La regresion simple usa una sola variable. Pero la realidad es mucho mas compleja. La <strong>regresion lineal multiple</strong> incluye multiples variables predictoras, creando un "mapa de la realidad" mucho mas rico y preciso.</p>
+
+    <div class="formula-box" style="font-size:1.05rem;">
+        y = &beta;&#8320; + &beta;&#8321;&middot;x&#8321; + &beta;&#8322;&middot;x&#8322; + ... + &beta;&#8342;&middot;x&#8342; + &epsilon;
+    </div>
+
+    <div class="callout info">
+        <div class="callout-icon">&#128218;</div>
+        <div>
+            <h4>Ceteris Paribus: "Manteniendo todo lo demas constante"</h4>
+            <p>En la regresion multiple, cada &beta; representa el efecto de <em>una</em> variable sobre Y, <strong>manteniendo constantes todas las demas variables del modelo</strong>. Esta es la clave de la interpretacion.</p>
+        </div>
+    </div>
+
+    <div class="real-world">
+        <div class="real-world-header">
+            <span class="badge">CASO PRACTICO</span>
+            <h4>Modelando el Puntaje de Credito</h4>
+        </div>
+        <p><strong>Pregunta de Negocio:</strong> &iquest;Podemos modelar el puntaje_credito de un cliente a partir de sus ingresos_anuales y su edad?</p>
+    </div>
+
+    <div class="code-block">
+        <div class="code-header">
+            <span>python &mdash; regresion_multiple.py</span>
+            <button class="code-copy-btn" onclick="copyCode(this)">Copiar</button>
+        </div>
+        <div class="code-body"><span class="comment"># --- 1. Construccion del Modelo de Regresion Multiple ---</span>
+<span class="variable">Y</span> = df[<span class="string">'puntaje_credito'</span>]
+<span class="variable">X</span> = df[[<span class="string">'ingresos_anuales'</span>, <span class="string">'edad'</span>]]
+<span class="variable">X</span> = sm.<span class="function">add_constant</span>(X)
+
+<span class="variable">modelo_multiple</span> = sm.<span class="function">OLS</span>(Y, X).<span class="function">fit</span>()
+
+<span class="keyword">print</span>(<span class="string">"--- Resultados del Modelo de Regresion Multiple ---"</span>)
+<span class="keyword">print</span>(modelo_multiple.<span class="function">summary</span>())</div>
+    </div>
+
+    <div class="card" style="margin-top:20px;">
+        <h3>Interpretacion de Coeficientes (R&#178; Ajustado = 0.674)</h3>
+        <ul style="padding-left:20px; margin-top:8px;">
+            <li><strong>ingresos_anuales (&beta;&#8321; = 2.476e-06):</strong> "Manteniendo la edad constante, por cada peso adicional en ingresos, el puntaje sube 0.0000025 puntos." (El efecto es pequeno por unidad, pero acumulativo.)</li>
+            <li><strong>edad (&beta;&#8322; = 2.82):</strong> "Manteniendo los ingresos constantes, por cada ano adicional de edad, el puntaje de credito aumenta en promedio 2.82 puntos."</li>
+        </ul>
+    </div>
+</section>
+
+<!-- 2.2 Metricas & Diagnostico -->
+<section class="chapter" id="t2s2">
+    <div class="chapter-header">
+        <div class="chapter-num">06</div>
+        <div class="chapter-info">
+            <div class="tag amber">TEMA 2 &middot; EVALUACION</div>
+            <h2 class="chapter-title">Metricas de Evaluacion y Diagnostico</h2>
+            <p class="chapter-subtitle">Construir un modelo es solo el primer paso. Necesitamos metricas objetivas para saber si es bueno.</p>
+        </div>
+    </div>
+
+    <div class="card-grid-3" style="margin:16px 0;">
+        <div class="card card-accent green">
+            <h3>R&#178; (R-cuadrado)</h3>
+            <p>Mide que porcentaje de la variabilidad en Y es explicado por el modelo. De 0 a 1. <strong>Problema:</strong> siempre sube al anadir variables, aunque sean inutiles.</p>
+        </div>
+        <div class="card card-accent blue">
+            <h3>R&#178; Ajustado</h3>
+            <p>Version "inteligente" del R&#178;. <strong>Penaliza</strong> al modelo por incluir variables que no aportan. <strong>Regla de oro:</strong> siempre usar R&#178; Ajustado al comparar modelos.</p>
+        </div>
+        <div class="card card-accent purple">
+            <h3>RMSE</h3>
+            <p>Root Mean Squared Error. Se expresa en las <strong>mismas unidades</strong> que Y. Nos dice el "error tipico" de prediccion. <strong>Menor es mejor.</strong></p>
+        </div>
+    </div>
+
+    <div class="code-block">
+        <div class="code-header">
+            <span>python &mdash; calcular_rmse.py</span>
+            <button class="code-copy-btn" onclick="copyCode(this)">Copiar</button>
+        </div>
+        <div class="code-body"><span class="comment"># Calcular el RMSE a partir del Error Cuadratico Medio de los Residuos</span>
+<span class="variable">rmse</span> = np.<span class="function">sqrt</span>(modelo_multiple.mse_resid)
+<span class="keyword">print</span>(<span class="string">f"El RMSE de nuestro modelo es: {rmse:.2f} puntos"</span>)
+<span class="comment"># Resultado: RMSE ≈ 41.71 puntos</span></div>
+    </div>
+
+    <div class="callout tip">
+        <div class="callout-icon">&#128161;</div>
+        <div>
+            <h4>Interpretacion del RMSE</h4>
+            <p>Un RMSE de <strong>41.71 puntos</strong> significa: "En promedio, las predicciones de nuestro modelo sobre el puntaje_credito se desvian unos <strong>42 puntos</strong> del valor real."</p>
+        </div>
+    </div>
+
+    <h3 style="margin-top:32px;">Los Supuestos LINE</h3>
+    <p>Para que podamos confiar en los resultados de una regresion lineal, el modelo debe cumplir cuatro supuestos clave:</p>
+
+    <div class="card-grid" style="margin:16px 0;">
+        <div class="card card-accent">
+            <h3>L - Linealidad</h3>
+            <p>La relacion entre X e Y debe ser lineal. Si la relacion es curva, el modelo lineal falla.</p>
+        </div>
+        <div class="card card-accent blue">
+            <h3>I - Independencia</h3>
+            <p>Los errores (residuos) deben ser independientes entre si. No debe haber patrones como la "autocorrelacion".</p>
+        </div>
+        <div class="card card-accent purple">
+            <h3>N - Normalidad</h3>
+            <p>Los errores deben seguir una distribucion normal. Se verifica con el grafico Q-Q.</p>
+        </div>
+        <div class="card card-accent green">
+            <h3>E - Equal Variance</h3>
+            <p><strong>Homocedasticidad:</strong> La varianza de los errores debe ser constante. Lo contrario es <strong>heterocedasticidad</strong>.</p>
+        </div>
+    </div>
+
+    <!-- TRIVIA 3 -->
+    <div class="trivia-section" id="trivia-t2s2">
+        <div class="trivia-section-header">
+            <h4><i class="fa-solid fa-brain"></i> Mini-Trivia: Metricas y Diagnostico</h4>
+            <span class="score-display" id="trivia-t2s2-score">0/3</span>
+        </div>
+        <div class="trivia-q-text" id="trivia-t2s2-q">Cargando...</div>
+        <div class="trivia-opts" id="trivia-t2s2-opts"></div>
+        <div class="trivia-feedback" id="trivia-t2s2-fb"></div>
+        <div class="trivia-nav">
+            <div class="trivia-dots" id="trivia-t2s2-dots"></div>
+            <button class="trivia-nav-btn" id="trivia-t2s2-next" onclick="triviaNext('t2s2')">Siguiente &rarr;</button>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================ -->
+<!--  TEMA 3: REGRESION LOGISTICA                                 -->
+<!-- ============================================================ -->
+
+<!-- 3.1 Introduccion a Regresion Logistica -->
+<section class="chapter" id="t3s1">
+    <div class="chapter-header">
+        <div class="chapter-num">07</div>
+        <div class="chapter-info">
+            <div class="tag rose">TEMA 3 &middot; CLASIFICACION</div>
+            <h2 class="chapter-title">Modelos de Clasificacion: Regresion Logistica</h2>
+            <p class="chapter-subtitle">De predecir "cuanto" a predecir "cual". Entramos al mundo de la clasificacion.</p>
+        </div>
+    </div>
+
+    <p>Hasta ahora, nuestros modelos predecian una <strong>cantidad numerica</strong>. Ahora, la pregunta ya no es "cuanto", sino <strong>"&iquest;cual?"</strong>. Nos adentramos en el mundo de la <strong>clasificacion</strong>:</p>
+
+    <div class="card-grid" style="margin:20px 0;">
+        <div class="card card-accent rose">
+            <h3>&iquest;Por que NO usar regresion lineal?</h3>
+            <p><strong>Predicciones sin sentido:</strong> Una linea recta no tiene limites. Produciria predicciones como 1.5 o -0.2. &iquest;Que significa una probabilidad del 150%? Nada.</p>
+        </div>
+        <div class="card card-accent green">
+            <h3>La Solucion: Funcion Sigmoide</h3>
+            <p>La regresion logistica usa una <strong>curva en forma de "S"</strong> que "aplasta" cualquier numero para que caiga siempre entre <strong>0 y 1</strong>. Perfecta para probabilidades.</p>
+        </div>
+    </div>
+
+    <div class="formula-box" style="font-size:1.1rem;">
+        P(y=1) = 1 / (1 + e<sup>-z</sup>) &nbsp;&nbsp; donde &nbsp;&nbsp; z = &beta;&#8320; + &beta;&#8321;&middot;x&#8321; + ...
+    </div>
+
+    <div class="card" style="margin-top:20px;">
+        <h3>El Motor Interno: La Transformacion Logit</h3>
+        <ol style="padding-left:20px; margin-top:8px;">
+            <li><strong>Probabilidad (P):</strong> Chance de que un evento ocurra (ej. 0.8, o 80%).</li>
+            <li><strong>Odds:</strong> P / (1 - P). Si P=0.8, los Odds son 0.8/0.2 = 4. (4 veces mas probable que ocurra a que no.)</li>
+            <li><strong>Log-Odds (Logit):</strong> ln(Odds). La regresion logistica modela una relacion lineal entre X y el <strong>logit de Y</strong>.</li>
+        </ol>
+    </div>
+</section>
+
+<!-- 3.2 Sigmoide & Umbral -->
+<section class="chapter" id="t3s2">
+    <div class="chapter-header">
+        <div class="chapter-num">08</div>
+        <div class="chapter-info">
+            <div class="tag rose">TEMA 3 &middot; SIGMOIDE</div>
+            <h2 class="chapter-title">La Funcion Sigmoide y el Umbral de Decision</h2>
+            <p class="chapter-subtitle">Convirtiendo numeros en probabilidades y probabilidades en decisiones.</p>
+        </div>
+    </div>
+
+    <!-- SIMULADOR SIGMOIDE -->
+    <div class="sim-panel">
+        <div class="sim-header">
+            <div class="sim-icon" style="background:var(--accent-rose-dim);color:var(--accent-rose);"><i class="fa-solid fa-wave-square"></i></div>
+            <div class="sim-header-text">
+                <h3>Simulador: Funcion Sigmoide Interactiva</h3>
+                <p>Mueve el slider de z y observa como la sigmoide transforma cualquier valor en una probabilidad entre 0 y 1.</p>
+            </div>
+        </div>
+        <div class="sim-body">
+            <div class="sim-controls">
+                <div class="slider-group">
+                    <div class="slider-label">
+                        <span>Valor de z</span>
+                        <strong id="sigZVal">0.00</strong>
+                    </div>
+                    <input type="range" class="purple" min="-60" max="60" value="0" id="sigZSlider" oninput="updateSigmoid()">
+                </div>
+                <div class="stat-box" style="margin-top:8px;">
+                    <div class="stat-box-label">Probabilidad &sigma;(z)</div>
+                    <div class="stat-box-value" id="sigProb" style="color:var(--accent-purple);">0.500</div>
+                </div>
+                <div id="sigDecision" style="padding:12px;border-radius:8px;text-align:center;font-weight:700;font-size:0.9rem;background:var(--surface3);margin-top:4px;">
+                    Umbral = 0.5 &rarr; Indeciso
+                </div>
+                <div class="slider-group" style="margin-top:8px;">
+                    <div class="slider-label">
+                        <span>Umbral de decision</span>
+                        <strong id="sigThreshVal">0.50</strong>
+                    </div>
+                    <input type="range" class="purple" min="10" max="90" value="50" id="sigThreshSlider" oninput="updateSigmoid()">
+                </div>
+            </div>
+            <div class="chart-wrap">
+                <canvas id="chartSigmoid"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <div class="callout info">
+        <div class="callout-icon">&#128270;</div>
+        <div>
+            <h4>El Umbral de Decision</h4>
+            <p>La sigmoide nos da una <strong>probabilidad</strong>. Pero necesitamos una <strong>decision</strong>: &iquest;Pagara o No Pagara? El <strong>umbral</strong> (por defecto 0.5) define el punto de corte. Si la probabilidad &ge; umbral &rarr; "No Pagado" (riesgo). Ajustar este umbral tiene consecuencias directas en precision y recall.</p>
+        </div>
+    </div>
+
+    <!-- TRIVIA 4 -->
+    <div class="trivia-section" id="trivia-t3s2">
+        <div class="trivia-section-header">
+            <h4><i class="fa-solid fa-brain"></i> Mini-Trivia: Sigmoide y Logistica</h4>
+            <span class="score-display" id="trivia-t3s2-score">0/3</span>
+        </div>
+        <div class="trivia-q-text" id="trivia-t3s2-q">Cargando...</div>
+        <div class="trivia-opts" id="trivia-t3s2-opts"></div>
+        <div class="trivia-feedback" id="trivia-t3s2-fb"></div>
+        <div class="trivia-nav">
+            <div class="trivia-dots" id="trivia-t3s2-dots"></div>
+            <button class="trivia-nav-btn" id="trivia-t3s2-next" onclick="triviaNext('t3s2')">Siguiente &rarr;</button>
+        </div>
+    </div>
+</section>
+
+<!-- 3.3 Modelo Logistico & Metricas -->
+<section class="chapter" id="t3s3">
+    <div class="chapter-header">
+        <div class="chapter-num">09</div>
+        <div class="chapter-info">
+            <div class="tag rose">TEMA 3 &middot; METRICAS</div>
+            <h2 class="chapter-title">Modelo Logistico en Python y Matriz de Confusion</h2>
+            <p class="chapter-subtitle">Construimos el modelo, evaluamos su rendimiento y aprendemos a leer el "marcador del partido".</p>
+        </div>
+    </div>
+
+    <div class="code-block">
+        <div class="code-header">
+            <span>python &mdash; regresion_logistica.py</span>
+            <button class="code-copy-btn" onclick="copyCode(this)">Copiar</button>
+        </div>
+        <div class="code-body"><span class="comment"># --- 1. Ingenieria de Variables y Construccion del Modelo ---</span>
+<span class="comment"># Calculamos el DTI ratio, un predictor clave</span>
+df[<span class="string">'dti_ratio'</span>] = df[<span class="string">'monto_prestamo'</span>] / df[<span class="string">'ingresos_anuales'</span>]
+
+<span class="comment"># Creamos la variable objetivo numerica</span>
+df[<span class="string">'no_pago_numeric'</span>] = (df[<span class="string">'estado_pago'</span>] == <span class="string">'No Pagado'</span>).astype(<span class="keyword">int</span>)
+
+<span class="variable">Y</span> = df[<span class="string">'no_pago_numeric'</span>]
+<span class="variable">X</span> = df[[<span class="string">'puntaje_credito'</span>, <span class="string">'dti_ratio'</span>, <span class="string">'edad'</span>]]
+<span class="variable">X</span> = sm.<span class="function">add_constant</span>(X)
+
+<span class="variable">modelo_logistico</span> = sm.<span class="function">Logit</span>(Y, X).<span class="function">fit</span>()
+<span class="keyword">print</span>(modelo_logistico.<span class="function">summary</span>())</div>
+    </div>
+
+    <div class="card" style="margin-top:20px;">
+        <h3>Odds Ratios &mdash; Interpretacion de Coeficientes</h3>
+        <p style="margin-bottom:12px;">Los coeficientes se interpretan como <strong>Odds Ratios (OR)</strong>, calculados como e<sup>coeficiente</sup>:</p>
+        <ul style="padding-left:20px;">
+            <li><strong>puntaje_credito (OR &asymp; 0.986):</strong> "Por cada punto adicional en puntaje_credito, los 'odds' de no pagar <strong>disminuyen</strong> un 1.4%. Es un factor <strong>protector</strong>."</li>
+            <li><strong>dti_ratio (OR &asymp; 7.61e+07):</strong> "Un aumento en el dti_ratio incrementa <strong>masivamente</strong> los odds de no pago. Es el predictor de riesgo mas fuerte."</li>
+            <li><strong>edad (p = 0.440):</strong> No fue estadisticamente significativa en este modelo.</li>
+        </ul>
+    </div>
+
+    <h3 style="margin-top:32px;">La Matriz de Confusion: El Marcador del Partido</h3>
+
+    <div class="card-grid" style="margin:16px 0;">
+        <div class="card card-accent green"><h3>Verdaderos Positivos (VP)</h3><p>Predijo 'No Pagado', y el cliente realmente no pago. <strong>(Acierto clave)</strong></p></div>
+        <div class="card card-accent blue"><h3>Verdaderos Negativos (VN)</h3><p>Predijo 'Pagado', y el cliente realmente pago.</p></div>
+        <div class="card card-accent amber"><h3>Falsos Positivos (FP)</h3><p>Predijo 'No Pagado', pero el cliente si habria pagado. <strong>(Perdida de oportunidad)</strong></p></div>
+        <div class="card card-accent rose"><h3>Falsos Negativos (FN)</h3><p>Predijo 'Pagado', pero el cliente no pago. <strong>(El error mas costoso!)</strong></p></div>
+    </div>
+
+    <!-- SIMULADOR UMBRAL / CONFUSION MATRIX -->
+    <div class="sim-panel">
+        <div class="sim-header">
+            <div class="sim-icon" style="background:var(--accent-amber-dim);color:var(--accent-amber);"><i class="fa-solid fa-table-cells"></i></div>
+            <div class="sim-header-text">
+                <h3>Simulador: Umbral y Matriz de Confusion</h3>
+                <p>Ajusta el umbral de decision y observa como cambian las metricas de clasificacion en tiempo real.</p>
+            </div>
+        </div>
+        <div class="sim-body">
+            <div class="sim-controls">
+                <div class="slider-group">
+                    <div class="slider-label">
+                        <span>Umbral de decision</span>
+                        <strong id="cmThreshVal">0.50</strong>
+                    </div>
+                    <input type="range" min="10" max="90" value="50" id="cmThreshSlider" oninput="updateCM()">
+                </div>
+                <div class="cm-grid" id="cmGrid">
+                    <div class="cm-label"></div>
+                    <div class="cm-label">Pred: Pago</div>
+                    <div class="cm-label">Pred: No Pago</div>
+                    <div class="cm-label" style="writing-mode:vertical-rl;transform:rotate(180deg);font-size:0.6rem;">Real: Pago</div>
+                    <div class="cm-cell cm-tn" id="cmTN">15186</div>
+                    <div class="cm-cell cm-fp" id="cmFP">695</div>
+                    <div class="cm-label" style="writing-mode:vertical-rl;transform:rotate(180deg);font-size:0.6rem;">Real: No Pago</div>
+                    <div class="cm-cell cm-fn" id="cmFN">1146</div>
+                    <div class="cm-cell cm-tp" id="cmTP">2973</div>
+                </div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+                    <div class="stat-box"><div class="stat-box-label">Accuracy</div><div class="stat-box-value" id="cmAcc" style="font-size:1rem;">90.8%</div></div>
+                    <div class="stat-box"><div class="stat-box-label">Precision</div><div class="stat-box-value" id="cmPrec" style="font-size:1rem;">81.1%</div></div>
+                    <div class="stat-box" style="border:2px solid var(--accent-rose);"><div class="stat-box-label" style="color:var(--accent-rose);">Recall</div><div class="stat-box-value" id="cmRecall" style="font-size:1rem;color:var(--accent-rose);">72.2%</div></div>
+                    <div class="stat-box"><div class="stat-box-label">F1-Score</div><div class="stat-box-value" id="cmF1" style="font-size:1rem;">76.4%</div></div>
+                </div>
+            </div>
+            <div class="chart-wrap">
+                <canvas id="chartCM"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <div class="callout danger">
+        <div class="callout-icon">&#9888;&#65039;</div>
+        <div>
+            <h4>Accuracy puede ser enganosa</h4>
+            <p>Con datos desbalanceados (la mayoria paga), un modelo que siempre diga "Pagado" tendria un accuracy del 80%+, pero seria completamente inutil. Por eso el <strong>Recall</strong> para la clase minoritaria ("No Pagado") es la metrica clave en este negocio.</p>
+        </div>
+    </div>
+
+    <!-- TRIVIA 5 -->
+    <div class="trivia-section" id="trivia-t3s3">
+        <div class="trivia-section-header">
+            <h4><i class="fa-solid fa-brain"></i> Mini-Trivia: Clasificacion y Metricas</h4>
+            <span class="score-display" id="trivia-t3s3-score">0/3</span>
+        </div>
+        <div class="trivia-q-text" id="trivia-t3s3-q">Cargando...</div>
+        <div class="trivia-opts" id="trivia-t3s3-opts"></div>
+        <div class="trivia-feedback" id="trivia-t3s3-fb"></div>
+        <div class="trivia-nav">
+            <div class="trivia-dots" id="trivia-t3s3-dots"></div>
+            <button class="trivia-nav-btn" id="trivia-t3s3-next" onclick="triviaNext('t3s3')">Siguiente &rarr;</button>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================ -->
+<!--  TEMA 4: MAS ALLA DE LA REGRESION — MODELOS DE ML            -->
+<!-- ============================================================ -->
+
+<!-- 4.1 Arboles & Random Forest -->
+<section class="chapter" id="t4s1">
+    <div class="chapter-header">
+        <div class="chapter-num">10</div>
+        <div class="chapter-info">
+            <div class="tag teal">TEMA 4 &middot; MACHINE LEARNING</div>
+            <h2 class="chapter-title">Arboles de Decision y Random Forest</h2>
+            <p class="chapter-subtitle">De lineas rectas a arboles que toman decisiones como un humano experto.</p>
+        </div>
+    </div>
+
+    <p>La regresion lineal y logistica son herramientas poderosas, pero tienen limitaciones: asumen relaciones lineales. En el mundo real, las relaciones pueden ser mucho mas complejas. Los <strong>modelos de Machine Learning</strong> van mas alla.</p>
+
+    <h3 style="margin-top:24px;">Arbol de Decision</h3>
+    <p>Un arbol de decision toma decisiones <strong>como un humano</strong>: haciendo preguntas secuenciales tipo "si/no" sobre los datos.</p>
+
+    <div class="real-world">
+        <div class="real-world-header">
+            <span class="badge">ANALOGIA</span>
+            <h4>El Juego de las 20 Preguntas</h4>
+        </div>
+        <p>Imagina que eres un oficial de credito y debes decidir si aprobar un prestamo. Tu proceso mental seria algo asi:</p>
+        <ol style="padding-left:20px; margin-top:8px;">
+            <li>&iquest;El puntaje de credito es mayor a 600? &rarr; Si: probablemente aprobado</li>
+            <li>&iquest;El DTI ratio es menor a 0.5? &rarr; Si: menos riesgo</li>
+            <li>&iquest;Tiene mas de 5 anos de experiencia? &rarr; Si: aprobar</li>
+        </ol>
+        <p style="margin-top:8px;">Un arbol de decision <strong>automatiza</strong> exactamente este proceso, encontrando las mejores preguntas y los mejores puntos de corte.</p>
+    </div>
+
+    <div class="card-grid" style="margin:20px 0;">
+        <div class="card card-accent teal">
+            <h3>Ventajas</h3>
+            <ul style="padding-left:16px;">
+                <li>Facil de interpretar y visualizar</li>
+                <li>No requiere normalizar datos</li>
+                <li>Captura relaciones no lineales</li>
+                <li>Maneja variables categoricas y numericas</li>
+            </ul>
+        </div>
+        <div class="card card-accent rose">
+            <h3>Desventajas</h3>
+            <ul style="padding-left:16px;">
+                <li><strong>Overfitting:</strong> Tiende a memorizar los datos de entrenamiento</li>
+                <li>Inestable: pequenos cambios en datos producen arboles muy diferentes</li>
+                <li>Rendimiento limitado frente a modelos mas sofisticados</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="code-block">
+        <div class="code-header">
+            <span>python &mdash; arbol_decision.py</span>
+            <button class="code-copy-btn" onclick="copyCode(this)">Copiar</button>
+        </div>
+        <div class="code-body"><span class="keyword">from</span> sklearn.tree <span class="keyword">import</span> DecisionTreeClassifier
+<span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> train_test_split
+<span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> classification_report
+
+<span class="comment"># Preparar los datos</span>
+<span class="variable">X</span> = df[[<span class="string">'puntaje_credito'</span>, <span class="string">'dti_ratio'</span>, <span class="string">'edad'</span>, <span class="string">'experiencia_laboral'</span>]]
+<span class="variable">y</span> = df[<span class="string">'no_pago_numeric'</span>]
+
+<span class="variable">X_train</span>, <span class="variable">X_test</span>, <span class="variable">y_train</span>, <span class="variable">y_test</span> = <span class="function">train_test_split</span>(X, y, test_size=<span class="number">0.3</span>, random_state=<span class="number">42</span>)
+
+<span class="comment"># Entrenar el arbol (max_depth evita overfitting)</span>
+<span class="variable">arbol</span> = <span class="function">DecisionTreeClassifier</span>(max_depth=<span class="number">5</span>, random_state=<span class="number">42</span>)
+arbol.<span class="function">fit</span>(X_train, y_train)
+
+<span class="comment"># Evaluar</span>
+<span class="variable">y_pred</span> = arbol.<span class="function">predict</span>(X_test)
+<span class="keyword">print</span>(<span class="function">classification_report</span>(y_test, y_pred))</div>
+    </div>
+
+    <h3 style="margin-top:32px;">Random Forest: La Sabiduria de la Multitud</h3>
+    <p>Si un arbol puede equivocarse, &iquest;que pasa si consultamos a <strong>cientos de arboles</strong> y dejamos que voten? Eso es exactamente <strong>Random Forest</strong>.</p>
+
+    <div class="callout success">
+        <div class="callout-icon">&#127795;</div>
+        <div>
+            <h4>Analogia: El Jurado</h4>
+            <p>Un solo juez puede equivocarse, pero 500 jueces votando en conjunto tienen mucha mayor probabilidad de acertar. Random Forest entrena cientos de arboles, cada uno con una <strong>muestra aleatoria</strong> de datos y variables, y la prediccion final es el <strong>voto de la mayoria</strong>.</p>
+        </div>
+    </div>
+
+    <div class="code-block">
+        <div class="code-header">
+            <span>python &mdash; random_forest.py</span>
+            <button class="code-copy-btn" onclick="copyCode(this)">Copiar</button>
+        </div>
+        <div class="code-body"><span class="keyword">from</span> sklearn.ensemble <span class="keyword">import</span> RandomForestClassifier
+
+<span class="comment"># Entrenar Random Forest con 200 arboles</span>
+<span class="variable">rf</span> = <span class="function">RandomForestClassifier</span>(n_estimators=<span class="number">200</span>, max_depth=<span class="number">8</span>, random_state=<span class="number">42</span>)
+rf.<span class="function">fit</span>(X_train, y_train)
+
+<span class="variable">y_pred_rf</span> = rf.<span class="function">predict</span>(X_test)
+<span class="keyword">print</span>(<span class="string">"--- Random Forest ---"</span>)
+<span class="keyword">print</span>(<span class="function">classification_report</span>(y_test, y_pred_rf))
+
+<span class="comment"># Ver la importancia de cada variable</span>
+<span class="keyword">for</span> name, imp <span class="keyword">in</span> <span class="function">zip</span>(X.columns, rf.feature_importances_):
+    <span class="keyword">print</span>(<span class="string">f"  {name}: {imp:.3f}"</span>)</div>
+    </div>
+</section>
+
+<!-- 4.2 KNN, SVM & Gradient Boosting -->
+<section class="chapter" id="t4s2">
+    <div class="chapter-header">
+        <div class="chapter-num">11</div>
+        <div class="chapter-info">
+            <div class="tag teal">TEMA 4 &middot; MODELOS AVANZADOS</div>
+            <h2 class="chapter-title">KNN, SVM y Gradient Boosting</h2>
+            <p class="chapter-subtitle">Un arsenal completo de algoritmos para atacar cualquier problema de prediccion.</p>
+        </div>
+    </div>
+
+    <div class="card card-accent blue" style="margin-bottom:24px;">
+        <div class="icon-box blue"><i class="fa-solid fa-people-group"></i></div>
+        <h3>K-Nearest Neighbors (KNN)</h3>
+        <p><strong>Analogia:</strong> "Dime con quien andas y te dire quien eres." KNN clasifica un nuevo punto mirando a sus <strong>K vecinos mas cercanos</strong> y asignandole la clase mayoritaria entre ellos.</p>
+        <ul style="padding-left:16px;margin-top:8px;">
+            <li><strong>K pequeno (ej. 1-3):</strong> Muy sensible al ruido, puede hacer overfitting</li>
+            <li><strong>K grande (ej. 50+):</strong> Demasiado suave, puede perder patrones locales</li>
+            <li><strong>Requiere:</strong> Normalizar las variables para que la "distancia" sea justa</li>
+        </ul>
+    </div>
+
+    <div class="card card-accent purple" style="margin-bottom:24px;">
+        <div class="icon-box purple"><i class="fa-solid fa-vector-square"></i></div>
+        <h3>Support Vector Machine (SVM)</h3>
+        <p><strong>Analogia:</strong> Imagina que tienes puntos rojos y azules en una mesa. SVM busca la <strong>linea (o hiperplano) que los separa con el mayor margen posible</strong>. La linea no solo separa, sino que maximiza la distancia a los puntos mas cercanos de cada clase (los "vectores de soporte").</p>
+        <ul style="padding-left:16px;margin-top:8px;">
+            <li><strong>Kernel trick:</strong> Puede encontrar fronteras de decision curvas y complejas</li>
+            <li><strong>Efectivo</strong> en espacios de alta dimension</li>
+            <li><strong>Lento</strong> con datasets muy grandes (&gt;10K registros)</li>
+        </ul>
+    </div>
+
+    <div class="card card-accent amber" style="margin-bottom:24px;">
+        <div class="icon-box amber"><i class="fa-solid fa-bolt"></i></div>
+        <h3>Gradient Boosting (XGBoost / LightGBM)</h3>
+        <p><strong>Analogia:</strong> Si Random Forest es un jurado que vota en paralelo, Gradient Boosting es un <strong>equipo de tutores</strong>: cada nuevo arbol se enfoca especificamente en <strong>corregir los errores</strong> del arbol anterior. Es un proceso iterativo de mejora continua.</p>
+        <ul style="padding-left:16px;margin-top:8px;">
+            <li><strong>XGBoost:</strong> La herramienta mas ganadora en competencias de data science (Kaggle)</li>
+            <li><strong>Rendimiento:</strong> Generalmente el mejor en datos tabulares (como nuestro dataset)</li>
+            <li><strong>Riesgo:</strong> Facil de hacer overfit si no se regularizan los hiperparametros</li>
+        </ul>
+    </div>
+
+    <div class="code-block">
+        <div class="code-header">
+            <span>python &mdash; comparar_modelos.py</span>
+            <button class="code-copy-btn" onclick="copyCode(this)">Copiar</button>
+        </div>
+        <div class="code-body"><span class="keyword">from</span> sklearn.neighbors <span class="keyword">import</span> KNeighborsClassifier
+<span class="keyword">from</span> sklearn.svm <span class="keyword">import</span> SVC
+<span class="keyword">from</span> sklearn.ensemble <span class="keyword">import</span> GradientBoostingClassifier
+<span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> StandardScaler
+<span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> f1_score
+
+<span class="comment"># Normalizar para KNN y SVM</span>
+<span class="variable">scaler</span> = <span class="function">StandardScaler</span>()
+<span class="variable">X_train_sc</span> = scaler.<span class="function">fit_transform</span>(X_train)
+<span class="variable">X_test_sc</span> = scaler.<span class="function">transform</span>(X_test)
+
+<span class="variable">modelos</span> = {
+    <span class="string">'KNN (k=7)'</span>: <span class="function">KNeighborsClassifier</span>(n_neighbors=<span class="number">7</span>),
+    <span class="string">'SVM (RBF)'</span>: <span class="function">SVC</span>(kernel=<span class="string">'rbf'</span>, C=<span class="number">1.0</span>),
+    <span class="string">'Gradient Boosting'</span>: <span class="function">GradientBoostingClassifier</span>(n_estimators=<span class="number">200</span>, max_depth=<span class="number">5</span>)
+}
+
+<span class="keyword">for</span> nombre, modelo <span class="keyword">in</span> modelos.items():
+    datos_X = X_train_sc <span class="keyword">if</span> <span class="string">'KNN'</span> <span class="keyword">in</span> nombre <span class="keyword">or</span> <span class="string">'SVM'</span> <span class="keyword">in</span> nombre <span class="keyword">else</span> X_train
+    datos_Xt = X_test_sc <span class="keyword">if</span> <span class="string">'KNN'</span> <span class="keyword">in</span> nombre <span class="keyword">or</span> <span class="string">'SVM'</span> <span class="keyword">in</span> nombre <span class="keyword">else</span> X_test
+    modelo.<span class="function">fit</span>(datos_X, y_train)
+    pred = modelo.<span class="function">predict</span>(datos_Xt)
+    <span class="keyword">print</span>(<span class="string">f"{nombre}: F1 = {f1_score(y_test, pred):.3f}"</span>)</div>
+    </div>
+
+    <h3 style="margin-top:28px;">Tabla Comparativa de Modelos</h3>
+    <table class="compare-table">
+        <thead>
+            <tr><th>Modelo</th><th>Tipo</th><th>Fortaleza</th><th>Debilidad</th></tr>
+        </thead>
+        <tbody>
+            <tr><td>Reg. Logistica</td><td>Lineal</td><td>Interpretable, rapido</td><td>Solo fronteras lineales</td></tr>
+            <tr><td>Arbol de Decision</td><td>No lineal</td><td>Interpretable, visual</td><td>Overfitting facil</td></tr>
+            <tr><td>Random Forest</td><td>Ensemble</td><td>Robusto, preciso</td><td>Dificil de interpretar</td></tr>
+            <tr><td>KNN</td><td>Basado en instancias</td><td>Simple, sin supuestos</td><td>Lento con muchos datos</td></tr>
+            <tr><td>SVM</td><td>Basado en margen</td><td>Efectivo en alta dim.</td><td>Lento, dificil de tunear</td></tr>
+            <tr><td>Gradient Boosting</td><td>Ensemble secuencial</td><td>Mejor rendimiento tipico</td><td>Overfitting si no se regula</td></tr>
+        </tbody>
+    </table>
+
+    <!-- TRIVIA 6 -->
+    <div class="trivia-section" id="trivia-t4s2">
+        <div class="trivia-section-header">
+            <h4><i class="fa-solid fa-brain"></i> Mini-Trivia: Modelos de Machine Learning</h4>
+            <span class="score-display" id="trivia-t4s2-score">0/3</span>
+        </div>
+        <div class="trivia-q-text" id="trivia-t4s2-q">Cargando...</div>
+        <div class="trivia-opts" id="trivia-t4s2-opts"></div>
+        <div class="trivia-feedback" id="trivia-t4s2-fb"></div>
+        <div class="trivia-nav">
+            <div class="trivia-dots" id="trivia-t4s2-dots"></div>
+            <button class="trivia-nav-btn" id="trivia-t4s2-next" onclick="triviaNext('t4s2')">Siguiente &rarr;</button>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================ -->
+<!--  TEMA 5: REDES NEURONALES                                    -->
+<!-- ============================================================ -->
+
+<!-- 5.1 La Neurona Artificial -->
+<section class="chapter" id="t5s1">
+    <div class="chapter-header">
+        <div class="chapter-num">12</div>
+        <div class="chapter-info">
+            <div class="tag purple">TEMA 5 &middot; DEEP LEARNING</div>
+            <h2 class="chapter-title">La Neurona Artificial: El Bloque Fundamental</h2>
+            <p class="chapter-subtitle">Todo comienza con una sola neurona que imita (de forma simplificada) lo que hace una neurona biologica.</p>
+        </div>
+    </div>
+
+    <p>Una <strong>red neuronal</strong> es, en su esencia, una extension sofisticada de la regresion logistica. Todo comienza con un bloque fundamental: el <strong>perceptron</strong> (neurona artificial).</p>
+
+    <div class="card card-accent purple">
+        <h3>Como Funciona una Neurona Artificial</h3>
+        <ol class="step-list">
+            <li><strong>Recibe entradas</strong> (x&#8321;, x&#8322;, ...) &mdash; Como los predictores de una regresion.</li>
+            <li><strong>Multiplica cada entrada por un peso</strong> (w&#8321;, w&#8322;, ...) &mdash; Como los coeficientes &beta;.</li>
+            <li><strong>Suma todo y agrega un sesgo (bias)</strong> &mdash; z = w&#8321;x&#8321; + w&#8322;x&#8322; + b</li>
+            <li><strong>Aplica una funcion de activacion</strong> &mdash; Como la sigmoide, transforma z en una salida util.</li>
+        </ol>
+    </div>
+
+    <div class="formula-box">
+        salida = &sigma;(w&#8321;&middot;x&#8321; + w&#8322;&middot;x&#8322; + b) &nbsp;&nbsp; donde &sigma; es la funcion de activacion
+    </div>
+
+    <!-- SIMULADOR PERCEPTRON -->
+    <div class="sim-panel">
+        <div class="sim-header">
+            <div class="sim-icon" style="background:var(--accent-purple-dim);color:var(--accent-purple);"><i class="fa-solid fa-brain"></i></div>
+            <div class="sim-header-text">
+                <h3>Simulador: Perceptron Interactivo</h3>
+                <p>Ajusta los pesos, el sesgo y las entradas. Observa como la neurona procesa la informacion.</p>
+            </div>
+        </div>
+        <div class="sim-body">
+            <div class="sim-controls">
+                <div class="slider-group">
+                    <div class="slider-label"><span>Entrada x&#8321;</span><strong id="nX1Val">0.5</strong></div>
+                    <input type="range" class="purple" min="0" max="100" value="50" id="nX1Slider" oninput="updateNeuron()">
+                </div>
+                <div class="slider-group">
+                    <div class="slider-label"><span>Entrada x&#8322;</span><strong id="nX2Val">0.5</strong></div>
+                    <input type="range" class="purple" min="0" max="100" value="50" id="nX2Slider" oninput="updateNeuron()">
+                </div>
+                <div class="slider-group">
+                    <div class="slider-label"><span>Peso w&#8321;</span><strong id="nW1Val">1.0</strong></div>
+                    <input type="range" class="purple" min="-30" max="30" value="10" id="nW1Slider" oninput="updateNeuron()">
+                </div>
+                <div class="slider-group">
+                    <div class="slider-label"><span>Peso w&#8322;</span><strong id="nW2Val">1.0</strong></div>
+                    <input type="range" class="purple" min="-30" max="30" value="10" id="nW2Slider" oninput="updateNeuron()">
+                </div>
+                <div class="slider-group">
+                    <div class="slider-label"><span>Sesgo (bias)</span><strong id="nBVal">0.0</strong></div>
+                    <input type="range" class="purple" min="-50" max="50" value="0" id="nBSlider" oninput="updateNeuron()">
+                </div>
+            </div>
+            <div class="chart-wrap" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;">
+                <div class="neuron-visual">
+                    <div class="neuron-inputs">
+                        <div class="neuron-input-row"><span id="nDispX1" style="min-width:90px;">x&#8321;=0.50</span> <span style="color:var(--accent-purple);">&times;</span> <span id="nDispW1">w&#8321;=1.0</span></div>
+                        <div class="neuron-input-row"><span id="nDispX2" style="min-width:90px;">x&#8322;=0.50</span> <span style="color:var(--accent-purple);">&times;</span> <span id="nDispW2">w&#8322;=1.0</span></div>
+                        <div class="neuron-input-row"><span style="min-width:90px;color:var(--text-dim);">bias</span> <span style="color:var(--accent-purple);">=</span> <span id="nDispB">0.0</span></div>
+                    </div>
+                    <div style="font-size:1.5rem;color:var(--text-dim);">&rarr;</div>
+                    <div class="neuron-circle">&sigma;(z)</div>
+                    <div style="font-size:1.5rem;color:var(--text-dim);">&rarr;</div>
+                    <div class="neuron-output" id="nOutput">0.500</div>
+                </div>
+                <div style="text-align:center;">
+                    <div style="font-family:'JetBrains Mono',monospace;font-size:0.9rem;color:var(--text-muted);">
+                        z = <span id="nDispZ">0.50&times;1.0 + 0.50&times;1.0 + 0.0 = 1.00</span>
+                    </div>
+                    <div id="nDecision" style="margin-top:8px;font-weight:700;font-size:1.1rem;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="callout tip">
+        <div class="callout-icon">&#128161;</div>
+        <div>
+            <h4>Funciones de Activacion Populares</h4>
+            <p><strong>Sigmoide:</strong> Salida entre 0 y 1 (buena para la capa final en clasificacion binaria). <strong>ReLU:</strong> max(0, z) &mdash; la mas usada en capas ocultas por su simplicidad y eficiencia. <strong>Softmax:</strong> Para clasificacion multiclase (distribuye probabilidades entre N clases).</p>
+        </div>
+    </div>
+</section>
+
+<!-- 5.2 Redes Multicapa & Deep Learning -->
+<section class="chapter" id="t5s2">
+    <div class="chapter-header">
+        <div class="chapter-num">13</div>
+        <div class="chapter-info">
+            <div class="tag purple">TEMA 5 &middot; REDES PROFUNDAS</div>
+            <h2 class="chapter-title">Redes Multicapa y Deep Learning</h2>
+            <p class="chapter-subtitle">Apilando neuronas para resolver problemas que ningun modelo lineal podria.</p>
+        </div>
+    </div>
+
+    <p>Una sola neurona es basicamente una regresion logistica. El poder real aparece cuando <strong>apilamos cientos o miles de neuronas en capas</strong>. Esto es una <strong>Red Neuronal Profunda (Deep Learning)</strong>.</p>
+
+    <div class="card-grid-3" style="margin:20px 0;">
+        <div class="card card-accent purple">
+            <h3>Capa de Entrada</h3>
+            <p>Recibe los datos crudos. Una neurona por cada feature (ej. puntaje_credito, dti_ratio, edad).</p>
+        </div>
+        <div class="card card-accent">
+            <h3>Capas Ocultas</h3>
+            <p>Donde ocurre la "magia". Cada capa aprende representaciones cada vez mas abstractas y complejas de los datos.</p>
+        </div>
+        <div class="card card-accent green">
+            <h3>Capa de Salida</h3>
+            <p>Produce la prediccion final. 1 neurona con sigmoide para binario, N neuronas con softmax para multiclase.</p>
+        </div>
+    </div>
+
+    <h3 style="margin-top:24px;">Backpropagation: Como Aprende una Red</h3>
+    <div class="callout info">
+        <div class="callout-icon">&#128260;</div>
+        <div>
+            <h4>Analogia: El Juego del Telefono Roto (pero al reves)</h4>
+            <p>Imagina que la red hace una prediccion y se equivoca. El <strong>error se propaga hacia atras</strong> por toda la red, y cada neurona ajusta sus pesos un poquito para reducir ese error. Esto se repite miles de veces (epocas) hasta que la red aprende. Es como un estudiante que revisa sus examenes, identifica errores y mejora gradualmente.</p>
+        </div>
+    </div>
+
+    <div class="code-block">
+        <div class="code-header">
+            <span>python &mdash; red_neuronal_keras.py</span>
+            <button class="code-copy-btn" onclick="copyCode(this)">Copiar</button>
+        </div>
+        <div class="code-body"><span class="keyword">from</span> tensorflow <span class="keyword">import</span> keras
+<span class="keyword">from</span> tensorflow.keras <span class="keyword">import</span> layers
+
+<span class="comment"># Definir la arquitectura de la red</span>
+<span class="variable">modelo_nn</span> = keras.<span class="function">Sequential</span>([
+    layers.<span class="function">Dense</span>(<span class="number">64</span>, activation=<span class="string">'relu'</span>, input_shape=(<span class="number">4</span>,)),   <span class="comment"># Capa oculta 1: 64 neuronas</span>
+    layers.<span class="function">Dropout</span>(<span class="number">0.3</span>),                                     <span class="comment"># Regularizacion</span>
+    layers.<span class="function">Dense</span>(<span class="number">32</span>, activation=<span class="string">'relu'</span>),                        <span class="comment"># Capa oculta 2: 32 neuronas</span>
+    layers.<span class="function">Dropout</span>(<span class="number">0.2</span>),
+    layers.<span class="function">Dense</span>(<span class="number">1</span>, activation=<span class="string">'sigmoid'</span>)                        <span class="comment"># Salida: probabilidad (0-1)</span>
+])
+
+<span class="comment"># Compilar el modelo</span>
+modelo_nn.<span class="function">compile</span>(
+    optimizer=<span class="string">'adam'</span>,
+    loss=<span class="string">'binary_crossentropy'</span>,
+    metrics=[<span class="string">'accuracy'</span>]
+)
+
+<span class="comment"># Entrenar</span>
+<span class="variable">historia</span> = modelo_nn.<span class="function">fit</span>(
+    X_train_sc, y_train,
+    epochs=<span class="number">50</span>,
+    batch_size=<span class="number">64</span>,
+    validation_split=<span class="number">0.2</span>,
+    verbose=<span class="number">1</span>
+)
+
+<span class="comment"># Evaluar</span>
+<span class="variable">loss</span>, <span class="variable">acc</span> = modelo_nn.<span class="function">evaluate</span>(X_test_sc, y_test)
+<span class="keyword">print</span>(<span class="string">f"Accuracy en test: {acc:.3f}"</span>)</div>
+    </div>
+
+    <div class="callout danger">
+        <div class="callout-icon">&#9888;&#65039;</div>
+        <div>
+            <h4>&iquest;Cuando NO usar Deep Learning?</h4>
+            <p>Para datos tabulares como nuestro credit_analysis_data.csv, modelos como <strong>Gradient Boosting suelen superar a las redes neuronales</strong>. Deep Learning brilla con imagenes, texto, audio y datos no estructurados. Para tablas: prueba primero XGBoost/LightGBM.</p>
+        </div>
+    </div>
+
+    <!-- TRIVIA 7 (antes del final) -->
+    <div class="trivia-section" id="trivia-t5s2">
+        <div class="trivia-section-header">
+            <h4><i class="fa-solid fa-brain"></i> Mini-Trivia: Redes Neuronales</h4>
+            <span class="score-display" id="trivia-t5s2-score">0/3</span>
+        </div>
+        <div class="trivia-q-text" id="trivia-t5s2-q">Cargando...</div>
+        <div class="trivia-opts" id="trivia-t5s2-opts"></div>
+        <div class="trivia-feedback" id="trivia-t5s2-fb"></div>
+        <div class="trivia-nav">
+            <div class="trivia-dots" id="trivia-t5s2-dots"></div>
+            <button class="trivia-nav-btn" id="trivia-t5s2-next" onclick="triviaNext('t5s2')">Siguiente &rarr;</button>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================ -->
+<!--  TRIVIA FINAL                                                 -->
+<!-- ============================================================ -->
+
+<section class="chapter" id="final">
+    <div class="chapter-header">
+        <div class="chapter-num" style="color:var(--accent-main-light);">&#127942;</div>
+        <div class="chapter-info">
+            <div class="tag main">DESAFIO FINAL</div>
+            <h2 class="chapter-title">Trivia Final: Analitica Predictiva & ML</h2>
+            <p class="chapter-subtitle">Pon a prueba todo lo que aprendiste en esta unidad.</p>
+        </div>
+    </div>
+
+    <div class="trivia-section" id="trivia-final" style="background:linear-gradient(135deg, #1a1816, #2c2825);">
+        <div class="trivia-section-header">
+            <h4><i class="fa-solid fa-trophy" style="color:var(--accent-amber);"></i> Trivia Final &mdash; Todo lo Aprendido</h4>
+            <span class="score-display" id="trivia-final-score">0/3</span>
+        </div>
+        <div class="trivia-q-text" id="trivia-final-q">Cargando...</div>
+        <div class="trivia-opts" id="trivia-final-opts"></div>
+        <div class="trivia-feedback" id="trivia-final-fb"></div>
+        <div class="trivia-nav">
+            <div class="trivia-dots" id="trivia-final-dots"></div>
+            <button class="trivia-nav-btn" id="trivia-final-next" onclick="triviaNext('final')">Siguiente &rarr;</button>
+        </div>
+    </div>
+
+    <div class="card" style="margin-top:24px;">
+        <h3><i class="fa-solid fa-video" style="color:var(--accent-main);margin-right:8px;"></i> Recursos Complementarios</h3>
+        <ul style="padding-left:20px;margin-top:8px;">
+            <li><strong>Video:</strong> <a href="https://www.youtube.com/watch?v=k964_uNn3l0" target="_blank" style="color:var(--accent-blue);">Regresion Lineal y Minimos Cuadrados Ordinarios | DotCSV</a></li>
+            <li><strong>Video:</strong> <a href="https://www.youtube.com/watch?v=Sb8XVheowVQ" target="_blank" style="color:var(--accent-blue);">Modelos para entender una realidad caotica | DotCSV</a></li>
+            <li><strong>Video:</strong> <a href="https://www.youtube.com/watch?v=MRIv2IwFTPg" target="_blank" style="color:var(--accent-blue);">&iquest;Que es una Red Neuronal? Parte 1: La Neurona | DotCSV</a></li>
+        </ul>
+    </div>
+</section>
+
+</div><!-- .container -->
+
+<footer>
+    <p><i class="fa-solid fa-code"></i> Guia Interactiva &mdash; Especializacion en Inteligencia de Negocios y Big Data &middot; UNAC</p>
+</footer>
+
+<!-- ==================== SCRIPTS ==================== -->
+<script>
+// ===== COPY CODE =====
+function copyCode(btn) {
+    const code = btn.closest('.code-block').querySelector('.code-body').innerText;
+    navigator.clipboard.writeText(code).then(() => {
+        btn.textContent = 'Copiado!';
+        setTimeout(() => btn.textContent = 'Copiar', 2000);
+    });
+}
+
+// ===== CORRELATION SIMULATOR =====
+let corrChart;
+(function initCorr() {
+    const ctx = document.getElementById('chartCorr').getContext('2d');
+    corrChart = new Chart(ctx, {
+        type: 'scatter',
+        data: { datasets: [{ label: 'Datos', data: [], backgroundColor: 'rgba(29,111,165,0.5)', pointRadius: 5, pointHoverRadius: 7 }] },
+        options: {
+            responsive: true, maintainAspectRatio: false,
+            animation: { duration: 200 },
+            scales: { x: { title: { display: true, text: 'Variable X' } }, y: { title: { display: true, text: 'Variable Y' } } },
+            plugins: { legend: { display: false } }
+        }
+    });
+    generateCorr();
+})();
+
+function updateCorrSim() {
+    document.getElementById('corrTargetVal').textContent = (parseInt(document.getElementById('corrSlider').value) / 100).toFixed(2);
+    document.getElementById('corrNVal').textContent = document.getElementById('corrNSlider').value;
+}
+
+function generateCorr() {
+    const r = parseInt(document.getElementById('corrSlider').value) / 100;
+    const n = parseInt(document.getElementById('corrNSlider').value);
+    const points = [];
+    for (let i = 0; i < n; i++) {
+        let u1 = Math.random(), u2 = Math.random();
+        let z1 = Math.sqrt(-2 * Math.log(u1)) * Math.cos(2 * Math.PI * u2);
+        let z2 = Math.sqrt(-2 * Math.log(u1)) * Math.sin(2 * Math.PI * u2);
+        let x = z1;
+        let y = r * z1 + Math.sqrt(1 - r * r) * z2;
+        points.push({ x: x, y: y });
+    }
+    corrChart.data.datasets[0].data = points;
+    corrChart.update();
+
+    // Calculate observed r
+    let n2 = points.length, sx = 0, sy = 0, sxy = 0, sx2 = 0, sy2 = 0;
+    points.forEach(p => { sx += p.x; sy += p.y; sxy += p.x * p.y; sx2 += p.x * p.x; sy2 += p.y * p.y; });
+    let obsR = (n2 * sxy - sx * sy) / Math.sqrt((n2 * sx2 - sx * sx) * (n2 * sy2 - sy * sy));
+    document.getElementById('corrObsR').textContent = obsR.toFixed(3);
+    let absR = Math.abs(obsR);
+    let strength = absR < 0.3 ? 'Debil' : absR < 0.7 ? 'Moderada' : 'Fuerte';
+    let color = absR < 0.3 ? 'var(--accent-amber)' : absR < 0.7 ? 'var(--accent-blue)' : 'var(--accent-green)';
+    document.getElementById('corrStrength').textContent = strength;
+    document.getElementById('corrStrength').style.color = color;
+}
+
+// ===== OLS SIMULATOR =====
+let olsChart, olsShowResiduals = false, olsPoints = [], olsBeta0 = 0, olsBeta1v = 0;
+(function initOLS() {
+    const ctx = document.getElementById('chartOLS').getContext('2d');
+    olsChart = new Chart(ctx, {
+        type: 'scatter',
+        data: {
+            datasets: [
+                { label: 'Datos', data: [], backgroundColor: 'rgba(192,86,33,0.5)', pointRadius: 5, order: 2 },
+                { label: 'Linea OLS', data: [], type: 'line', borderColor: '#c05621', borderWidth: 2.5, pointRadius: 0, fill: false, order: 1 },
+                { label: 'Residuos', data: [], type: 'line', borderColor: 'rgba(181,51,74,0.4)', borderWidth: 1, pointRadius: 0, fill: false, showLine: false, order: 3 }
+            ]
+        },
+        options: {
+            responsive: true, maintainAspectRatio: false,
+            animation: { duration: 200 },
+            scales: { x: { title: { display: true, text: 'X (Experiencia)' } }, y: { title: { display: true, text: 'Y (Ingresos)' } } },
+            plugins: { legend: { display: false } }
+        }
+    });
+    generateOLS();
+})();
+
+function generateOLS() {
+    const noise = parseInt(document.getElementById('olsNoiseSlider').value);
+    const n = parseInt(document.getElementById('olsNSlider').value);
+    document.getElementById('olsNoiseVal').textContent = noise;
+    document.getElementById('olsNVal').textContent = n;
+
+    olsPoints = [];
+    for (let i = 0; i < n; i++) {
+        let x = Math.random() * 30 + 1;
+        let u1 = Math.random(), u2 = Math.random();
+        let err = Math.sqrt(-2 * Math.log(u1)) * Math.cos(2 * Math.PI * u2) * noise;
+        let y = 20 + 2.5 * x + err;
+        olsPoints.push({ x: x, y: y });
+    }
+
+    // Compute OLS
+    let sx = 0, sy = 0, sxy = 0, sx2 = 0;
+    olsPoints.forEach(p => { sx += p.x; sy += p.y; sxy += p.x * p.y; sx2 += p.x * p.x; });
+    olsBeta1v = (n * sxy - sx * sy) / (n * sx2 - sx * sx);
+    olsBeta0 = (sy - olsBeta1v * sx) / n;
+
+    let lineData = [{ x: 0, y: olsBeta0 }, { x: 35, y: olsBeta0 + olsBeta1v * 35 }];
+
+    let sse = 0;
+    olsPoints.forEach(p => { let pred = olsBeta0 + olsBeta1v * p.x; sse += (p.y - pred) ** 2; });
+
+    olsChart.data.datasets[0].data = olsPoints;
+    olsChart.data.datasets[1].data = lineData;
+    drawResiduals();
+    olsChart.update();
+
+    document.getElementById('olsBeta0').textContent = olsBeta0.toFixed(1);
+    document.getElementById('olsBeta1').textContent = olsBeta1v.toFixed(2);
+    document.getElementById('olsSSE').textContent = sse.toFixed(0);
+}
+
+function toggleResiduals() {
+    olsShowResiduals = !olsShowResiduals;
+    document.getElementById('olsResidBtn').querySelector('span').textContent = olsShowResiduals ? 'Ocultar residuos' : 'Mostrar residuos';
+    drawResiduals();
+    olsChart.update();
+}
+
+function drawResiduals() {
+    if (!olsShowResiduals) {
+        olsChart.data.datasets[2].data = [];
+        return;
+    }
+    let residData = [];
+    olsPoints.forEach(p => {
+        let pred = olsBeta0 + olsBeta1v * p.x;
+        residData.push({ x: p.x, y: p.y });
+        residData.push({ x: p.x, y: pred });
+        residData.push({ x: NaN, y: NaN });
+    });
+    olsChart.data.datasets[2] = {
+        label: 'Residuos', data: residData, type: 'line',
+        borderColor: 'rgba(181,51,74,0.5)', borderWidth: 1.5,
+        pointRadius: 0, fill: false, showLine: true, order: 3,
+        segment: { borderDash: [4, 3] }
+    };
+}
+
+// ===== SIGMOID SIMULATOR =====
+let sigChart;
+(function initSigmoid() {
+    const ctx = document.getElementById('chartSigmoid').getContext('2d');
+    const xs = [], ys = [];
+    for (let z = -6; z <= 6; z += 0.1) {
+        xs.push(z.toFixed(1));
+        ys.push(1 / (1 + Math.exp(-z)));
+    }
+    sigChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: xs,
+            datasets: [
+                { label: 'Sigmoide', data: ys, borderColor: '#6d4aaa', borderWidth: 3, pointRadius: 0, fill: false, tension: 0.4 },
+                { label: 'Punto actual', data: Array(xs.length).fill(null), borderColor: '#c05621', backgroundColor: '#c05621', pointRadius: 0, showLine: false },
+                { label: 'Umbral', data: Array(xs.length).fill(0.5), borderColor: 'rgba(181,51,74,0.4)', borderWidth: 2, borderDash: [6, 4], pointRadius: 0, fill: false }
+            ]
+        },
+        options: {
+            responsive: true, maintainAspectRatio: false,
+            animation: { duration: 100 },
+            scales: {
+                x: { title: { display: true, text: 'z (combinacion lineal)' }, grid: { display: false }, ticks: { maxTicksLimit: 13 } },
+                y: { title: { display: true, text: 'P(y=1)' }, min: 0, max: 1 }
+            },
+            plugins: { legend: { display: false } }
+        }
+    });
+    updateSigmoid();
+})();
+
+function updateSigmoid() {
+    const zVal = parseInt(document.getElementById('sigZSlider').value) / 10;
+    const thresh = parseInt(document.getElementById('sigThreshSlider').value) / 100;
+    const prob = 1 / (1 + Math.exp(-zVal));
+
+    document.getElementById('sigZVal').textContent = zVal.toFixed(1);
+    document.getElementById('sigThreshVal').textContent = thresh.toFixed(2);
+    document.getElementById('sigProb').textContent = prob.toFixed(3);
+
+    // Update point
+    const pointData = sigChart.data.labels.map((l, i) => {
+        let idx = Math.round((zVal + 6) / 0.1);
+        return i === idx ? prob : null;
+    });
+    sigChart.data.datasets[1].data = pointData;
+    sigChart.data.datasets[1].pointRadius = pointData.map(v => v !== null ? 10 : 0);
+
+    // Update threshold line
+    sigChart.data.datasets[2].data = sigChart.data.labels.map(() => thresh);
+    sigChart.update();
+
+    const dec = document.getElementById('sigDecision');
+    if (prob >= thresh) {
+        dec.innerHTML = '<span style="color:var(--accent-rose);">P &ge; umbral &rarr; Clase: NO PAGADO (Riesgo)</span>';
+        dec.style.background = 'var(--accent-rose-dim)';
+    } else {
+        dec.innerHTML = '<span style="color:var(--accent-green);">P &lt; umbral &rarr; Clase: PAGADO (Seguro)</span>';
+        dec.style.background = 'var(--accent-green-dim)';
+    }
+}
+
+// ===== CONFUSION MATRIX SIMULATOR =====
+let cmChart;
+const cmBaseData = {
+    totalPos: 15881, totalNeg: 4119,
+    scores: []
+};
+// Pre-generate simulated scores
+(function initCMData() {
+    for (let i = 0; i < cmBaseData.totalPos; i++) {
+        let u1 = Math.random(), u2 = Math.random();
+        let z = Math.sqrt(-2 * Math.log(u1)) * Math.cos(2 * Math.PI * u2);
+        cmBaseData.scores.push({ actual: 0, prob: Math.min(0.99, Math.max(0.01, 0.2 + z * 0.15)) });
+    }
+    for (let i = 0; i < cmBaseData.totalNeg; i++) {
+        let u1 = Math.random(), u2 = Math.random();
+        let z = Math.sqrt(-2 * Math.log(u1)) * Math.cos(2 * Math.PI * u2);
+        cmBaseData.scores.push({ actual: 1, prob: Math.min(0.99, Math.max(0.01, 0.6 + z * 0.2)) });
+    }
+})();
+
+(function initCMChart() {
+    const ctx = document.getElementById('chartCM').getContext('2d');
+    cmChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['Accuracy', 'Precision', 'Recall', 'F1-Score'],
+            datasets: [{
+                data: [0.908, 0.811, 0.722, 0.764],
+                backgroundColor: ['rgba(29,111,165,0.6)', 'rgba(42,125,95,0.6)', 'rgba(181,51,74,0.6)', 'rgba(109,74,170,0.6)'],
+                borderColor: ['#1d6fa5', '#2a7d5f', '#b5334a', '#6d4aaa'],
+                borderWidth: 2, borderRadius: 6
+            }]
+        },
+        options: {
+            responsive: true, maintainAspectRatio: false,
+            animation: { duration: 200 },
+            scales: { y: { min: 0, max: 1, ticks: { callback: v => (v * 100).toFixed(0) + '%' } }, x: { grid: { display: false } } },
+            plugins: { legend: { display: false } }
+        }
+    });
+    updateCM();
+})();
+
+function updateCM() {
+    const thresh = parseInt(document.getElementById('cmThreshSlider').value) / 100;
+    document.getElementById('cmThreshVal').textContent = thresh.toFixed(2);
+
+    let tp = 0, fp = 0, tn = 0, fn = 0;
+    cmBaseData.scores.forEach(s => {
+        let pred = s.prob >= thresh ? 1 : 0;
+        if (s.actual === 1 && pred === 1) tp++;
+        else if (s.actual === 0 && pred === 1) fp++;
+        else if (s.actual === 0 && pred === 0) tn++;
+        else fn++;
+    });
+
+    document.getElementById('cmTP').textContent = tp;
+    document.getElementById('cmFP').textContent = fp;
+    document.getElementById('cmTN').textContent = tn;
+    document.getElementById('cmFN').textContent = fn;
+
+    let acc = (tp + tn) / (tp + fp + tn + fn);
+    let prec = tp + fp > 0 ? tp / (tp + fp) : 0;
+    let recall = tp + fn > 0 ? tp / (tp + fn) : 0;
+    let f1 = prec + recall > 0 ? 2 * prec * recall / (prec + recall) : 0;
+
+    document.getElementById('cmAcc').textContent = (acc * 100).toFixed(1) + '%';
+    document.getElementById('cmPrec').textContent = (prec * 100).toFixed(1) + '%';
+    document.getElementById('cmRecall').textContent = (recall * 100).toFixed(1) + '%';
+    document.getElementById('cmF1').textContent = (f1 * 100).toFixed(1) + '%';
+
+    cmChart.data.datasets[0].data = [acc, prec, recall, f1];
+    cmChart.update();
+}
+
+// ===== PERCEPTRON SIMULATOR =====
+function updateNeuron() {
+    const x1 = parseInt(document.getElementById('nX1Slider').value) / 100;
+    const x2 = parseInt(document.getElementById('nX2Slider').value) / 100;
+    const w1 = parseInt(document.getElementById('nW1Slider').value) / 10;
+    const w2 = parseInt(document.getElementById('nW2Slider').value) / 10;
+    const b = parseInt(document.getElementById('nBSlider').value) / 10;
+
+    document.getElementById('nX1Val').textContent = x1.toFixed(2);
+    document.getElementById('nX2Val').textContent = x2.toFixed(2);
+    document.getElementById('nW1Val').textContent = w1.toFixed(1);
+    document.getElementById('nW2Val').textContent = w2.toFixed(1);
+    document.getElementById('nBVal').textContent = b.toFixed(1);
+
+    const z = x1 * w1 + x2 * w2 + b;
+    const output = 1 / (1 + Math.exp(-z));
+
+    document.getElementById('nDispX1').innerHTML = `x&#8321;=${x1.toFixed(2)}`;
+    document.getElementById('nDispX2').innerHTML = `x&#8322;=${x2.toFixed(2)}`;
+    document.getElementById('nDispW1').innerHTML = `w&#8321;=${w1.toFixed(1)}`;
+    document.getElementById('nDispW2').innerHTML = `w&#8322;=${w2.toFixed(1)}`;
+    document.getElementById('nDispB').textContent = b.toFixed(1);
+    document.getElementById('nDispZ').textContent = `${x1.toFixed(2)}×${w1.toFixed(1)} + ${x2.toFixed(2)}×${w2.toFixed(1)} + ${b.toFixed(1)} = ${z.toFixed(2)}`;
+    document.getElementById('nOutput').textContent = output.toFixed(3);
+    document.getElementById('nOutput').style.color = output >= 0.5 ? 'var(--accent-rose)' : 'var(--accent-green)';
+
+    const dec = document.getElementById('nDecision');
+    if (output >= 0.5) {
+        dec.innerHTML = `<span style="color:var(--accent-rose);">Salida: ${output.toFixed(3)} &ge; 0.5 &rarr; Clase 1 (Activa)</span>`;
+    } else {
+        dec.innerHTML = `<span style="color:var(--accent-green);">Salida: ${output.toFixed(3)} &lt; 0.5 &rarr; Clase 0 (Inactiva)</span>`;
+    }
+}
+updateNeuron();
+
+// ===== TRIVIA SYSTEM =====
+const allTrivia = {
+    t1s1: [
+        { q: "Un estudio encuentra que los paises que comen mas chocolate tienen mas Premios Nobel. Esto demuestra que:", o: ["El chocolate aumenta la inteligencia", "Hay una relacion de causalidad directa", "Existe una correlacion, pero no necesariamente causalidad", "Los Nobel comen mas chocolate"], a: 2, e: "Correlacion no implica causalidad. Probablemente hay variables de confusion como el nivel de desarrollo economico que afectan ambas cosas." },
+        { q: "En nuestro dataset, si la correlacion entre experiencia_laboral e ingresos_anuales es r = 0.805, esto es una correlacion:", o: ["Debil positiva", "Moderada negativa", "Fuerte positiva", "Perfecta positiva"], a: 2, e: "Un r de 0.805 esta entre 0.7 y 1.0, lo que lo clasifica como una correlacion fuerte positiva." },
+        { q: "Una variable de confusion es:", o: ["Una variable que no tiene correlacion", "Una tercera variable oculta que afecta a las otras dos", "Una variable que siempre causa errores", "Otro nombre para la variable dependiente"], a: 1, e: "Una variable de confusion es una tercera variable que causa la correlacion observada entre las otras dos, sin que exista causalidad directa entre ellas." }
+    ],
+    t1s3: [
+        { q: "En la ecuacion y = beta_0 + beta_1*x + epsilon, el termino epsilon representa:", o: ["El intercepto del modelo", "La pendiente de la recta", "Todo lo que el modelo NO puede capturar (error/residuo)", "La variable independiente"], a: 2, e: "Epsilon (error) representa la aleatoriedad, errores de medicion y el efecto de todas las variables que no incluimos en el modelo." },
+        { q: "El metodo de Minimos Cuadrados Ordinarios (OLS) busca la linea que:", o: ["Pasa por todos los puntos", "Minimiza la suma de los residuos al cuadrado", "Maximiza la distancia a los puntos", "Tiene la pendiente mas grande posible"], a: 1, e: "OLS minimiza la suma de los cuadrados de las distancias verticales (residuos) entre los puntos reales y la linea. Se elevan al cuadrado para evitar que errores positivos y negativos se cancelen." },
+        { q: "Si beta_1 = 2,098,000 en nuestro modelo de ingresos vs experiencia, significa que:", o: ["El ingreso base es $2,098,000", "Por cada ano de experiencia, los ingresos suben en promedio $2,098,000", "El modelo tiene un error de $2,098,000", "El R-cuadrado es 2,098,000"], a: 1, e: "Beta_1 (la pendiente) nos dice cuanto cambia Y por cada unidad de aumento en X. En este caso: por cada ano adicional de experiencia laboral, los ingresos aumentan en promedio $2,098,000 COP." }
+    ],
+    t2s2: [
+        { q: "Al comparar dos modelos con diferente numero de variables, debemos usar:", o: ["R-cuadrado simple", "R-cuadrado Ajustado", "Solo el RMSE", "El numero de variables"], a: 1, e: "El R-cuadrado Ajustado penaliza la inclusion de variables inutiles, a diferencia del R-cuadrado simple que siempre sube al anadir variables." },
+        { q: "Un RMSE de 41.71 puntos en el modelo de puntaje_credito significa:", o: ["El modelo acierta el 41.71% de las veces", "Las predicciones se desvian en promedio 42 puntos del valor real", "El modelo tiene 41 variables", "Es un modelo perfecto"], a: 1, e: "El RMSE se expresa en las mismas unidades que Y. Aqui significa que, en promedio, nuestras predicciones sobre el puntaje de credito se desvian unos 42 puntos del valor real." },
+        { q: "Los supuestos LINE incluyen todos EXCEPTO:", o: ["Linealidad", "Independencia de errores", "Normalidad de errores", "Multicolinealidad perfecta"], a: 3, e: "LINE = Linealidad, Independencia, Normalidad, Equal variance (Homocedasticidad). La multicolinealidad perfecta no es un supuesto, sino un problema a evitar." }
+    ],
+    t3s2: [
+        { q: "La funcion sigmoide transforma cualquier numero real en un valor entre:", o: ["0 y 100", "-1 y 1", "0 y 1", "-infinito e infinito"], a: 2, e: "La sigmoide sigma(z) = 1/(1+e^-z) siempre produce valores entre 0 y 1, haciendola perfecta para representar probabilidades." },
+        { q: "Si el umbral de decision es 0.5 y la sigmoide produce P = 0.72 para un cliente, lo clasificamos como:", o: ["Pagado (bajo riesgo)", "No Pagado (riesgo)", "Indeterminado", "Necesitamos mas datos"], a: 1, e: "Si P(no pago) = 0.72 >= 0.5 (umbral), clasificamos como 'No Pagado' (riesgo). La probabilidad supera el umbral de decision." },
+        { q: "Los coeficientes de la regresion logistica se interpretan como:", o: ["Cambio directo en la probabilidad", "Odds Ratios (e^coeficiente)", "Porcentajes directos", "Valores de R-cuadrado"], a: 1, e: "Los coeficientes de regresion logistica se interpretan como Odds Ratios, calculados como e^coeficiente. Un OR > 1 aumenta los odds del evento; OR < 1 los disminuye." }
+    ],
+    t3s3: [
+        { q: "En la matriz de confusion, un Falso Negativo (FN) en nuestro caso de credito significa:", o: ["Predijo 'No Pagado' y el cliente no pago (acierto)", "Predijo 'Pagado' pero el cliente no pago (error costoso)", "Predijo 'No Pagado' pero el cliente si pago", "Predijo 'Pagado' y el cliente pago"], a: 1, e: "Un Falso Negativo es cuando el modelo predice 'Pagado' (no hay riesgo) pero en realidad el cliente no pago. Es el error mas costoso para el negocio porque dejamos pasar un moroso." },
+        { q: "El Recall mide:", o: ["De todos los que predijimos positivo, cuantos acertamos", "De todos los realmente positivos, cuantos logramos detectar", "El porcentaje total de aciertos", "La velocidad del modelo"], a: 1, e: "Recall = VP / (VP + FN). Mide que porcentaje de los casos realmente positivos logramos detectar. Es crucial cuando el costo de no detectar (FN) es alto." },
+        { q: "Un modelo con Accuracy del 95% en datos donde el 95% de los clientes paga es:", o: ["Excelente, 95% es muy alto", "Potencialmente inutil: podria estar diciendo siempre 'Pagado'", "Perfecto para produccion", "Mejor que cualquier alternativa"], a: 1, e: "Con datos desbalanceados, un modelo 'tonto' que siempre prediga la clase mayoritaria tiene accuracy alta pero no detecta ningun caso de la clase minoritaria. Por eso Recall y F1 son mas informativos." }
+    ],
+    t4s2: [
+        { q: "Random Forest mejora a un arbol de decision individual mediante:", o: ["Usar un arbol mas profundo", "Entrenar multiples arboles con muestras aleatorias y promediar sus votos", "Eliminar todas las variables", "Usar solo la variable mas importante"], a: 1, e: "Random Forest entrena cientos de arboles, cada uno con una muestra aleatoria de datos y variables, y la prediccion final es el voto de la mayoria. Esto reduce el overfitting y aumenta la robustez." },
+        { q: "Gradient Boosting se diferencia de Random Forest en que:", o: ["Usa menos arboles", "Cada arbol nuevo corrige los errores del anterior (secuencial)", "No usa arboles", "Solo funciona con datos binarios"], a: 1, e: "En Gradient Boosting, cada nuevo arbol se enfoca especificamente en corregir los errores del anterior. Es un proceso iterativo y secuencial, a diferencia de Random Forest donde los arboles son independientes." },
+        { q: "Para datos tabulares (como nuestro CSV), el tipo de modelo que tipicamente obtiene mejor rendimiento es:", o: ["Redes neuronales profundas", "Regresion lineal simple", "Gradient Boosting (XGBoost/LightGBM)", "KNN con k=1"], a: 2, e: "Para datos tabulares estructurados, Gradient Boosting (XGBoost, LightGBM) tipicamente supera a otros modelos, incluyendo redes neuronales. Deep Learning brilla con imagenes, texto y datos no estructurados." }
+    ],
+    t5s2: [
+        { q: "Una neurona artificial calcula:", o: ["El promedio de todas las entradas", "La suma ponderada de entradas + bias, pasada por una funcion de activacion", "Solo la entrada mas grande", "Un numero aleatorio"], a: 1, e: "La neurona calcula z = sum(wi*xi) + b (suma ponderada + bias) y luego aplica una funcion de activacion (como sigmoide o ReLU) para producir la salida." },
+        { q: "ReLU (Rectified Linear Unit) se define como:", o: ["1 / (1 + e^-z)", "max(0, z)", "z^2", "tanh(z)"], a: 1, e: "ReLU = max(0, z). Si z es positivo, retorna z; si es negativo, retorna 0. Es la funcion de activacion mas usada en capas ocultas por su simplicidad y eficiencia computacional." },
+        { q: "Backpropagation es el proceso mediante el cual:", o: ["Los datos se propagan hacia adelante en la red", "El error se propaga hacia atras para ajustar los pesos de cada neurona", "Se eliminan neuronas que no funcionan", "Se agregan mas capas a la red"], a: 1, e: "Backpropagation calcula el gradiente del error respecto a cada peso, propagandolo desde la capa de salida hacia atras. Cada peso se ajusta un poco en la direccion que reduce el error." }
+    ],
+    final: [
+        { q: "Un banco quiere predecir si un cliente entrara en mora. De todos los modelos que estudiamos, el flujo correcto de analisis seria:", o: ["Aplicar directamente una red neuronal profunda", "1. Explorar correlaciones, 2. Probar regresion logistica como baseline, 3. Comparar con Random Forest y Gradient Boosting", "Usar solo regresion lineal simple", "Elegir el modelo con mayor accuracy"], a: 1, e: "El flujo ideal es: comenzar con exploracion (correlacion, graficos), establecer un baseline simple (logistica), y luego comparar con modelos mas sofisticados usando metricas como F1 y Recall, no solo accuracy." },
+        { q: "En nuestro dataset de credito, el dti_ratio (deuda/ingresos) resulto ser el predictor mas poderoso de mora. Esto ilustra el concepto de:", o: ["Correlacion espuria", "Ingenieria de features (crear variables derivadas que capturan mejor el fenomeno)", "Overfitting", "Multicolinealidad"], a: 1, e: "dti_ratio es una variable que creamos (feature engineering) dividiendo monto_prestamo entre ingresos_anuales. A veces las variables mas poderosas no estan en los datos originales, sino que las creamos combinando otras." },
+        { q: "Si entrenas un modelo con accuracy de 99% en entrenamiento pero 60% en test, probablemente tienes:", o: ["Un modelo perfecto", "Underfitting (el modelo es demasiado simple)", "Overfitting (el modelo memorizo los datos de entrenamiento)", "Un error en los datos"], a: 2, e: "La gran diferencia entre rendimiento en entrenamiento (99%) y test (60%) es la firma clasica del overfitting: el modelo memorizo los datos de entrenamiento incluyendo el ruido, pero no generaliza a datos nuevos." }
+    ]
+};
+
+const triviaState = {};
+function initTrivia(id) {
+    triviaState[id] = { idx: 0, score: 0, answered: false };
+    renderTrivia(id);
+}
+function renderTrivia(id) {
+    const st = triviaState[id];
+    const qs = allTrivia[id];
+    const q = qs[st.idx];
+    document.getElementById(`trivia-${id}-q`).textContent = q.q;
+    document.getElementById(`trivia-${id}-score`).textContent = `${st.score}/${qs.length}`;
+    const optsEl = document.getElementById(`trivia-${id}-opts`);
+    optsEl.innerHTML = '';
+    q.o.forEach((opt, i) => {
+        const letters = ['a', 'b', 'c', 'd'];
+        const btn = document.createElement('button');
+        btn.className = 'trivia-opt-btn';
+        btn.textContent = `${letters[i]}) ${opt}`;
+        btn.onclick = () => checkTrivia(id, i);
+        optsEl.appendChild(btn);
+    });
+    document.getElementById(`trivia-${id}-fb`).className = 'trivia-feedback';
+    document.getElementById(`trivia-${id}-fb`).style.display = '';
+    document.getElementById(`trivia-${id}-next`).style.display = 'none';
+    st.answered = false;
+    const dotsEl = document.getElementById(`trivia-${id}-dots`);
+    dotsEl.innerHTML = '';
+    qs.forEach((_, i) => {
+        const d = document.createElement('div');
+        d.className = `trivia-dot ${i < st.idx ? 'done' : ''} ${i === st.idx ? 'active' : ''}`;
+        dotsEl.appendChild(d);
+    });
+}
+function checkTrivia(id, chosen) {
+    const st = triviaState[id];
+    if (st.answered) return;
+    st.answered = true;
+    const q = allTrivia[id][st.idx];
+    const btns = document.querySelectorAll(`#trivia-${id}-opts .trivia-opt-btn`);
+    const fb = document.getElementById(`trivia-${id}-fb`);
+    if (chosen === q.a) {
+        btns[chosen].classList.add('correct');
+        st.score++;
+        document.getElementById(`trivia-${id}-score`).textContent = `${st.score}/${allTrivia[id].length}`;
+        fb.innerHTML = `<strong>Correcto!</strong><br>${q.e}`;
+        fb.style.backgroundColor = 'rgba(42,125,95,0.2)';
+        fb.style.color = '#6ee7b7';
+    } else {
+        btns[chosen].classList.add('wrong');
+        btns[q.a].classList.add('correct');
+        fb.innerHTML = `<strong>No es correcto</strong><br>${q.e}`;
+        fb.style.backgroundColor = 'rgba(181,51,74,0.2)';
+        fb.style.color = '#fda4af';
+    }
+    fb.classList.add('show');
+    const nextBtn = document.getElementById(`trivia-${id}-next`);
+    nextBtn.style.display = 'block';
+    nextBtn.textContent = st.idx === allTrivia[id].length - 1 ? 'Finalizar' : 'Siguiente \u2192';
+}
+function triviaNext(id) {
+    const st = triviaState[id];
+    st.idx++;
+    if (st.idx < allTrivia[id].length) {
+        renderTrivia(id);
+    } else {
+        const pct = Math.round(st.score / allTrivia[id].length * 100);
+        let emoji = pct === 100 ? '\u{1F3C6}' : pct >= 60 ? '\u{1F44F}' : '\u{1F4AA}';
+        document.getElementById(`trivia-${id}-q`).innerHTML = `${emoji} Resultado: <span style="color:var(--accent-main-light);font-size:1.5em;">${st.score}/${allTrivia[id].length}</span> (${pct}%)`;
+        document.getElementById(`trivia-${id}-opts`).innerHTML = pct === 100 ? '<p style="color:#6ee7b7;">Perfecto! Dominas este tema.</p>' : '<p style="color:#94a3b8;">Revisa los conceptos y vuelve a intentar.</p>';
+        document.getElementById(`trivia-${id}-fb`).style.display = 'none';
+        document.getElementById(`trivia-${id}-next`).style.display = 'none';
+    }
+}
+Object.keys(allTrivia).forEach(id => initTrivia(id));
+
+// ===== NAVIGATION =====
+const secs = document.querySelectorAll('.chapter');
+const pills = document.querySelectorAll('.nav-pill');
+const obs = new IntersectionObserver(es => {
+    es.forEach(e => {
+        if (e.isIntersecting) {
+            pills.forEach(p => p.classList.remove('active'));
+            const pill = document.querySelector(`.nav-pill[data-section="${e.target.id}"]`);
+            if (pill) {
+                pill.classList.add('active');
+                pill.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+            }
+        }
+    });
+}, { threshold: 0.15, rootMargin: '-80px 0px -50% 0px' });
+secs.forEach(s => obs.observe(s));
+pills.forEach(p => {
+    p.addEventListener('click', e => {
+        e.preventDefault();
+        const t = document.getElementById(p.dataset.section);
+        if (t) {
+            const y = t.getBoundingClientRect().top + window.pageYOffset - document.getElementById('navBar').offsetHeight - 20;
+            window.scrollTo({ top: y, behavior: 'smooth' });
+        }
+    });
+});
+</script>
+</body>
+</html>
