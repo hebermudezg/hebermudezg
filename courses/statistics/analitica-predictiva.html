@@ -816,6 +816,28 @@
         <p style="margin-top:12px; font-size:0.9rem;">Fuente: <a href="https://tylervigen.com/spurious-correlations" target="_blank" style="color:var(--accent-blue);">tylervigen.com/spurious-correlations</a></p>
     </div>
 
+    <div class="card" style="margin-top:24px;">
+        <h3><i class="fa-solid fa-dinosaur" style="color:var(--accent-purple);margin-right:8px;"></i> El Datasaurus Dozen: &iquest;Por que SIEMPRE debes graficar tus datos?</h3>
+        <p>Este es uno de los ejemplos mas famosos de la estadistica moderna. El <strong>Datasaurus Dozen</strong> son 13 datasets completamente diferentes &mdash; un dinosaurio, una estrella, un circulo, lineas, una X &mdash; que comparten <strong>exactamente las mismas estadisticas</strong>:</p>
+        <ul style="padding-left:20px; margin:12px 0;">
+            <li>Misma media de X (<strong>54.26</strong>) y de Y (<strong>47.83</strong>)</li>
+            <li>Misma desviacion estandar de X (<strong>16.77</strong>) y de Y (<strong>26.94</strong>)</li>
+            <li>Misma correlacion de Pearson (<strong>r = -0.06</strong>)</li>
+        </ul>
+        <p>Si solo miraras los numeros, pensarias que son el <strong>mismo dataset</strong>. Pero al graficarlos...</p>
+        <div style="text-align:center; margin-top:16px;">
+            <img src="datasaurus-dozen.jpg" alt="Datasaurus Dozen: 13 datasets con estadisticas identicas pero formas completamente diferentes" style="max-width:100%; border-radius:12px; border:1px solid var(--border); box-shadow: var(--shadow-md);">
+            <p style="font-size:0.8rem; color:var(--text-dim); margin-top:8px; font-style:italic;">Datasaurus Dozen &mdash; 13 datasets con estadisticas identicas (media, desviacion, correlacion) pero patrones completamente diferentes. Fuente: Matejka & Fitzmaurice (2017), Autodesk Research.</p>
+        </div>
+        <div class="callout danger" style="margin-top:16px;">
+            <div class="callout-icon">&#9888;&#65039;</div>
+            <div>
+                <h4>Leccion fundamental</h4>
+                <p><strong>Nunca confies solo en las estadisticas resumidas.</strong> Siempre visualiza tus datos antes de modelar. Un coeficiente de correlacion puede ocultar patrones que un simple diagrama de dispersion revela al instante.</p>
+            </div>
+        </div>
+    </div>
+
     <div class="card" style="margin-top:20px;">
         <h3><i class="fa-solid fa-database" style="color:var(--accent-blue);margin-right:8px;"></i> Nuestro Dataset: credit_analysis_data.csv</h3>
         <p>A lo largo de esta unidad trabajaremos con este dataset de 20,000 registros:</p>
