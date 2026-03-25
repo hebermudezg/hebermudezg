@@ -625,6 +625,24 @@
             border: 2px solid var(--border);
         }
 
+        /* ===== REVEAL CARDS ===== */
+        .reveal-card .reveal-answer {
+            max-height: 0;
+            overflow: hidden;
+            opacity: 0;
+            transition: max-height 0.4s ease, opacity 0.3s ease;
+        }
+        .reveal-card.revealed .reveal-answer {
+            max-height: 200px;
+            opacity: 1;
+        }
+        .reveal-card.revealed .reveal-question span {
+            display: none;
+        }
+        .reveal-card:hover {
+            border-color: var(--accent-main-light) !important;
+        }
+
         /* ===== FOOTER ===== */
         footer {
             text-align: center;
@@ -804,28 +822,50 @@
         <h3><i class="fa-solid fa-microscope" style="color:var(--accent-green);margin-right:8px;"></i> Mas Ejemplos de Variables de Confusion</h3>
         <p>Este error no es solo teorico. En el mundo real, confundir correlacion con causalidad ha llevado a decisiones erroneas con consecuencias graves:</p>
 
-        <div class="card-grid" style="margin-top:16px;">
-            <div class="card card-accent green">
+        <p style="font-size:0.9rem;color:var(--text-dim);margin-top:8px;"><i class="fa-solid fa-hand-pointer" style="margin-right:4px;"></i> Haz click en cada tarjeta para revelar la variable de confusion oculta.</p>
+
+        <div class="card-grid" style="margin-top:12px;">
+            <div class="card card-accent green reveal-card" onclick="this.classList.toggle('revealed')" style="cursor:pointer;position:relative;">
                 <div class="icon-box green"><i class="fa-solid fa-lungs"></i></div>
                 <h3>Epidemiologia: Cafe y Cancer de Pulmon</h3>
-                <p>Estudios antiguos encontraron que los bebedores de cafe tenian <strong>mayor tasa de cancer de pulmon</strong>. &iquest;El cafe causa cancer? No. La <strong>variable de confusion era el cigarrillo</strong>: los fumadores tambien tendian a beber mas cafe. Al controlar por tabaquismo, la correlacion desaparecia.</p>
+                <p class="reveal-question">"Los bebedores de cafe tienen <strong>mayor tasa de cancer de pulmon</strong>."<br><br><span style="color:var(--accent-main);font-weight:700;">&iquest;El cafe causa cancer? &#128073; Click para descubrir</span></p>
+                <div class="reveal-answer">
+                    <div style="background:var(--accent-green-dim);border-radius:10px;padding:14px;margin-top:12px;border:1px solid rgba(42,125,95,0.2);">
+                        <p style="margin:0;"><strong style="color:var(--accent-green);">&#10060; NO.</strong> La <strong>variable de confusion era el cigarrillo</strong>: los fumadores tambien tendian a beber mas cafe. Al controlar por tabaquismo, la correlacion desaparecia por completo.</p>
+                    </div>
+                </div>
             </div>
-            <div class="card card-accent blue">
+            <div class="card card-accent blue reveal-card" onclick="this.classList.toggle('revealed')" style="cursor:pointer;position:relative;">
                 <div class="icon-box blue"><i class="fa-solid fa-hospital"></i></div>
                 <h3>Medicina: Hospitales y Mortalidad</h3>
-                <p>Los hospitales mas grandes y prestigiosos a menudo reportan <strong>tasas de mortalidad mas altas</strong>. &iquest;Son peores? No. La <strong>variable de confusion es la gravedad del paciente</strong>: los casos mas criticos y complejos se derivan a los mejores hospitales, inflando su tasa de mortalidad.</p>
+                <p class="reveal-question">"Los hospitales mas grandes y prestigiosos reportan <strong>tasas de mortalidad mas altas</strong>."<br><br><span style="color:var(--accent-main);font-weight:700;">&iquest;Son peores hospitales? &#128073; Click para descubrir</span></p>
+                <div class="reveal-answer">
+                    <div style="background:var(--accent-blue-dim);border-radius:10px;padding:14px;margin-top:12px;border:1px solid rgba(29,111,165,0.2);">
+                        <p style="margin:0;"><strong style="color:var(--accent-blue);">&#10060; NO.</strong> La <strong>variable de confusion es la gravedad del paciente</strong>: los casos mas criticos y complejos se derivan a los mejores hospitales, inflando su tasa de mortalidad.</p>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="card-grid" style="margin-top:0;">
-            <div class="card card-accent purple">
-                <div class="icon-box purple"><i class="fa-solid fa-baby"></i></div>
+            <div class="card card-accent purple reveal-card" onclick="this.classList.toggle('revealed')" style="cursor:pointer;position:relative;">
+                <div class="icon-box purple"><i class="fa-solid fa-fire"></i></div>
                 <h3>Salud Publica: Bomberos e Incendios</h3>
-                <p>Cuantos mas <strong>bomberos</strong> se envian a un incendio, <strong>mayor es el dano</strong> registrado. &iquest;Los bomberos causan dano? Obvio que no. La variable de confusion: <strong>la magnitud del incendio</strong>. Incendios grandes requieren mas bomberos Y causan mas dano.</p>
+                <p class="reveal-question">"Cuantos mas <strong>bomberos</strong> se envian a un incendio, <strong>mayor es el dano</strong> registrado."<br><br><span style="color:var(--accent-main);font-weight:700;">&iquest;Los bomberos causan dano? &#128073; Click para descubrir</span></p>
+                <div class="reveal-answer">
+                    <div style="background:var(--accent-purple-dim);border-radius:10px;padding:14px;margin-top:12px;border:1px solid rgba(109,74,170,0.2);">
+                        <p style="margin:0;"><strong style="color:var(--accent-purple);">&#10060; NO.</strong> La variable de confusion: <strong>la magnitud del incendio</strong>. Incendios grandes requieren mas bomberos Y causan mas dano. Los bomberos no causan nada.</p>
+                    </div>
+                </div>
             </div>
-            <div class="card card-accent rose">
-                <div class="icon-box rose"><i class="fa-solid fa-chart-pie"></i></div>
+            <div class="card card-accent rose reveal-card" onclick="this.classList.toggle('revealed')" style="cursor:pointer;position:relative;">
+                <div class="icon-box rose"><i class="fa-solid fa-shoe-prints"></i></div>
                 <h3>Negocios: Zapatos y Dolor de Cabeza</h3>
-                <p>Las personas que duermen con zapatos tienen <strong>mayor probabilidad de despertar con dolor de cabeza</strong>. &iquest;Los zapatos causan migranas? No. La variable de confusion: <strong>haber bebido alcohol</strong> la noche anterior. Quien bebe mucho se queda dormido sin quitarse los zapatos Y despierta con resaca.</p>
+                <p class="reveal-question">"Las personas que duermen con zapatos tienen <strong>mayor probabilidad de despertar con dolor de cabeza</strong>."<br><br><span style="color:var(--accent-main);font-weight:700;">&iquest;Los zapatos causan migranas? &#128073; Click para descubrir</span></p>
+                <div class="reveal-answer">
+                    <div style="background:var(--accent-rose-dim);border-radius:10px;padding:14px;margin-top:12px;border:1px solid rgba(181,51,74,0.2);">
+                        <p style="margin:0;"><strong style="color:var(--accent-rose);">&#10060; NO.</strong> La variable de confusion: <strong>haber bebido alcohol</strong> la noche anterior. Quien bebe mucho se queda dormido sin quitarse los zapatos Y despierta con resaca.</p>
+                    </div>
+                </div>
             </div>
         </div>
 
