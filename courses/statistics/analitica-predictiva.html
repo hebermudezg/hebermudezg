@@ -715,7 +715,7 @@
                 <div class="hero-stat-label">Trivias</div>
             </div>
             <div class="hero-stat">
-                <div class="hero-stat-number">20K</div>
+                <div class="hero-stat-number">1M</div>
                 <div class="hero-stat-label">Observaciones</div>
             </div>
         </div>
@@ -761,7 +761,7 @@
         </div>
     </div>
 
-    <p>En la Unidad 2, fuimos <strong>detectives</strong>: usamos muestras para inferir verdades sobre la poblacion. Ahora evolucionamos a <strong>arquitectos de predicciones</strong>. Usaremos el dataset <code>credit_analysis_data.csv</code> con informacion financiera de <strong>20,000 solicitantes de credito</strong> para construir modelos capaces de <strong>predecir su comportamiento futuro</strong>.</p>
+    <p>En la Unidad 2, fuimos <strong>detectives</strong>: usamos muestras para inferir verdades sobre la poblacion. Ahora evolucionamos a <strong>arquitectos de predicciones</strong>. Usaremos el dataset <code>credit_risk_data.csv</code> con informacion financiera de <strong>1,000,000 de solicitantes de credito</strong> para construir modelos capaces de <strong>predecir su comportamiento futuro</strong>.</p>
 
     <div class="callout danger" style="margin-top:24px;">
         <div class="callout-icon">&#9888;&#65039;</div>
@@ -839,8 +839,8 @@
     </div>
 
     <div class="card" style="margin-top:20px;">
-        <h3><i class="fa-solid fa-database" style="color:var(--accent-blue);margin-right:8px;"></i> Nuestro Dataset: credit_analysis_data.csv</h3>
-        <p>A lo largo de esta unidad trabajaremos con este dataset de 20,000 registros:</p>
+        <h3><i class="fa-solid fa-database" style="color:var(--accent-blue);margin-right:8px;"></i> Nuestro Dataset: credit_risk_data.csv</h3>
+        <p>A lo largo de esta unidad trabajaremos con este dataset de <strong>1,000,000 de registros</strong>:</p>
         <div class="compare-table" style="margin-top:12px;">
             <table class="compare-table">
                 <thead>
@@ -851,12 +851,14 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr><td><code>edad</code></td><td>Numerica</td><td>Edad del solicitante</td></tr>
-                    <tr><td><code>experiencia_laboral</code></td><td>Numerica</td><td>Anos de experiencia laboral</td></tr>
-                    <tr><td><code>ingresos_anuales</code></td><td>Numerica</td><td>Ingresos anuales en COP</td></tr>
-                    <tr><td><code>puntaje_credito</code></td><td>Numerica</td><td>Score crediticio del cliente</td></tr>
+                    <tr><td><code>id_cliente</code></td><td>Identificador</td><td>ID unico del cliente</td></tr>
+                    <tr><td><code>nombre</code>, <code>apellido</code></td><td>Texto</td><td>Datos personales del cliente</td></tr>
+                    <tr><td><code>edad</code></td><td>Numerica</td><td>Edad del solicitante (media: 33.4)</td></tr>
+                    <tr><td><code>ingresos_anuales</code></td><td>Numerica</td><td>Ingresos anuales en COP (media: ~$50.8M)</td></tr>
                     <tr><td><code>monto_prestamo</code></td><td>Numerica</td><td>Monto del prestamo solicitado</td></tr>
-                    <tr><td><code>estado_pago</code></td><td>Categorica</td><td>Pagado / No Pagado</td></tr>
+                    <tr><td><code>puntaje_credito</code></td><td>Numerica</td><td>Score crediticio (media: 648.7)</td></tr>
+                    <tr><td><code>proposito_prestamo</code></td><td>Categorica</td><td>Personal, Coche, Vivienda, Educacion, Negocio</td></tr>
+                    <tr><td><code>estado_pago</code></td><td>Categorica</td><td>Pagado (~73%) / No Pagado (~27%)</td></tr>
                 </tbody>
             </table>
         </div>
@@ -925,9 +927,9 @@
     <div class="real-world">
         <div class="real-world-header">
             <span class="badge">NUESTRO CASO</span>
-            <h4>Experiencia Laboral vs Ingresos Anuales</h4>
+            <h4>Ingresos Anuales vs Monto del Prestamo</h4>
         </div>
-        <p>Al analizar la relacion entre <strong>experiencia_laboral</strong> y <strong>ingresos_anuales</strong> en nuestro dataset, el calculo del coeficiente de Pearson arroja <strong>r = 0.805</strong>. Esto confirma una <strong>asociacion lineal positiva muy fuerte</strong>: a mas experiencia, mayores ingresos.</p>
+        <p>Al analizar la relacion entre <strong>ingresos_anuales</strong> y <strong>monto_prestamo</strong> en nuestro dataset de 1 millon de registros, el calculo del coeficiente de Pearson arroja <strong>r = 0.775</strong>. Esto confirma una <strong>asociacion lineal positiva fuerte</strong>: a mayores ingresos, mayor es el monto del prestamo que solicitan los clientes.</p>
     </div>
 
     <!-- SIMULADOR DE CORRELACION -->
@@ -990,11 +992,11 @@
     <div class="card-grid" style="margin:20px 0;">
         <div class="card card-accent">
             <h3>Variable Dependiente (Y)</h3>
-            <p>Lo que queremos predecir. Es nuestro <strong>objetivo</strong>. En nuestro caso: <code>ingresos_anuales</code>.</p>
+            <p>Lo que queremos predecir. Es nuestro <strong>objetivo</strong>. En nuestro caso: <code>monto_prestamo</code>.</p>
         </div>
         <div class="card card-accent blue">
             <h3>Variable Independiente (X)</h3>
-            <p>Lo que usamos como "pista" para predecir Y. Nuestro <strong>predictor</strong>: <code>experiencia_laboral</code>.</p>
+            <p>Lo que usamos como "pista" para predecir Y. Nuestro <strong>predictor</strong>: <code>ingresos_anuales</code>.</p>
         </div>
     </div>
 
@@ -1101,7 +1103,7 @@
         <div class="chapter-info">
             <div class="tag green">TEMA 1 &middot; PYTHON</div>
             <h2 class="chapter-title">Construccion e Interpretacion del Modelo en Python</h2>
-            <p class="chapter-subtitle">Pregunta de Negocio: &iquest;Podemos predecir los ingresos_anuales si conocemos la experiencia_laboral?</p>
+            <p class="chapter-subtitle">Pregunta de Negocio: &iquest;Podemos predecir el monto_prestamo que solicitara un cliente si conocemos sus ingresos_anuales?</p>
         </div>
     </div>
 
@@ -1113,8 +1115,8 @@
             <button class="code-copy-btn" onclick="copyCode(this)">Copiar</button>
         </div>
         <div class="code-body"><span class="comment"># Definir nuestras variables X (independiente) e Y (dependiente)</span>
-<span class="variable">Y</span> = df[<span class="string">'ingresos_anuales'</span>]
-<span class="variable">X</span> = df[<span class="string">'experiencia_laboral'</span>]
+<span class="variable">Y</span> = df[<span class="string">'monto_prestamo'</span>]
+<span class="variable">X</span> = df[<span class="string">'ingresos_anuales'</span>]
 
 <span class="comment"># statsmodels requiere que anadamos una constante (el intercepto beta_0)</span>
 <span class="variable">X</span> = sm.<span class="function">add_constant</span>(X)
@@ -1130,8 +1132,8 @@
 
     <div class="card-grid" style="margin:16px 0;">
         <div class="card card-accent green">
-            <h3>R-squared: 0.648</h3>
-            <p>El <strong>64.8%</strong> de la variabilidad en los ingresos_anuales es explicada por la experiencia_laboral. Para un modelo de una sola variable, es excelente.</p>
+            <h3>R-squared: 0.601</h3>
+            <p>El <strong>60.1%</strong> de la variabilidad en el monto_prestamo es explicada por los ingresos_anuales. Para un modelo de una sola variable, es un poder predictivo solido.</p>
         </div>
         <div class="card card-accent blue">
             <h3>Prob (F-statistic): 0.000</h3>
@@ -1142,13 +1144,13 @@
     <div class="card card-accent">
         <h3>Coeficientes del Modelo</h3>
         <ul style="padding-left:20px; margin-top:8px;">
-            <li><strong>const (&beta;&#8320;) = $31,970,000 COP:</strong> Ingreso anual base estimado para una persona con cero anos de experiencia.</li>
-            <li><strong>experiencia_laboral (&beta;&#8321;) = $2,098,000 COP:</strong> <em>"Por cada ano adicional de experiencia laboral, esperamos que los ingresos anuales aumenten, en promedio, en $2,098,000 COP."</em></li>
+            <li><strong>const (&beta;&#8320;) = -$210,000 COP:</strong> El intercepto (monto base cuando ingresos son cero). No tiene interpretacion practica aqui, pero es necesario matematicamente.</li>
+            <li><strong>ingresos_anuales (&beta;&#8321;) = 0.43:</strong> <em>"Por cada peso adicional de ingresos anuales, esperamos que el monto del prestamo solicitado aumente, en promedio, en $0.43 COP."</em> O visto de otra forma: por cada $1,000,000 mas de ingreso, el prestamo sube ~$430,000.</li>
         </ul>
     </div>
 
     <div class="formula-box">
-        ingresos_anuales = 31,970,000 + 2,098,000 &middot; experiencia_laboral + &epsilon;
+        monto_prestamo = -210,000 + 0.43 &middot; ingresos_anuales + &epsilon;
     </div>
 </section>
 
@@ -1186,7 +1188,7 @@
             <span class="badge">CASO PRACTICO</span>
             <h4>Modelando el Puntaje de Credito</h4>
         </div>
-        <p><strong>Pregunta de Negocio:</strong> &iquest;Podemos modelar el puntaje_credito de un cliente a partir de sus ingresos_anuales y su edad?</p>
+        <p><strong>Pregunta de Negocio:</strong> &iquest;Podemos modelar el monto_prestamo de un cliente a partir de sus ingresos_anuales, su puntaje_credito y su edad?</p>
     </div>
 
     <div class="code-block">
@@ -1195,8 +1197,8 @@
             <button class="code-copy-btn" onclick="copyCode(this)">Copiar</button>
         </div>
         <div class="code-body"><span class="comment"># --- 1. Construccion del Modelo de Regresion Multiple ---</span>
-<span class="variable">Y</span> = df[<span class="string">'puntaje_credito'</span>]
-<span class="variable">X</span> = df[[<span class="string">'ingresos_anuales'</span>, <span class="string">'edad'</span>]]
+<span class="variable">Y</span> = df[<span class="string">'monto_prestamo'</span>]
+<span class="variable">X</span> = df[[<span class="string">'ingresos_anuales'</span>, <span class="string">'puntaje_credito'</span>, <span class="string">'edad'</span>]]
 <span class="variable">X</span> = sm.<span class="function">add_constant</span>(X)
 
 <span class="variable">modelo_multiple</span> = sm.<span class="function">OLS</span>(Y, X).<span class="function">fit</span>()
@@ -1206,10 +1208,11 @@
     </div>
 
     <div class="card" style="margin-top:20px;">
-        <h3>Interpretacion de Coeficientes (R&#178; Ajustado = 0.674)</h3>
+        <h3>Interpretacion de Coeficientes</h3>
         <ul style="padding-left:20px; margin-top:8px;">
-            <li><strong>ingresos_anuales (&beta;&#8321; = 2.476e-06):</strong> "Manteniendo la edad constante, por cada peso adicional en ingresos, el puntaje sube 0.0000025 puntos." (El efecto es pequeno por unidad, pero acumulativo.)</li>
-            <li><strong>edad (&beta;&#8322; = 2.82):</strong> "Manteniendo los ingresos constantes, por cada ano adicional de edad, el puntaje de credito aumenta en promedio 2.82 puntos."</li>
+            <li><strong>ingresos_anuales:</strong> "Manteniendo puntaje y edad constantes, por cada peso adicional en ingresos, el monto del prestamo sube." Es el predictor mas fuerte dado la alta correlacion (r = 0.775).</li>
+            <li><strong>puntaje_credito:</strong> "Manteniendo ingresos y edad constantes, un mayor puntaje de credito puede influir en el monto que el banco aprueba."</li>
+            <li><strong>edad:</strong> "Manteniendo lo demas constante, la edad puede tener un efecto marginal en el monto solicitado."</li>
         </ul>
     </div>
 </section>
@@ -1247,15 +1250,15 @@
         </div>
         <div class="code-body"><span class="comment"># Calcular el RMSE a partir del Error Cuadratico Medio de los Residuos</span>
 <span class="variable">rmse</span> = np.<span class="function">sqrt</span>(modelo_multiple.mse_resid)
-<span class="keyword">print</span>(<span class="string">f"El RMSE de nuestro modelo es: {rmse:.2f} puntos"</span>)
-<span class="comment"># Resultado: RMSE ≈ 41.71 puntos</span></div>
+<span class="keyword">print</span>(<span class="string">f"El RMSE de nuestro modelo es: ${rmse:,.0f} COP"</span>)
+<span class="comment"># Resultado: RMSE ≈ $14,100,000 COP</span></div>
     </div>
 
     <div class="callout tip">
         <div class="callout-icon">&#128161;</div>
         <div>
             <h4>Interpretacion del RMSE</h4>
-            <p>Un RMSE de <strong>41.71 puntos</strong> significa: "En promedio, las predicciones de nuestro modelo sobre el puntaje_credito se desvian unos <strong>42 puntos</strong> del valor real."</p>
+            <p>Un RMSE de <strong>$14,100,000 COP</strong> significa: "En promedio, las predicciones de nuestro modelo sobre el monto_prestamo se desvian unos <strong>14.1 millones</strong> del valor real." Dado que los prestamos promedian ~$21.6M, este error es considerable pero esperable con tan pocas variables.</p>
         </div>
     </div>
 
@@ -1593,7 +1596,7 @@ df[<span class="string">'no_pago_numeric'</span>] = (df[<span class="string">'es
 <span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> classification_report
 
 <span class="comment"># Preparar los datos</span>
-<span class="variable">X</span> = df[[<span class="string">'puntaje_credito'</span>, <span class="string">'dti_ratio'</span>, <span class="string">'edad'</span>, <span class="string">'experiencia_laboral'</span>]]
+<span class="variable">X</span> = df[[<span class="string">'puntaje_credito'</span>, <span class="string">'dti_ratio'</span>, <span class="string">'edad'</span>, <span class="string">'ingresos_anuales'</span>]]
 <span class="variable">y</span> = df[<span class="string">'no_pago_numeric'</span>]
 
 <span class="variable">X_train</span>, <span class="variable">X_test</span>, <span class="variable">y_train</span>, <span class="variable">y_test</span> = <span class="function">train_test_split</span>(X, y, test_size=<span class="number">0.3</span>, random_state=<span class="number">42</span>)
@@ -1917,7 +1920,7 @@ modelo_nn.<span class="function">compile</span>(
         <div class="callout-icon">&#9888;&#65039;</div>
         <div>
             <h4>&iquest;Cuando NO usar Deep Learning?</h4>
-            <p>Para datos tabulares como nuestro credit_analysis_data.csv, modelos como <strong>Gradient Boosting suelen superar a las redes neuronales</strong>. Deep Learning brilla con imagenes, texto, audio y datos no estructurados. Para tablas: prueba primero XGBoost/LightGBM.</p>
+            <p>Para datos tabulares como nuestro credit_risk_data.csv, modelos como <strong>Gradient Boosting suelen superar a las redes neuronales</strong>. Deep Learning brilla con imagenes, texto, audio y datos no estructurados. Para tablas: prueba primero XGBoost/LightGBM.</p>
         </div>
     </div>
 
@@ -1971,6 +1974,7 @@ modelo_nn.<span class="function">compile</span>(
             <li><strong>Video:</strong> <a href="https://www.youtube.com/watch?v=k964_uNn3l0" target="_blank" style="color:var(--accent-blue);">Regresion Lineal y Minimos Cuadrados Ordinarios | DotCSV</a></li>
             <li><strong>Video:</strong> <a href="https://www.youtube.com/watch?v=Sb8XVheowVQ" target="_blank" style="color:var(--accent-blue);">Modelos para entender una realidad caotica | DotCSV</a></li>
             <li><strong>Video:</strong> <a href="https://www.youtube.com/watch?v=MRIv2IwFTPg" target="_blank" style="color:var(--accent-blue);">&iquest;Que es una Red Neuronal? Parte 1: La Neurona | DotCSV</a></li>
+            <li><strong>Recurso interactivo:</strong> <a href="https://mlu-explain.github.io/" target="_blank" style="color:var(--accent-blue);">MLU-Explain (Amazon)</a> &mdash; Explicaciones visuales e interactivas de conceptos de Machine Learning: regresion lineal, arboles de decision, bias-variance, ROC/AUC y mas.</li>
         </ul>
     </div>
 </section>
@@ -2304,17 +2308,17 @@ updateNeuron();
 const allTrivia = {
     t1s1: [
         { q: "Un estudio encuentra que los paises que comen mas chocolate tienen mas Premios Nobel. Esto demuestra que:", o: ["El chocolate aumenta la inteligencia", "Hay una relacion de causalidad directa", "Existe una correlacion, pero no necesariamente causalidad", "Los Nobel comen mas chocolate"], a: 2, e: "Correlacion no implica causalidad. Probablemente hay variables de confusion como el nivel de desarrollo economico que afectan ambas cosas." },
-        { q: "En nuestro dataset, si la correlacion entre experiencia_laboral e ingresos_anuales es r = 0.805, esto es una correlacion:", o: ["Debil positiva", "Moderada negativa", "Fuerte positiva", "Perfecta positiva"], a: 2, e: "Un r de 0.805 esta entre 0.7 y 1.0, lo que lo clasifica como una correlacion fuerte positiva." },
+        { q: "En nuestro dataset, si la correlacion entre ingresos_anuales y monto_prestamo es r = 0.775, esto es una correlacion:", o: ["Debil positiva", "Moderada negativa", "Fuerte positiva", "Perfecta positiva"], a: 2, e: "Un r de 0.775 esta entre 0.7 y 1.0, lo que lo clasifica como una correlacion fuerte positiva." },
         { q: "Una variable de confusion es:", o: ["Una variable que no tiene correlacion", "Una tercera variable oculta que afecta a las otras dos", "Una variable que siempre causa errores", "Otro nombre para la variable dependiente"], a: 1, e: "Una variable de confusion es una tercera variable que causa la correlacion observada entre las otras dos, sin que exista causalidad directa entre ellas." }
     ],
     t1s3: [
         { q: "En la ecuacion y = beta_0 + beta_1*x + epsilon, el termino epsilon representa:", o: ["El intercepto del modelo", "La pendiente de la recta", "Todo lo que el modelo NO puede capturar (error/residuo)", "La variable independiente"], a: 2, e: "Epsilon (error) representa la aleatoriedad, errores de medicion y el efecto de todas las variables que no incluimos en el modelo." },
         { q: "El metodo de Minimos Cuadrados Ordinarios (OLS) busca la linea que:", o: ["Pasa por todos los puntos", "Minimiza la suma de los residuos al cuadrado", "Maximiza la distancia a los puntos", "Tiene la pendiente mas grande posible"], a: 1, e: "OLS minimiza la suma de los cuadrados de las distancias verticales (residuos) entre los puntos reales y la linea. Se elevan al cuadrado para evitar que errores positivos y negativos se cancelen." },
-        { q: "Si beta_1 = 2,098,000 en nuestro modelo de ingresos vs experiencia, significa que:", o: ["El ingreso base es $2,098,000", "Por cada ano de experiencia, los ingresos suben en promedio $2,098,000", "El modelo tiene un error de $2,098,000", "El R-cuadrado es 2,098,000"], a: 1, e: "Beta_1 (la pendiente) nos dice cuanto cambia Y por cada unidad de aumento en X. En este caso: por cada ano adicional de experiencia laboral, los ingresos aumentan en promedio $2,098,000 COP." }
+        { q: "Si beta_1 = 0.43 en nuestro modelo de monto_prestamo vs ingresos_anuales, significa que:", o: ["El monto base del prestamo es $0.43", "Por cada peso de ingreso adicional, el monto del prestamo sube en promedio $0.43", "El modelo tiene un error de 0.43", "El R-cuadrado es 0.43"], a: 1, e: "Beta_1 (la pendiente) nos dice cuanto cambia Y por cada unidad de aumento en X. En este caso: por cada peso adicional de ingresos anuales, el monto del prestamo solicitado sube en promedio $0.43 COP. O sea, ~$430,000 por cada millon de ingresos." }
     ],
     t2s2: [
         { q: "Al comparar dos modelos con diferente numero de variables, debemos usar:", o: ["R-cuadrado simple", "R-cuadrado Ajustado", "Solo el RMSE", "El numero de variables"], a: 1, e: "El R-cuadrado Ajustado penaliza la inclusion de variables inutiles, a diferencia del R-cuadrado simple que siempre sube al anadir variables." },
-        { q: "Un RMSE de 41.71 puntos en el modelo de puntaje_credito significa:", o: ["El modelo acierta el 41.71% de las veces", "Las predicciones se desvian en promedio 42 puntos del valor real", "El modelo tiene 41 variables", "Es un modelo perfecto"], a: 1, e: "El RMSE se expresa en las mismas unidades que Y. Aqui significa que, en promedio, nuestras predicciones sobre el puntaje de credito se desvian unos 42 puntos del valor real." },
+        { q: "Un RMSE de $14,100,000 COP en el modelo de monto_prestamo significa:", o: ["El modelo acierta el 14.1% de las veces", "Las predicciones se desvian en promedio $14.1 millones del valor real", "El modelo tiene 14.1 millones de variables", "Es un modelo perfecto"], a: 1, e: "El RMSE se expresa en las mismas unidades que Y. Aqui significa que, en promedio, nuestras predicciones sobre el monto del prestamo se desvian unos $14.1 millones del valor real." },
         { q: "Los supuestos LINE incluyen todos EXCEPTO:", o: ["Linealidad", "Independencia de errores", "Normalidad de errores", "Multicolinealidad perfecta"], a: 3, e: "LINE = Linealidad, Independencia, Normalidad, Equal variance (Homocedasticidad). La multicolinealidad perfecta no es un supuesto, sino un problema a evitar." }
     ],
     t3s2: [
