@@ -1266,11 +1266,177 @@
         </div>
     </div>
 
-    <p>Usaremos la biblioteca <strong>statsmodels</strong> porque su resumen de resultados es muy completo y pedagogico.</p>
+    <p>Antes de modelar, debemos <strong>cargar los datos</strong>, <strong>importar las librerias</strong> y <strong>explorar el dataset</strong>. Veamos el proceso completo paso a paso.</p>
+
+    <h3 style="margin-top:24px;">Paso 1: Importar las Librerias</h3>
+    <div class="code-block">
+        <div class="code-header">
+            <span>python &mdash; paso_1_imports.py</span>
+            <button class="code-copy-btn" onclick="copyCode(this)">Copiar</button>
+        </div>
+        <div class="code-body"><span class="comment"># --- Librerias fundamentales ---</span>
+<span class="keyword">import</span> pandas <span class="keyword">as</span> pd
+<span class="keyword">import</span> numpy <span class="keyword">as</span> np
+<span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt
+<span class="keyword">import</span> seaborn <span class="keyword">as</span> sns
+
+<span class="comment"># --- Para modelado estadistico ---</span>
+<span class="keyword">import</span> statsmodels.api <span class="keyword">as</span> sm
+
+<span class="comment"># --- Para Machine Learning (lo usaremos mas adelante) ---</span>
+<span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> train_test_split
+<span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> classification_report, confusion_matrix
+
+<span class="comment"># Configuracion de graficos</span>
+plt.<span class="function">style</span>.<span class="function">use</span>(<span class="string">'seaborn-v0_8-whitegrid'</span>)
+sns.<span class="function">set_palette</span>(<span class="string">'husl'</span>)
+plt.<span class="function">rcParams</span>[<span class="string">'figure.figsize'</span>] = (<span class="number">10</span>, <span class="number">6</span>)</div>
+    </div>
+
+    <h3 style="margin-top:24px;">Paso 2: Cargar los Datos</h3>
+    <p>Dependiendo de tu entorno de trabajo, hay diferentes formas de cargar el dataset:</p>
 
     <div class="code-block">
         <div class="code-header">
-            <span>python &mdash; regresion_simple.py</span>
+            <span>python &mdash; paso_2a_cargar_csv.py</span>
+            <button class="code-copy-btn" onclick="copyCode(this)">Copiar</button>
+        </div>
+        <div class="code-body"><span class="comment"># ====================================</span>
+<span class="comment"># OPCION A: Desde archivo CSV local</span>
+<span class="comment"># (Google Colab, Jupyter Notebook, VS Code)</span>
+<span class="comment"># ====================================</span>
+
+<span class="comment"># Si el archivo esta en la misma carpeta</span>
+<span class="variable">df</span> = pd.<span class="function">read_csv</span>(<span class="string">'credit_risk_data.csv'</span>)
+
+<span class="comment"># Si el archivo esta en otra ruta</span>
+<span class="comment"># df = pd.read_csv('/ruta/a/tu/archivo/credit_risk_data.csv')</span>
+
+<span class="comment"># En Google Colab: subir archivo primero</span>
+<span class="comment"># from google.colab import files</span>
+<span class="comment"># files.upload()  # Selecciona el CSV</span>
+<span class="comment"># df = pd.read_csv('credit_risk_data.csv')</span></div>
+    </div>
+
+    <div class="code-block">
+        <div class="code-header">
+            <span>python &mdash; paso_2b_cargar_databricks.py</span>
+            <button class="code-copy-btn" onclick="copyCode(this)">Copiar</button>
+        </div>
+        <div class="code-body"><span class="comment"># ====================================</span>
+<span class="comment"># OPCION B: Desde tabla en Databricks</span>
+<span class="comment"># (Si los datos ya estan como tabla en el catalogo)</span>
+<span class="comment"># ====================================</span>
+
+<span class="comment"># Leer directamente desde una tabla del catalogo</span>
+<span class="variable">df_spark</span> = spark.<span class="function">table</span>(<span class="string">'mi_catalogo.mi_esquema.credit_risk_data'</span>)
+
+<span class="comment"># Convertir de Spark DataFrame a Pandas DataFrame</span>
+<span class="variable">df</span> = df_spark.<span class="function">toPandas</span>()
+
+<span class="comment"># --- O si el CSV esta en un volumen de Unity Catalog ---</span>
+<span class="comment"># df_spark = spark.read.csv('/Volumes/mi_catalogo/mi_esquema/mi_volumen/credit_risk_data.csv',</span>
+<span class="comment">#                          header=True, inferSchema=True)</span>
+<span class="comment"># df = df_spark.toPandas()</span>
+
+<span class="comment"># --- O si el CSV esta en DBFS (legacy) ---</span>
+<span class="comment"># df = pd.read_csv('/dbfs/FileStore/tables/credit_risk_data.csv')</span></div>
+    </div>
+
+    <h3 style="margin-top:24px;">Paso 3: Explorar el Dataset</h3>
+    <div class="code-block">
+        <div class="code-header">
+            <span>python &mdash; paso_3_explorar.py</span>
+            <button class="code-copy-btn" onclick="copyCode(this)">Copiar</button>
+        </div>
+        <div class="code-body"><span class="comment"># Ver las primeras filas</span>
+<span class="keyword">print</span>(<span class="string">"--- Primeras 5 filas ---"</span>)
+<span class="keyword">print</span>(df.<span class="function">head</span>())
+
+<span class="comment"># Dimensiones del dataset</span>
+<span class="keyword">print</span>(<span class="string">f"\nDimensiones: {df.shape[0]:,} filas x {df.shape[1]} columnas"</span>)
+
+<span class="comment"># Tipos de datos y valores nulos</span>
+<span class="keyword">print</span>(<span class="string">"\n--- Info del dataset ---"</span>)
+<span class="keyword">print</span>(df.<span class="function">info</span>())
+
+<span class="comment"># Estadisticas descriptivas</span>
+<span class="keyword">print</span>(<span class="string">"\n--- Estadisticas descriptivas ---"</span>)
+<span class="keyword">print</span>(df.<span class="function">describe</span>())
+
+<span class="comment"># Verificar valores nulos</span>
+<span class="keyword">print</span>(<span class="string">"\n--- Valores nulos por columna ---"</span>)
+<span class="keyword">print</span>(df.<span class="function">isnull</span>().<span class="function">sum</span>())
+
+<span class="comment"># Distribucion de la variable objetivo</span>
+<span class="keyword">print</span>(<span class="string">"\n--- Distribucion de estado_pago ---"</span>)
+<span class="keyword">print</span>(df[<span class="string">'estado_pago'</span>].<span class="function">value_counts</span>(normalize=<span class="keyword">True</span>).<span class="function">round</span>(<span class="number">3</span>))</div>
+    </div>
+
+    <h3 style="margin-top:24px;">Paso 4: Limpieza y Preparacion</h3>
+    <div class="code-block">
+        <div class="code-header">
+            <span>python &mdash; paso_4_limpieza.py</span>
+            <button class="code-copy-btn" onclick="copyCode(this)">Copiar</button>
+        </div>
+        <div class="code-body"><span class="comment"># Eliminar filas con valores nulos (si existen)</span>
+<span class="keyword">print</span>(<span class="string">f"Filas antes de limpiar: {len(df):,}"</span>)
+<span class="variable">df</span> = df.<span class="function">dropna</span>()
+<span class="keyword">print</span>(<span class="string">f"Filas despues de limpiar: {len(df):,}"</span>)
+
+<span class="comment"># Crear variable derivada: DTI ratio (deuda/ingresos)</span>
+<span class="variable">df</span>[<span class="string">'dti_ratio'</span>] = df[<span class="string">'monto_prestamo'</span>] / df[<span class="string">'ingresos_anuales'</span>]
+
+<span class="comment"># Crear variable objetivo numerica para clasificacion</span>
+<span class="variable">df</span>[<span class="string">'no_pago_numeric'</span>] = (df[<span class="string">'estado_pago'</span>] == <span class="string">'No Pagado'</span>).<span class="function">astype</span>(<span class="keyword">int</span>)
+
+<span class="comment"># Verificar las nuevas columnas</span>
+<span class="keyword">print</span>(<span class="string">"\n--- Nuevas columnas ---"</span>)
+<span class="keyword">print</span>(df[[<span class="string">'ingresos_anuales'</span>, <span class="string">'monto_prestamo'</span>, <span class="string">'dti_ratio'</span>, <span class="string">'estado_pago'</span>, <span class="string">'no_pago_numeric'</span>]].<span class="function">head</span>())</div>
+    </div>
+
+    <h3 style="margin-top:24px;">Paso 5: Visualizacion Exploratoria</h3>
+    <div class="code-block">
+        <div class="code-header">
+            <span>python &mdash; paso_5_visualizar.py</span>
+            <button class="code-copy-btn" onclick="copyCode(this)">Copiar</button>
+        </div>
+        <div class="code-body"><span class="comment"># Matriz de correlacion</span>
+<span class="variable">cols_num</span> = [<span class="string">'edad'</span>, <span class="string">'ingresos_anuales'</span>, <span class="string">'monto_prestamo'</span>, <span class="string">'puntaje_credito'</span>, <span class="string">'dti_ratio'</span>]
+<span class="variable">corr_matrix</span> = df[cols_num].<span class="function">corr</span>()
+
+plt.<span class="function">figure</span>(figsize=(<span class="number">8</span>, <span class="number">6</span>))
+sns.<span class="function">heatmap</span>(corr_matrix, annot=<span class="keyword">True</span>, fmt=<span class="string">'.3f'</span>, cmap=<span class="string">'coolwarm'</span>,
+            center=<span class="number">0</span>, square=<span class="keyword">True</span>, linewidths=<span class="number">0.5</span>)
+plt.<span class="function">title</span>(<span class="string">'Matriz de Correlacion'</span>)
+plt.<span class="function">tight_layout</span>()
+plt.<span class="function">show</span>()
+
+<span class="comment"># Scatter plot: Ingresos vs Monto (nuestra correlacion fuerte)</span>
+plt.<span class="function">figure</span>(figsize=(<span class="number">10</span>, <span class="number">6</span>))
+plt.<span class="function">scatter</span>(df[<span class="string">'ingresos_anuales'</span>].<span class="function">sample</span>(<span class="number">5000</span>),
+           df[<span class="string">'monto_prestamo'</span>].<span class="function">sample</span>(<span class="number">5000</span>),
+           alpha=<span class="number">0.3</span>, s=<span class="number">10</span>, color=<span class="string">'#c05621'</span>)
+plt.<span class="function">xlabel</span>(<span class="string">'Ingresos Anuales (COP)'</span>)
+plt.<span class="function">ylabel</span>(<span class="string">'Monto del Prestamo (COP)'</span>)
+plt.<span class="function">title</span>(<span class="string">'Relacion entre Ingresos Anuales y Monto del Prestamo'</span>)
+plt.<span class="function">show</span>()
+
+<span class="keyword">print</span>(<span class="string">f"Correlacion de Pearson (r): {df['ingresos_anuales'].corr(df['monto_prestamo']):.3f}"</span>)</div>
+    </div>
+
+    <div class="callout success">
+        <div class="callout-icon">&#9989;</div>
+        <div>
+            <h4>Datos listos!</h4>
+            <p>Ahora que tenemos los datos cargados, limpios y explorados, podemos construir nuestro primer modelo. Usaremos la biblioteca <strong>statsmodels</strong> porque su resumen de resultados es muy completo y pedagogico.</p>
+        </div>
+    </div>
+
+    <h3 style="margin-top:24px;">Paso 6: Construir el Modelo de Regresion Simple</h3>
+    <div class="code-block">
+        <div class="code-header">
+            <span>python &mdash; paso_6_regresion_simple.py</span>
             <button class="code-copy-btn" onclick="copyCode(this)">Copiar</button>
         </div>
         <div class="code-body"><span class="comment"># Definir nuestras variables X (independiente) e Y (dependiente)</span>
