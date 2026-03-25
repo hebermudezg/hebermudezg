@@ -2463,6 +2463,18 @@ function shuffleFitData() {
     document.getElementById('fitB0Slider').value = Math.round((fitOLSb0 + (Math.random() - 0.5) * 6) * 10);
     document.getElementById('fitB1Slider').value = Math.round((fitOLSb1 + (Math.random() - 0.5) * 1.5) * 10);
 
+    // Fix axis scales based on data (with padding for residual squares)
+    const xVals = fitData.map(p => p.x);
+    const yVals = fitData.map(p => p.y);
+    const fitXMin = Math.floor(Math.min(...xVals)) - 1;
+    const fitXMax = Math.ceil(Math.max(...xVals)) + 2;
+    const fitYMin = Math.floor(Math.min(...yVals)) - 3;
+    const fitYMax = Math.ceil(Math.max(...yVals)) + 5;
+    fitChart.options.scales.x.min = fitXMin;
+    fitChart.options.scales.x.max = fitXMax;
+    fitChart.options.scales.y.min = fitYMin;
+    fitChart.options.scales.y.max = fitYMax;
+
     // Hide OLS solution
     document.getElementById('fitOLSResult').style.display = 'none';
     fitChart.data.datasets[2].hidden = true;
@@ -2478,10 +2490,10 @@ function updateFitSim() {
     document.getElementById('fitEqB0').textContent = b0.toFixed(2);
     document.getElementById('fitEqB1').textContent = b1.toFixed(2);
 
-    // Update chart
+    // Update chart - use fixed scale limits for line endpoints
     fitChart.data.datasets[0].data = fitData;
-    const xMin = Math.min(...fitData.map(p => p.x)) - 1;
-    const xMax = Math.max(...fitData.map(p => p.x)) + 1;
+    const xMin = fitChart.options.scales.x.min;
+    const xMax = fitChart.options.scales.x.max;
     fitChart.data.datasets[1].data = [{ x: xMin, y: b0 + b1 * xMin }, { x: xMax, y: b0 + b1 * xMax }];
     fitChart.update();
 
@@ -2531,9 +2543,9 @@ function showOLSSolution() {
     document.getElementById('fitOLSMSE').textContent = olsMSE.toFixed(2);
     document.getElementById('fitOLSR2').textContent = olsR2.toFixed(3);
 
-    // Show OLS line on chart
-    const xMin = Math.min(...fitData.map(p => p.x)) - 1;
-    const xMax = Math.max(...fitData.map(p => p.x)) + 1;
+    // Show OLS line on chart using fixed scale limits
+    const xMin = fitChart.options.scales.x.min;
+    const xMax = fitChart.options.scales.x.max;
     fitChart.data.datasets[2].data = [{ x: xMin, y: fitOLSb0 + fitOLSb1 * xMin }, { x: xMax, y: fitOLSb0 + fitOLSb1 * xMax }];
     fitChart.data.datasets[2].hidden = false;
     fitChart.update();
