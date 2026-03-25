@@ -801,6 +801,44 @@
     </div>
 
     <div class="card" style="margin-top:24px;">
+        <h3><i class="fa-solid fa-microscope" style="color:var(--accent-green);margin-right:8px;"></i> Mas Ejemplos de Variables de Confusion</h3>
+        <p>Este error no es solo teorico. En el mundo real, confundir correlacion con causalidad ha llevado a decisiones erroneas con consecuencias graves:</p>
+
+        <div class="card-grid" style="margin-top:16px;">
+            <div class="card card-accent green">
+                <div class="icon-box green"><i class="fa-solid fa-lungs"></i></div>
+                <h3>Epidemiologia: Cafe y Cancer de Pulmon</h3>
+                <p>Estudios antiguos encontraron que los bebedores de cafe tenian <strong>mayor tasa de cancer de pulmon</strong>. &iquest;El cafe causa cancer? No. La <strong>variable de confusion era el cigarrillo</strong>: los fumadores tambien tendian a beber mas cafe. Al controlar por tabaquismo, la correlacion desaparecia.</p>
+            </div>
+            <div class="card card-accent blue">
+                <div class="icon-box blue"><i class="fa-solid fa-hospital"></i></div>
+                <h3>Medicina: Hospitales y Mortalidad</h3>
+                <p>Los hospitales mas grandes y prestigiosos a menudo reportan <strong>tasas de mortalidad mas altas</strong>. &iquest;Son peores? No. La <strong>variable de confusion es la gravedad del paciente</strong>: los casos mas criticos y complejos se derivan a los mejores hospitales, inflando su tasa de mortalidad.</p>
+            </div>
+        </div>
+        <div class="card-grid" style="margin-top:0;">
+            <div class="card card-accent purple">
+                <div class="icon-box purple"><i class="fa-solid fa-baby"></i></div>
+                <h3>Salud Publica: Bomberos e Incendios</h3>
+                <p>Cuantos mas <strong>bomberos</strong> se envian a un incendio, <strong>mayor es el dano</strong> registrado. &iquest;Los bomberos causan dano? Obvio que no. La variable de confusion: <strong>la magnitud del incendio</strong>. Incendios grandes requieren mas bomberos Y causan mas dano.</p>
+            </div>
+            <div class="card card-accent rose">
+                <div class="icon-box rose"><i class="fa-solid fa-chart-pie"></i></div>
+                <h3>Negocios: Zapatos y Dolor de Cabeza</h3>
+                <p>Las personas que duermen con zapatos tienen <strong>mayor probabilidad de despertar con dolor de cabeza</strong>. &iquest;Los zapatos causan migranas? No. La variable de confusion: <strong>haber bebido alcohol</strong> la noche anterior. Quien bebe mucho se queda dormido sin quitarse los zapatos Y despierta con resaca.</p>
+            </div>
+        </div>
+
+        <div class="callout success" style="margin-top:16px;">
+            <div class="callout-icon">&#129302;</div>
+            <div>
+                <h4>Leccion para el Data Scientist</h4>
+                <p>Antes de concluir que X causa Y, siempre preguntate: <strong>&iquest;Existe una tercera variable Z que podria estar causando ambas?</strong> En nuestro dataset de credito, si vemos que clientes de mayor edad tienen mas prestamos, podria ser porque tambien tienen mayores ingresos (la variable de confusion).</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="card" style="margin-top:24px;">
         <h3><i class="fa-solid fa-face-surprise" style="color:var(--accent-rose);margin-right:8px;"></i> Correlaciones Espurias: Cuando los Datos Mienten</h3>
         <p>Tyler Vigen recopilo cientos de ejemplos absurdos de correlaciones altisimas entre variables que <strong>no tienen absolutamente nada que ver</strong>. Son la prueba definitiva de que correlacion no implica causalidad:</p>
         <div style="margin-top:16px;">
@@ -2309,11 +2347,11 @@ updateNeuron();
 const allTrivia = {
     t1s1: [
         { q: "Un estudio encuentra que los paises que comen mas chocolate tienen mas Premios Nobel. Esto demuestra que:", o: ["El chocolate aumenta la inteligencia", "Hay una relacion de causalidad directa", "Existe una correlacion, pero no necesariamente causalidad", "Los Nobel comen mas chocolate"], a: 2, e: "Correlacion no implica causalidad. Probablemente hay variables de confusion como el nivel de desarrollo economico que afectan ambas cosas." },
-        { q: "En nuestro dataset, si la correlacion entre ingresos_anuales y monto_prestamo es r = 0.775, esto es una correlacion:", o: ["Debil positiva", "Moderada negativa", "Fuerte positiva", "Perfecta positiva"], a: 2, e: "Un r de 0.775 esta entre 0.7 y 1.0, lo que lo clasifica como una correlacion fuerte positiva." },
-        { q: "Una variable de confusion es:", o: ["Una variable que no tiene correlacion", "Una tercera variable oculta que afecta a las otras dos", "Una variable que siempre causa errores", "Otro nombre para la variable dependiente"], a: 1, e: "Una variable de confusion es una tercera variable que causa la correlacion observada entre las otras dos, sin que exista causalidad directa entre ellas." }
+        { q: "Una variable de confusion es:", o: ["Una variable que no tiene correlacion", "Una tercera variable oculta que afecta a las otras dos", "Una variable que siempre causa errores", "Otro nombre para la variable dependiente"], a: 1, e: "Una variable de confusion es una tercera variable que causa la correlacion observada entre las otras dos, sin que exista causalidad directa entre ellas." },
+        { q: "Los hospitales grandes reportan mayor tasa de mortalidad que los pequenos. La explicacion mas probable es:", o: ["Los hospitales grandes tienen peores medicos", "Hay una variable de confusion: los casos mas graves se derivan a hospitales grandes", "Es pura coincidencia estadistica", "Los hospitales pequenos esconden sus datos"], a: 1, e: "La gravedad del paciente es la variable de confusion. Los hospitales de referencia reciben los casos mas criticos y complejos, lo que infla su tasa de mortalidad sin que esto refleje peor calidad de atencion." }
     ],
     t1s3: [
-        { q: "En la ecuacion y = beta_0 + beta_1*x + epsilon, el termino epsilon representa:", o: ["El intercepto del modelo", "La pendiente de la recta", "Todo lo que el modelo NO puede capturar (error/residuo)", "La variable independiente"], a: 2, e: "Epsilon (error) representa la aleatoriedad, errores de medicion y el efecto de todas las variables que no incluimos en el modelo." },
+        { q: "En nuestro dataset, si la correlacion entre ingresos_anuales y monto_prestamo es r = 0.775, esto es una correlacion:", o: ["Debil positiva", "Moderada negativa", "Fuerte positiva", "Perfecta positiva"], a: 2, e: "Un r de 0.775 esta entre 0.7 y 1.0, lo que lo clasifica como una correlacion fuerte positiva. Significa que a mayores ingresos, mayor tiende a ser el monto del prestamo solicitado." },
         { q: "El metodo de Minimos Cuadrados Ordinarios (OLS) busca la linea que:", o: ["Pasa por todos los puntos", "Minimiza la suma de los residuos al cuadrado", "Maximiza la distancia a los puntos", "Tiene la pendiente mas grande posible"], a: 1, e: "OLS minimiza la suma de los cuadrados de las distancias verticales (residuos) entre los puntos reales y la linea. Se elevan al cuadrado para evitar que errores positivos y negativos se cancelen." },
         { q: "Si beta_1 = 0.43 en nuestro modelo de monto_prestamo vs ingresos_anuales, significa que:", o: ["El monto base del prestamo es $0.43", "Por cada peso de ingreso adicional, el monto del prestamo sube en promedio $0.43", "El modelo tiene un error de 0.43", "El R-cuadrado es 0.43"], a: 1, e: "Beta_1 (la pendiente) nos dice cuanto cambia Y por cada unidad de aumento en X. En este caso: por cada peso adicional de ingresos anuales, el monto del prestamo solicitado sube en promedio $0.43 COP. O sea, ~$430,000 por cada millon de ingresos." }
     ],
