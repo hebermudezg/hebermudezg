@@ -1469,13 +1469,13 @@ plt.<span class="function">show</span>()
     <div class="card card-accent">
         <h3>Coeficientes del Modelo</h3>
         <ul style="padding-left:20px; margin-top:8px;">
-            <li><strong>const (&beta;&#8320;) = -$210,000 COP:</strong> El intercepto (monto base cuando ingresos son cero). No tiene interpretacion practica aqui, pero es necesario matematicamente.</li>
-            <li><strong>ingresos_anuales (&beta;&#8321;) = 0.43:</strong> <em>"Por cada peso adicional de ingresos anuales, esperamos que el monto del prestamo solicitado aumente, en promedio, en $0.43 COP."</em> O visto de otra forma: por cada $1,000,000 mas de ingreso, el prestamo sube ~$430,000.</li>
+            <li><strong>const (&beta;&#8320;) = -$66,756 COP:</strong> El intercepto (monto base cuando ingresos son cero). No tiene interpretacion practica aqui, pero es necesario matematicamente para posicionar la linea.</li>
+            <li><strong>ingresos_anuales (&beta;&#8321;) = 0.427:</strong> <em>"Por cada peso adicional de ingresos anuales, esperamos que el monto del prestamo solicitado aumente, en promedio, en $0.43 COP."</em> O visto de otra forma: por cada $1,000,000 mas de ingreso, el prestamo sube ~$427,000.</li>
         </ul>
     </div>
 
     <div class="formula-box">
-        monto_prestamo = -210,000 + 0.43 &middot; ingresos_anuales + &epsilon;
+        monto_prestamo = -66,756 + 0.427 &middot; ingresos_anuales + &epsilon;
     </div>
 </section>
 
@@ -1776,9 +1776,9 @@ df[<span class="string">'no_pago_numeric'</span>] = (df[<span class="string">'es
         <h3>Odds Ratios &mdash; Interpretacion de Coeficientes</h3>
         <p style="margin-bottom:12px;">Los coeficientes se interpretan como <strong>Odds Ratios (OR)</strong>, calculados como e<sup>coeficiente</sup>:</p>
         <ul style="padding-left:20px;">
-            <li><strong>puntaje_credito (OR &asymp; 0.986):</strong> "Por cada punto adicional en puntaje_credito, los 'odds' de no pagar <strong>disminuyen</strong> un 1.4%. Es un factor <strong>protector</strong>."</li>
-            <li><strong>dti_ratio (OR &asymp; 7.61e+07):</strong> "Un aumento en el dti_ratio incrementa <strong>masivamente</strong> los odds de no pago. Es el predictor de riesgo mas fuerte."</li>
-            <li><strong>edad (p = 0.440):</strong> No fue estadisticamente significativa en este modelo.</li>
+            <li><strong>puntaje_credito (OR &asymp; 0.988):</strong> "Por cada punto adicional en puntaje_credito, los 'odds' de no pagar <strong>disminuyen</strong> un 1.2%. Es un factor <strong>protector</strong>."</li>
+            <li><strong>dti_ratio (OR &asymp; 1,665):</strong> "Un aumento de una unidad en el dti_ratio incrementa los odds de no pago en <strong>1,665 veces</strong>. Es el predictor de riesgo mas fuerte del modelo."</li>
+            <li><strong>edad (OR &asymp; 0.999, p = 0.0002):</strong> Estadisticamente significativa pero con un efecto practicamente nulo. La edad casi no influye en la probabilidad de impago.</li>
         </ul>
     </div>
 
@@ -2808,7 +2808,7 @@ const allTrivia = {
     t1s3: [
         { q: "En nuestro dataset, si la correlacion entre ingresos_anuales y monto_prestamo es r = 0.775, esto es una correlacion:", o: ["Debil positiva", "Moderada negativa", "Fuerte positiva", "Perfecta positiva"], a: 2, e: "Un r de 0.775 esta entre 0.7 y 1.0, lo que lo clasifica como una correlacion fuerte positiva. Significa que a mayores ingresos, mayor tiende a ser el monto del prestamo solicitado." },
         { q: "El metodo de Minimos Cuadrados Ordinarios (OLS) busca la linea que:", o: ["Pasa por todos los puntos", "Minimiza la suma de los residuos al cuadrado", "Maximiza la distancia a los puntos", "Tiene la pendiente mas grande posible"], a: 1, e: "OLS minimiza la suma de los cuadrados de las distancias verticales (residuos) entre los puntos reales y la linea. Se elevan al cuadrado para evitar que errores positivos y negativos se cancelen." },
-        { q: "Si beta_1 = 0.43 en nuestro modelo de monto_prestamo vs ingresos_anuales, significa que:", o: ["El monto base del prestamo es $0.43", "Por cada peso de ingreso adicional, el monto del prestamo sube en promedio $0.43", "El modelo tiene un error de 0.43", "El R-cuadrado es 0.43"], a: 1, e: "Beta_1 (la pendiente) nos dice cuanto cambia Y por cada unidad de aumento en X. En este caso: por cada peso adicional de ingresos anuales, el monto del prestamo solicitado sube en promedio $0.43 COP. O sea, ~$430,000 por cada millon de ingresos." }
+        { q: "Si beta_1 = 0.427 en nuestro modelo de monto_prestamo vs ingresos_anuales, significa que:", o: ["El monto base del prestamo es $0.427", "Por cada peso de ingreso adicional, el monto del prestamo sube en promedio $0.427", "El modelo tiene un error de 0.427", "El R-cuadrado es 0.427"], a: 1, e: "Beta_1 (la pendiente) nos dice cuanto cambia Y por cada unidad de aumento en X. En este caso: por cada peso adicional de ingresos anuales, el monto del prestamo solicitado sube en promedio $0.427 COP. O sea, ~$427,000 por cada millon de ingresos." }
     ],
     t2s2: [
         { q: "Al comparar dos modelos con diferente numero de variables, debemos usar:", o: ["R-cuadrado simple", "R-cuadrado Ajustado", "Solo el RMSE", "El numero de variables"], a: 1, e: "El R-cuadrado Ajustado penaliza la inclusion de variables inutiles, a diferencia del R-cuadrado simple que siempre sube al anadir variables." },
