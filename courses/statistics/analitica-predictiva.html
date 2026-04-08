@@ -1486,6 +1486,10 @@ plt.<span class="function">show</span>()</div>
 
     <p>Antes de entrenar cualquier modelo, debemos <strong>separar los datos</strong>. &iquest;Por que? Porque si evaluamos el modelo con los mismos datos que uso para aprender, <strong>no sabemos si realmente aprendio o solo memorizo</strong>.</p>
 
+    <div style="margin:24px 0; text-align:center;">
+        <img src="img_train_test_split.png" alt="Diagrama train test split" style="max-width:100%; border-radius:var(--radius); box-shadow:var(--shadow-md);">
+    </div>
+
     <div class="card-grid" style="margin:20px 0;">
         <div class="card card-accent green">
             <h3>&#128214; Datos de Entrenamiento (80%)</h3>
@@ -1510,19 +1514,23 @@ plt.<span class="function">show</span>()</div>
             <span>python &mdash; paso_6_train_test_split.py</span>
             <button class="code-copy-btn" onclick="copyCode(this)">Copiar</button>
         </div>
-        <div class="code-body"><span class="comment"># Separar en 80% entrenamiento y 20% prueba</span>
-<span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> train_test_split
+        <div class="code-body"><span class="comment"># Definir X (predictores) e y (objetivo)</span>
+<span class="variable">X</span> = df[[<span class="string">'ingresos_anuales'</span>]]
+<span class="variable">y</span> = df[<span class="string">'monto_prestamo'</span>]
 
-<span class="variable">train</span>, <span class="variable">test</span> = train_test_split(df, test_size=<span class="number">0.2</span>, random_state=<span class="number">42</span>)
+<span class="comment"># Separar en 80% entrenamiento y 20% prueba</span>
+<span class="variable">X_train</span>, <span class="variable">X_test</span>, <span class="variable">y_train</span>, <span class="variable">y_test</span> = train_test_split(
+    X, y, test_size=<span class="number">0.2</span>, random_state=<span class="number">42</span>
+)
 
-<span class="keyword">print</span>(<span class="string">f"Entrenamiento: {len(train):,} registros ({len(train)/len(df)*100:.0f}%)"</span>)
-<span class="keyword">print</span>(<span class="string">f"Prueba:        {len(test):,} registros ({len(test)/len(df)*100:.0f}%)"</span>)</div>
+<span class="keyword">print</span>(<span class="string">f"X_train: {X_train.shape}  y_train: {y_train.shape}"</span>)
+<span class="keyword">print</span>(<span class="string">f"X_test:  {X_test.shape}   y_test:  {y_test.shape}"</span>)</div>
     </div>
 
     <div class="code-block" style="margin-top:12px;">
         <div class="code-header"><span>output</span></div>
-        <div class="code-body" style="color:var(--accent-green);">Entrenamiento: 8,000 registros (80%)
-Prueba:        2,000 registros (20%)</div>
+        <div class="code-body" style="color:var(--accent-green);">X_train: (8000, 1)  y_train: (8000,)
+X_test:  (2000, 1)   y_test:  (2000,)</div>
     </div>
 
     <div class="card" style="margin-top:16px;">
@@ -1538,7 +1546,7 @@ Prueba:        2,000 registros (20%)</div>
         <div class="callout-icon">&#9989;</div>
         <div>
             <h4>Datos particionados y listos!</h4>
-            <p>De aqui en adelante, <strong>todos los modelos</strong> se entrenan con <code>train</code> y se evaluan con <code>test</code>. Recuerda el patron: <code>crear &rarr; fit(train) &rarr; predict(test) &rarr; evaluar</code>.</p>
+            <p>De aqui en adelante, <strong>todos los modelos</strong> siguen el mismo patron: <code>X_train, X_test, y_train, y_test = train_test_split(X, y)</code> y luego <code>fit(X_train) &rarr; predict(X_test) &rarr; evaluar</code>.</p>
         </div>
     </div>
 
@@ -1548,13 +1556,10 @@ Prueba:        2,000 registros (20%)</div>
             <span>python &mdash; paso_7_regresion_simple.py</span>
             <button class="code-copy-btn" onclick="copyCode(this)">Copiar</button>
         </div>
-        <div class="code-body"><span class="keyword">from</span> scipy <span class="keyword">import</span> stats
-
-<span class="comment"># Definir variables</span>
-<span class="variable">X_train</span> = train[[<span class="string">'ingresos_anuales'</span>]]
-<span class="variable">X_test</span>  = test[[<span class="string">'ingresos_anuales'</span>]]
-<span class="variable">y_train</span> = train[<span class="string">'monto_prestamo'</span>]
-<span class="variable">y_test</span>  = test[<span class="string">'monto_prestamo'</span>]
+        <div class="code-body"><span class="comment"># Definir variables y particionar</span>
+<span class="variable">X</span> = df[[<span class="string">'ingresos_anuales'</span>]]
+<span class="variable">y</span> = df[<span class="string">'monto_prestamo'</span>]
+<span class="variable">X_train</span>, <span class="variable">X_test</span>, <span class="variable">y_train</span>, <span class="variable">y_test</span> = train_test_split(X, y, test_size=<span class="number">0.2</span>, random_state=<span class="number">42</span>)
 
 <span class="comment"># Crear y entrenar SOLO con datos de entrenamiento</span>
 <span class="variable">modelo_simple</span> = LinearRegression()
@@ -1566,15 +1571,6 @@ Prueba:        2,000 registros (20%)</div>
 <span class="variable">rmse_train</span> = np.<span class="function">sqrt</span>(mean_squared_error(y_train, modelo_simple.<span class="function">predict</span>(X_train)))
 <span class="variable">rmse_test</span>  = np.<span class="function">sqrt</span>(mean_squared_error(y_test, modelo_simple.<span class="function">predict</span>(X_test)))
 
-<span class="comment"># Prueba F y t (sobre datos de entrenamiento)</span>
-<span class="variable">y_pred_tr</span> = modelo_simple.<span class="function">predict</span>(X_train)
-<span class="variable">n</span> = <span class="function">len</span>(y_train)
-<span class="variable">ss_res</span> = np.<span class="function">sum</span>((y_train - y_pred_tr)**<span class="number">2</span>)
-<span class="variable">ss_tot</span> = np.<span class="function">sum</span>((y_train - y_train.<span class="function">mean</span>())**<span class="number">2</span>)
-<span class="variable">f_stat</span> = ((ss_tot - ss_res) / <span class="number">1</span>) / (ss_res / (n - <span class="number">2</span>))
-<span class="variable">se_b1</span> = np.<span class="function">sqrt</span>(ss_res / (n-<span class="number">2</span>) / np.<span class="function">sum</span>((X_train.values[:,<span class="number">0</span>] - X_train.values[:,<span class="number">0</span>].<span class="function">mean</span>())**<span class="number">2</span>))
-<span class="variable">t_stat</span> = modelo_simple.coef_[<span class="number">0</span>] / se_b1
-
 <span class="keyword">print</span>(<span class="string">"========== RESUMEN DEL MODELO =========="</span>)
 <span class="keyword">print</span>(<span class="string">f"Intercepto (beta_0): ${modelo_simple.intercept_:>13,.2f} COP"</span>)
 <span class="keyword">print</span>(<span class="string">f"Pendiente  (beta_1): {modelo_simple.coef_[0]:>14.4f}"</span>)
@@ -1582,17 +1578,7 @@ Prueba:        2,000 registros (20%)</div>
 <span class="keyword">print</span>(<span class="string">f"R² prueba:           {r2_test:>13.3f}"</span>)
 <span class="keyword">print</span>(<span class="string">f"RMSE entrenamiento:  ${rmse_train:>12,.0f} COP"</span>)
 <span class="keyword">print</span>(<span class="string">f"RMSE prueba:         ${rmse_test:>12,.0f} COP"</span>)
-<span class="keyword">print</span>(<span class="string">f"F-statistic:         {f_stat:>13.1f}"</span>)
-<span class="keyword">print</span>(<span class="string">f"t(beta_1):           {t_stat:>13.1f}"</span>)
-<span class="keyword">print</span>(<span class="string">f"Observaciones train: {n:>13,}"</span>)</div>
-    </div>
-
-    <div class="callout tip" style="margin-top:16px;">
-        <div class="callout-icon">&#128161;</div>
-        <div>
-            <h4>sklearn + scipy = resumen completo</h4>
-            <p>sklearn entrena el modelo, pero no calcula p-values automaticamente. Con <code>scipy.stats</code> podemos calcular la <strong>prueba F</strong> (si el modelo es util) y la <strong>prueba t</strong> (si la pendiente es distinta de cero).</p>
-        </div>
+<span class="keyword">print</span>(<span class="string">f"Observaciones train: {len(y_train):>13,}"</span>)</div>
     </div>
 
     <h3 style="margin-top:28px;">Salida Esperada</h3>
@@ -1606,8 +1592,6 @@ Prueba:        2,000 registros (20%)</div>
 <span style="color:var(--text-muted);">R² prueba:</span>                   0.466
 <span style="color:var(--text-muted);">RMSE entrenamiento:</span>  $   4,593,190 COP
 <span style="color:var(--text-muted);">RMSE prueba:</span>         $   4,689,585 COP
-<span style="color:var(--text-muted);">F-statistic:</span>               7,236.4
-<span style="color:var(--text-muted);">t(beta_1):</span>                    85.1
 <span style="color:var(--text-muted);">Observaciones train:</span>         8,000</div>
     </div>
 
@@ -1617,17 +1601,6 @@ Prueba:        2,000 registros (20%)</div>
         <div class="card card-accent green">
             <h3>R&#178; train = 0.475 &asymp; R&#178; test = 0.466</h3>
             <p>Ambos R&#178; son similares &mdash; <strong>el modelo generaliza bien!</strong> No memorizo los datos de entrenamiento. Si fueran muy diferentes (ej. train=0.90, test=0.40), tendriamos <strong>overfitting</strong>.</p>
-        </div>
-        <div class="card card-accent blue">
-            <h3>F = 7,236 &rarr; el modelo SI sirve</h3>
-            <p>La prueba F pregunta: <em>"&iquest;este modelo es mejor que solo usar el promedio?"</em> Un F tan alto confirma que la relacion es <strong>real y significativa</strong>.</p>
-        </div>
-    </div>
-
-    <div class="card-grid" style="margin:8px 0;">
-        <div class="card card-accent purple">
-            <h3>t(&beta;&#8321;) = 85.1 &rarr; la pendiente es real</h3>
-            <p>La prueba t pregunta: <em>"&iquest;la pendiente podria ser cero?"</em> Con t = 85.1, <strong>rechazamos contundentemente</strong> que &beta;&#8321; sea cero. La relacion ingresos&rarr;monto existe.</p>
         </div>
         <div class="card card-accent amber">
             <h3>RMSE test = $4,689,585</h3>
@@ -1742,11 +1715,10 @@ plt.<span class="function">show</span>()</div>
             <span>python &mdash; regresion_multiple.py</span>
             <button class="code-copy-btn" onclick="copyCode(this)">Copiar</button>
         </div>
-        <div class="code-body"><span class="comment"># --- 1. Preparar variables con la misma particion ---</span>
-<span class="variable">X_train</span> = train[[<span class="string">'edad'</span>, <span class="string">'antiguedad_laboral'</span>, <span class="string">'ingresos_anuales'</span>, <span class="string">'puntaje_credito'</span>]]
-<span class="variable">X_test</span>  = test[[<span class="string">'edad'</span>, <span class="string">'antiguedad_laboral'</span>, <span class="string">'ingresos_anuales'</span>, <span class="string">'puntaje_credito'</span>]]
-<span class="variable">y_train</span> = train[<span class="string">'monto_prestamo'</span>]
-<span class="variable">y_test</span>  = test[<span class="string">'monto_prestamo'</span>]
+        <div class="code-body"><span class="comment"># --- 1. Definir variables y particionar ---</span>
+<span class="variable">X</span> = df[[<span class="string">'edad'</span>, <span class="string">'antiguedad_laboral'</span>, <span class="string">'ingresos_anuales'</span>, <span class="string">'puntaje_credito'</span>]]
+<span class="variable">y</span> = df[<span class="string">'monto_prestamo'</span>]
+<span class="variable">X_train</span>, <span class="variable">X_test</span>, <span class="variable">y_train</span>, <span class="variable">y_test</span> = train_test_split(X, y, test_size=<span class="number">0.2</span>, random_state=<span class="number">42</span>)
 
 <span class="comment"># --- 2. Entrenar y evaluar ---</span>
 <span class="variable">modelo_multiple</span> = LinearRegression()
@@ -2059,11 +2031,10 @@ plt.<span class="function">show</span>()</div>
 <span class="variable">df</span>[<span class="string">'no_pago'</span>] = (df[<span class="string">'estado_pago'</span>] == <span class="string">'No Pagado'</span>).<span class="function">astype</span>(<span class="keyword">int</span>)
 <span class="comment"># 1 = No Pago (riesgo),  0 = Pago (safe)</span>
 
-<span class="comment"># --- 2. Usar la misma particion train/test del Paso 6 ---</span>
-<span class="variable">X_train</span> = train[[<span class="string">'puntaje_credito'</span>, <span class="string">'monto_prestamo'</span>, <span class="string">'ingresos_anuales'</span>, <span class="string">'antiguedad_laboral'</span>]]
-<span class="variable">X_test</span>  = test[[<span class="string">'puntaje_credito'</span>, <span class="string">'monto_prestamo'</span>, <span class="string">'ingresos_anuales'</span>, <span class="string">'antiguedad_laboral'</span>]]
-<span class="variable">y_train</span> = train[<span class="string">'no_pago'</span>]
-<span class="variable">y_test</span>  = test[<span class="string">'no_pago'</span>]
+<span class="comment"># --- 2. Definir variables y particionar ---</span>
+<span class="variable">X</span> = df[[<span class="string">'puntaje_credito'</span>, <span class="string">'monto_prestamo'</span>, <span class="string">'ingresos_anuales'</span>, <span class="string">'antiguedad_laboral'</span>]]
+<span class="variable">y</span> = df[<span class="string">'no_pago'</span>]
+<span class="variable">X_train</span>, <span class="variable">X_test</span>, <span class="variable">y_train</span>, <span class="variable">y_test</span> = train_test_split(X, y, test_size=<span class="number">0.2</span>, random_state=<span class="number">42</span>)
 
 <span class="comment"># --- 3. Escalar las variables (importante para regresion logistica) ---</span>
 <span class="variable">scaler</span> = StandardScaler()
@@ -2564,7 +2535,11 @@ Gradient Boosting: F1 = 0.480</div>
         </div>
     </div>
 
-    <p>Una <strong>red neuronal</strong> es, en su esencia, una extension sofisticada de la regresion logistica. Todo comienza con un bloque fundamental: el <strong>perceptron</strong> (neurona artificial).</p>
+    <p>Una <strong>red neuronal</strong> es, en su esencia, una extension sofisticada de la regresion logistica. Todo comienza con un bloque fundamental: el <strong>perceptron</strong> (neurona artificial). Este video lo explica de forma excelente:</p>
+
+    <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:var(--radius);box-shadow:var(--shadow-md);margin:20px 0;">
+        <iframe src="https://www.youtube.com/embed/MRIv2IwFTPg?start=18" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;" allowfullscreen></iframe>
+    </div>
 
     <div class="card card-accent purple">
         <h3>Como Funciona una Neurona Artificial</h3>
