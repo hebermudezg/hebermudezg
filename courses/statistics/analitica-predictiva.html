@@ -2071,9 +2071,10 @@ plt.<span class="function">show</span>()</div>
 <span class="variable">m_range</span> = np.<span class="function">linspace</span>(<span class="number">1_000_000</span>, <span class="number">80_000_000</span>, <span class="number">50</span>)
 <span class="variable">pp</span>, <span class="variable">mm</span> = np.<span class="function">meshgrid</span>(p_range, m_range)
 
-<span class="comment"># Predecir probabilidad para cada punto (ingresos fijos en $50M)</span>
+<span class="comment"># Predecir probabilidad (ingresos=$30M, antiguedad=8 anos fijos)</span>
 <span class="variable">grid</span> = np.<span class="function">column_stack</span>([pp.<span class="function">ravel</span>(), mm.<span class="function">ravel</span>(),
-                       np.<span class="function">full</span>(pp.<span class="function">size</span>, <span class="number">50_000_000</span>)])
+                       np.<span class="function">full</span>(pp.<span class="function">size</span>, <span class="number">30000000</span>),
+                       np.<span class="function">full</span>(pp.<span class="function">size</span>, <span class="number">8</span>)])
 <span class="variable">grid_s</span> = scaler.<span class="function">transform</span>(grid)
 <span class="variable">proba</span> = modelo_logistico.<span class="function">predict_proba</span>(grid_s)[:, <span class="number">1</span>].<span class="function">reshape</span>(pp.shape)
 
@@ -2084,7 +2085,7 @@ surf = ax.<span class="function">plot_surface</span>(pp, mm/<span class="number"
 ax.<span class="function">set_xlabel</span>(<span class="string">'Puntaje de Credito'</span>)
 ax.<span class="function">set_ylabel</span>(<span class="string">'Monto Prestamo (Millones)'</span>)
 ax.<span class="function">set_zlabel</span>(<span class="string">'P(No Pago)'</span>)
-ax.<span class="function">set_title</span>(<span class="string">'Superficie de Probabilidad de Impago\\n(Ingresos fijos en $50M)'</span>)
+ax.<span class="function">set_title</span>(<span class="string">'Superficie de Probabilidad de Impago\\n(Ingresos=$30M, Antiguedad=8 anos)'</span>)
 fig.<span class="function">colorbar</span>(surf, shrink=<span class="number">0.5</span>, label=<span class="string">'Probabilidad'</span>)
 plt.<span class="function">show</span>()</div>
     </div>
@@ -3137,7 +3138,7 @@ const allTrivia = {
         { q: "Los hospitales grandes reportan mayor tasa de mortalidad que los pequenos. La explicacion mas probable es:", o: ["Los hospitales grandes tienen peores medicos", "Hay una variable de confusion: los casos mas graves se derivan a hospitales grandes", "Es pura coincidencia estadistica", "Los hospitales pequenos esconden sus datos"], a: 1, e: "La gravedad del paciente es la variable de confusion. Los hospitales de referencia reciben los casos mas criticos y complejos, lo que infla su tasa de mortalidad sin que esto refleje peor calidad de atencion." }
     ],
     t1s3: [
-        { q: "En nuestro dataset, si la correlacion entre ingresos_anuales y monto_prestamo es r = 0.775, esto es una correlacion:", o: ["Debil positiva", "Moderada negativa", "Fuerte positiva", "Perfecta positiva"], a: 2, e: "Un r de 0.775 esta entre 0.7 y 1.0, lo que lo clasifica como una correlacion fuerte positiva. Significa que a mayores ingresos, mayor tiende a ser el monto del prestamo solicitado." },
+        { q: "En nuestro dataset, si la correlacion entre ingresos_anuales y monto_prestamo es r = 0.688, esto es una correlacion:", o: ["Debil positiva", "Moderada negativa", "Fuerte positiva (entre 0.5 y 0.8)", "Perfecta positiva"], a: 2, e: "Un r de 0.688 esta entre 0.5 y 0.8, lo que lo clasifica como una correlacion fuerte positiva. Significa que a mayores ingresos, mayor tiende a ser el monto del prestamo solicitado." },
         { q: "El metodo de Minimos Cuadrados Ordinarios (OLS) busca la linea que:", o: ["Pasa por todos los puntos", "Minimiza la suma de los residuos al cuadrado", "Maximiza la distancia a los puntos", "Tiene la pendiente mas grande posible"], a: 1, e: "OLS minimiza la suma de los cuadrados de las distancias verticales (residuos) entre los puntos reales y la linea. Se elevan al cuadrado para evitar que errores positivos y negativos se cancelen." },
         { q: "Si beta_1 = 0.478 en nuestro modelo de monto_prestamo vs ingresos_anuales, significa que:", o: ["El monto base del prestamo es $0.478", "Por cada peso de ingreso adicional, el monto del prestamo sube en promedio $0.478", "El modelo tiene un error de 0.478", "El R-cuadrado es 0.478"], a: 1, e: "Beta_1 (la pendiente) nos dice cuanto cambia Y por cada unidad de aumento en X. En este caso: por cada peso adicional de ingresos anuales, el monto del prestamo solicitado sube en promedio $0.478 COP. O sea, ~$478,000 por cada millon de ingresos." }
     ],
