@@ -1552,9 +1552,7 @@ Prueba:        2,000 registros (20%)</div>
             <span>python &mdash; paso_7_regresion_simple.py</span>
             <button class="code-copy-btn" onclick="copyCode(this)">Copiar</button>
         </div>
-        <div class="code-body"><span class="keyword">from</span> scipy <span class="keyword">import</span> stats
-
-<span class="comment"># Definir variables</span>
+        <div class="code-body"><span class="comment"># Definir variables</span>
 <span class="variable">X_train</span> = train[[<span class="string">'ingresos_anuales'</span>]]
 <span class="variable">X_test</span>  = test[[<span class="string">'ingresos_anuales'</span>]]
 <span class="variable">y_train</span> = train[<span class="string">'monto_prestamo'</span>]
@@ -1570,15 +1568,6 @@ Prueba:        2,000 registros (20%)</div>
 <span class="variable">rmse_train</span> = np.<span class="function">sqrt</span>(mean_squared_error(y_train, modelo_simple.<span class="function">predict</span>(X_train)))
 <span class="variable">rmse_test</span>  = np.<span class="function">sqrt</span>(mean_squared_error(y_test, modelo_simple.<span class="function">predict</span>(X_test)))
 
-<span class="comment"># Prueba F y t (sobre datos de entrenamiento)</span>
-<span class="variable">y_pred_tr</span> = modelo_simple.<span class="function">predict</span>(X_train)
-<span class="variable">n</span> = <span class="function">len</span>(y_train)
-<span class="variable">ss_res</span> = np.<span class="function">sum</span>((y_train - y_pred_tr)**<span class="number">2</span>)
-<span class="variable">ss_tot</span> = np.<span class="function">sum</span>((y_train - y_train.<span class="function">mean</span>())**<span class="number">2</span>)
-<span class="variable">f_stat</span> = ((ss_tot - ss_res) / <span class="number">1</span>) / (ss_res / (n - <span class="number">2</span>))
-<span class="variable">se_b1</span> = np.<span class="function">sqrt</span>(ss_res / (n-<span class="number">2</span>) / np.<span class="function">sum</span>((X_train.values[:,<span class="number">0</span>] - X_train.values[:,<span class="number">0</span>].<span class="function">mean</span>())**<span class="number">2</span>))
-<span class="variable">t_stat</span> = modelo_simple.coef_[<span class="number">0</span>] / se_b1
-
 <span class="keyword">print</span>(<span class="string">"========== RESUMEN DEL MODELO =========="</span>)
 <span class="keyword">print</span>(<span class="string">f"Intercepto (beta_0): ${modelo_simple.intercept_:>13,.2f} COP"</span>)
 <span class="keyword">print</span>(<span class="string">f"Pendiente  (beta_1): {modelo_simple.coef_[0]:>14.4f}"</span>)
@@ -1586,17 +1575,7 @@ Prueba:        2,000 registros (20%)</div>
 <span class="keyword">print</span>(<span class="string">f"R² prueba:           {r2_test:>13.3f}"</span>)
 <span class="keyword">print</span>(<span class="string">f"RMSE entrenamiento:  ${rmse_train:>12,.0f} COP"</span>)
 <span class="keyword">print</span>(<span class="string">f"RMSE prueba:         ${rmse_test:>12,.0f} COP"</span>)
-<span class="keyword">print</span>(<span class="string">f"F-statistic:         {f_stat:>13.1f}"</span>)
-<span class="keyword">print</span>(<span class="string">f"t(beta_1):           {t_stat:>13.1f}"</span>)
-<span class="keyword">print</span>(<span class="string">f"Observaciones train: {n:>13,}"</span>)</div>
-    </div>
-
-    <div class="callout tip" style="margin-top:16px;">
-        <div class="callout-icon">&#128161;</div>
-        <div>
-            <h4>sklearn + scipy = resumen completo</h4>
-            <p>sklearn entrena el modelo, pero no calcula p-values automaticamente. Con <code>scipy.stats</code> podemos calcular la <strong>prueba F</strong> (si el modelo es util) y la <strong>prueba t</strong> (si la pendiente es distinta de cero).</p>
-        </div>
+<span class="keyword">print</span>(<span class="string">f"Observaciones train: {len(y_train):>13,}"</span>)</div>
     </div>
 
     <h3 style="margin-top:28px;">Salida Esperada</h3>
@@ -1610,8 +1589,6 @@ Prueba:        2,000 registros (20%)</div>
 <span style="color:var(--text-muted);">R² prueba:</span>                   0.466
 <span style="color:var(--text-muted);">RMSE entrenamiento:</span>  $   4,593,190 COP
 <span style="color:var(--text-muted);">RMSE prueba:</span>         $   4,689,585 COP
-<span style="color:var(--text-muted);">F-statistic:</span>               7,236.4
-<span style="color:var(--text-muted);">t(beta_1):</span>                    85.1
 <span style="color:var(--text-muted);">Observaciones train:</span>         8,000</div>
     </div>
 
@@ -1621,17 +1598,6 @@ Prueba:        2,000 registros (20%)</div>
         <div class="card card-accent green">
             <h3>R&#178; train = 0.475 &asymp; R&#178; test = 0.466</h3>
             <p>Ambos R&#178; son similares &mdash; <strong>el modelo generaliza bien!</strong> No memorizo los datos de entrenamiento. Si fueran muy diferentes (ej. train=0.90, test=0.40), tendriamos <strong>overfitting</strong>.</p>
-        </div>
-        <div class="card card-accent blue">
-            <h3>F = 7,236 &rarr; el modelo SI sirve</h3>
-            <p>La prueba F pregunta: <em>"&iquest;este modelo es mejor que solo usar el promedio?"</em> Un F tan alto confirma que la relacion es <strong>real y significativa</strong>.</p>
-        </div>
-    </div>
-
-    <div class="card-grid" style="margin:8px 0;">
-        <div class="card card-accent purple">
-            <h3>t(&beta;&#8321;) = 85.1 &rarr; la pendiente es real</h3>
-            <p>La prueba t pregunta: <em>"&iquest;la pendiente podria ser cero?"</em> Con t = 85.1, <strong>rechazamos contundentemente</strong> que &beta;&#8321; sea cero. La relacion ingresos&rarr;monto existe.</p>
         </div>
         <div class="card card-accent amber">
             <h3>RMSE test = $4,689,585</h3>
