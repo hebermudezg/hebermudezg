@@ -1324,6 +1324,7 @@
 <span class="comment"># --- Scikit-learn: nuestra navaja suiza de ML ---</span>
 <span class="keyword">from</span> sklearn.linear_model <span class="keyword">import</span> LinearRegression, LogisticRegression
 <span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> train_test_split
+<span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> StandardScaler
 <span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> r2_score, mean_squared_error
 <span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> classification_report, confusion_matrix
 
@@ -1351,86 +1352,137 @@ plt.<span class="function">rcParams</span>[<span class="string">'figure.figsize'
 <span class="comment"># Databricks: df = spark.table('credit_risk_data').toPandas()</span></div>
     </div>
 
-    <h3 style="margin-top:24px;">Paso 3: Explorar el Dataset</h3>
+    <h3 style="margin-top:24px;">Paso 3: Conocer los Datos</h3>
     <div class="code-block">
         <div class="code-header">
-            <span>python &mdash; paso_3_explorar.py</span>
+            <span>python &mdash; paso_3_conocer.py</span>
             <button class="code-copy-btn" onclick="copyCode(this)">Copiar</button>
         </div>
-        <div class="code-body"><span class="comment"># Ver las primeras filas</span>
-<span class="keyword">print</span>(<span class="string">"--- Primeras 5 filas ---"</span>)
+        <div class="code-body"><span class="comment"># Dimensiones y primeras filas</span>
+<span class="keyword">print</span>(<span class="string">f"Dimensiones: {df.shape[0]:,} filas x {df.shape[1]} columnas"</span>)
 <span class="keyword">print</span>(df.<span class="function">head</span>())
 
-<span class="comment"># Dimensiones del dataset</span>
-<span class="keyword">print</span>(<span class="string">f"\nDimensiones: {df.shape[0]:,} filas x {df.shape[1]} columnas"</span>)
-
-<span class="comment"># Tipos de datos y valores nulos</span>
-<span class="keyword">print</span>(<span class="string">"\n--- Info del dataset ---"</span>)
-<span class="keyword">print</span>(df.<span class="function">info</span>())
-
-<span class="comment"># Estadisticas descriptivas</span>
-<span class="keyword">print</span>(<span class="string">"\n--- Estadisticas descriptivas ---"</span>)
+<span class="comment"># Estadisticas descriptivas de las variables numericas</span>
 <span class="keyword">print</span>(df.<span class="function">describe</span>())
 
-<span class="comment"># Verificar valores nulos</span>
-<span class="keyword">print</span>(<span class="string">"\n--- Valores nulos por columna ---"</span>)
-<span class="keyword">print</span>(df.<span class="function">isnull</span>().<span class="function">sum</span>())
-
 <span class="comment"># Distribucion de la variable objetivo</span>
-<span class="keyword">print</span>(<span class="string">"\n--- Distribucion de estado_pago ---"</span>)
 <span class="keyword">print</span>(df[<span class="string">'estado_pago'</span>].<span class="function">value_counts</span>(normalize=<span class="keyword">True</span>).<span class="function">round</span>(<span class="number">3</span>))</div>
     </div>
 
-    <h3 style="margin-top:24px;">Paso 4: Limpieza y Preparacion</h3>
+    <div class="card-grid" style="margin:16px 0;">
+        <div class="card card-accent green">
+            <h3>990,000 filas &times; 9 columnas</h3>
+            <p>Un millon de registros de clientes bancarios con datos de credito, ingresos, edad y estado de pago.</p>
+        </div>
+        <div class="card card-accent blue">
+            <h3>73.3% Pagado vs 26.7% No Pagado</h3>
+            <p>Nuestro dataset esta <strong>desbalanceado</strong>: la mayoria de clientes pagaron. Esto es comun en riesgo crediticio.</p>
+        </div>
+    </div>
+
+    <h3 style="margin-top:24px;">Paso 4: Limpieza</h3>
     <div class="code-block">
         <div class="code-header">
             <span>python &mdash; paso_4_limpieza.py</span>
             <button class="code-copy-btn" onclick="copyCode(this)">Copiar</button>
         </div>
         <div class="code-body"><span class="comment"># Eliminar filas con valores nulos (si existen)</span>
-<span class="keyword">print</span>(<span class="string">f"Filas antes de limpiar: {len(df):,}"</span>)
 <span class="variable">df</span> = df.<span class="function">dropna</span>()
-<span class="keyword">print</span>(<span class="string">f"Filas despues de limpiar: {len(df):,}"</span>)
 
-<span class="comment"># Crear variable derivada: DTI ratio (deuda/ingresos)</span>
-<span class="variable">df</span>[<span class="string">'dti_ratio'</span>] = df[<span class="string">'monto_prestamo'</span>] / df[<span class="string">'ingresos_anuales'</span>]
-
-<span class="comment"># Crear variable objetivo numerica para clasificacion</span>
+<span class="comment"># Crear variable objetivo numerica para clasificacion (la usaremos en Tema 3)</span>
 <span class="variable">df</span>[<span class="string">'no_pago_numeric'</span>] = (df[<span class="string">'estado_pago'</span>] == <span class="string">'No Pagado'</span>).<span class="function">astype</span>(<span class="keyword">int</span>)
-
-<span class="comment"># Verificar las nuevas columnas</span>
-<span class="keyword">print</span>(<span class="string">"\n--- Nuevas columnas ---"</span>)
-<span class="keyword">print</span>(df[[<span class="string">'ingresos_anuales'</span>, <span class="string">'monto_prestamo'</span>, <span class="string">'dti_ratio'</span>, <span class="string">'estado_pago'</span>, <span class="string">'no_pago_numeric'</span>]].<span class="function">head</span>())</div>
+<span class="comment"># 1 = No Pago (riesgo),  0 = Pago (safe)</span></div>
     </div>
 
-    <h3 style="margin-top:24px;">Paso 5: Visualizacion Exploratoria</h3>
+    <h3 style="margin-top:24px;">Paso 5: Analisis Descriptivo Visual</h3>
+    <p>Antes de modelar, <strong>visualizamos</strong> las relaciones entre variables. Esto nos dice que esperar del modelo.</p>
+
     <div class="code-block">
         <div class="code-header">
-            <span>python &mdash; paso_5_visualizar.py</span>
+            <span>python &mdash; paso_5a_correlograma.py</span>
             <button class="code-copy-btn" onclick="copyCode(this)">Copiar</button>
         </div>
-        <div class="code-body"><span class="comment"># Matriz de correlacion</span>
-<span class="variable">cols_num</span> = [<span class="string">'edad'</span>, <span class="string">'ingresos_anuales'</span>, <span class="string">'monto_prestamo'</span>, <span class="string">'puntaje_credito'</span>, <span class="string">'dti_ratio'</span>]
+        <div class="code-body"><span class="comment"># --- Correlograma (Heatmap de correlaciones) ---</span>
+<span class="variable">cols_num</span> = [<span class="string">'edad'</span>, <span class="string">'ingresos_anuales'</span>, <span class="string">'monto_prestamo'</span>, <span class="string">'puntaje_credito'</span>]
 <span class="variable">corr_matrix</span> = df[cols_num].<span class="function">corr</span>()
 
-plt.<span class="function">figure</span>(figsize=(<span class="number">8</span>, <span class="number">6</span>))
+plt.<span class="function">figure</span>(figsize=(<span class="number">7</span>, <span class="number">5</span>))
 sns.<span class="function">heatmap</span>(corr_matrix, annot=<span class="keyword">True</span>, fmt=<span class="string">'.3f'</span>, cmap=<span class="string">'coolwarm'</span>,
             center=<span class="number">0</span>, square=<span class="keyword">True</span>, linewidths=<span class="number">0.5</span>)
-plt.<span class="function">title</span>(<span class="string">'Matriz de Correlacion'</span>)
+plt.<span class="function">title</span>(<span class="string">'Correlograma: Variables Numericas'</span>)
 plt.<span class="function">tight_layout</span>()
-plt.<span class="function">show</span>()
+plt.<span class="function">show</span>()</div>
+    </div>
 
-<span class="comment"># Scatter plot: Ingresos vs Monto (nuestra correlacion fuerte)</span>
+    <div style="margin:20px 0; text-align:center;">
+        <img src="img_correlograma.png" alt="Correlograma de variables numericas" style="max-width:100%; border-radius:var(--radius); box-shadow:var(--shadow-md);">
+    </div>
+
+    <div class="callout tip" style="margin-top:16px;">
+        <div class="callout-icon">&#128161;</div>
+        <div>
+            <h4>&iquest;Que nos dice el correlograma?</h4>
+            <p><strong>ingresos_anuales &harr; monto_prestamo: r = 0.775</strong> &mdash; Correlacion fuerte! Cuanto mas gana un cliente, mas prestamo solicita. Las demas variables (edad, puntaje) tienen correlaciones cercanas a cero entre si.</p>
+        </div>
+    </div>
+
+    <div class="code-block" style="margin-top:16px;">
+        <div class="code-header">
+            <span>python &mdash; paso_5b_distribuciones.py</span>
+            <button class="code-copy-btn" onclick="copyCode(this)">Copiar</button>
+        </div>
+        <div class="code-body"><span class="comment"># --- Distribucion de variables clave por estado_pago ---</span>
+fig, axes = plt.<span class="function">subplots</span>(<span class="number">1</span>, <span class="number">3</span>, figsize=(<span class="number">16</span>, <span class="number">4</span>))
+
+<span class="comment"># 1. Puntaje de credito por grupo</span>
+sns.<span class="function">boxplot</span>(data=df, x=<span class="string">'estado_pago'</span>, y=<span class="string">'puntaje_credito'</span>, ax=axes[<span class="number">0</span>],
+            palette={<span class="string">'Pagado'</span>: <span class="string">'#00A99D'</span>, <span class="string">'No Pagado'</span>: <span class="string">'#e74c3c'</span>})
+axes[<span class="number">0</span>].<span class="function">set_title</span>(<span class="string">'Puntaje de Credito por Estado de Pago'</span>)
+
+<span class="comment"># 2. Monto del prestamo por grupo</span>
+sns.<span class="function">boxplot</span>(data=df, x=<span class="string">'estado_pago'</span>, y=<span class="string">'monto_prestamo'</span>, ax=axes[<span class="number">1</span>],
+            palette={<span class="string">'Pagado'</span>: <span class="string">'#00A99D'</span>, <span class="string">'No Pagado'</span>: <span class="string">'#e74c3c'</span>})
+axes[<span class="number">1</span>].<span class="function">set_title</span>(<span class="string">'Monto del Prestamo por Estado de Pago'</span>)
+
+<span class="comment"># 3. Ingresos por grupo</span>
+sns.<span class="function">boxplot</span>(data=df, x=<span class="string">'estado_pago'</span>, y=<span class="string">'ingresos_anuales'</span>, ax=axes[<span class="number">2</span>],
+            palette={<span class="string">'Pagado'</span>: <span class="string">'#00A99D'</span>, <span class="string">'No Pagado'</span>: <span class="string">'#e74c3c'</span>})
+axes[<span class="number">2</span>].<span class="function">set_title</span>(<span class="string">'Ingresos Anuales por Estado de Pago'</span>)
+
+plt.<span class="function">tight_layout</span>()
+plt.<span class="function">show</span>()</div>
+    </div>
+
+    <div style="margin:20px 0; text-align:center;">
+        <img src="img_boxplots.png" alt="Boxplots por estado de pago" style="max-width:100%; border-radius:var(--radius); box-shadow:var(--shadow-md);">
+    </div>
+
+    <div class="card-grid" style="margin:16px 0;">
+        <div class="card card-accent rose">
+            <h3>Puntaje: Clave para clasificar</h3>
+            <p>Clientes que <strong>no pagaron</strong> tienen puntaje promedio de <strong>594</strong> vs <strong>669</strong> de quienes si pagaron. Diferencia clara!</p>
+        </div>
+        <div class="card card-accent">
+            <h3>Monto: Mas prestamo = mas riesgo</h3>
+            <p>Quienes no pagan solicitan en promedio <strong>$30.1M</strong> vs <strong>$18.6M</strong>. Pedir mas de lo que puedes pagar es riesgoso.</p>
+        </div>
+    </div>
+
+    <div class="code-block" style="margin-top:16px;">
+        <div class="code-header">
+            <span>python &mdash; paso_5c_scatter.py</span>
+            <button class="code-copy-btn" onclick="copyCode(this)">Copiar</button>
+        </div>
+        <div class="code-body"><span class="comment"># --- Scatter: Ingresos vs Monto (nuestra correlacion fuerte) ---</span>
+<span class="variable">muestra</span> = df.<span class="function">sample</span>(<span class="number">5000</span>, random_state=<span class="number">42</span>)
+
 plt.<span class="function">figure</span>(figsize=(<span class="number">10</span>, <span class="number">6</span>))
-plt.<span class="function">scatter</span>(df[<span class="string">'ingresos_anuales'</span>].<span class="function">sample</span>(<span class="number">5000</span>),
-           df[<span class="string">'monto_prestamo'</span>].<span class="function">sample</span>(<span class="number">5000</span>),
+plt.<span class="function">scatter</span>(muestra[<span class="string">'ingresos_anuales'</span>], muestra[<span class="string">'monto_prestamo'</span>],
            alpha=<span class="number">0.3</span>, s=<span class="number">10</span>, color=<span class="string">'#00A99D'</span>)
 plt.<span class="function">xlabel</span>(<span class="string">'Ingresos Anuales (COP)'</span>)
 plt.<span class="function">ylabel</span>(<span class="string">'Monto del Prestamo (COP)'</span>)
-plt.<span class="function">title</span>(<span class="string">'Relacion entre Ingresos Anuales y Monto del Prestamo'</span>)
-plt.<span class="function">show</span>()
-
-<span class="keyword">print</span>(<span class="string">f"Correlacion de Pearson (r): {df['ingresos_anuales'].corr(df['monto_prestamo']):.3f}"</span>)</div>
+plt.<span class="function">title</span>(<span class="string">'Ingresos vs Monto del Prestamo (r = 0.775)'</span>)
+plt.<span class="function">show</span>()</div>
     </div>
 
     <div class="callout success">
@@ -1516,6 +1568,44 @@ plt.<span class="function">show</span>()
 <span class="comment"># Resultado: $25,541,984 COP</span></div>
     </div>
 
+    <h3 style="margin-top:24px;">Paso 8: Visualizar el Modelo Ajustado</h3>
+    <p>El grafico mas importante: <strong>datos reales vs linea del modelo</strong>.</p>
+    <div class="code-block">
+        <div class="code-header">
+            <span>python &mdash; paso_8_grafico_ajuste.py</span>
+            <button class="code-copy-btn" onclick="copyCode(this)">Copiar</button>
+        </div>
+        <div class="code-body"><span class="comment"># --- Grafico: Datos reales + Linea de regresion ajustada ---</span>
+<span class="variable">muestra</span> = df.<span class="function">sample</span>(<span class="number">3000</span>, random_state=<span class="number">42</span>)
+
+plt.<span class="function">figure</span>(figsize=(<span class="number">10</span>, <span class="number">6</span>))
+plt.<span class="function">scatter</span>(muestra[<span class="string">'ingresos_anuales'</span>], muestra[<span class="string">'monto_prestamo'</span>],
+           alpha=<span class="number">0.2</span>, s=<span class="number">8</span>, color=<span class="string">'#00A99D'</span>, label=<span class="string">'Datos reales'</span>)
+
+<span class="comment"># Linea del modelo</span>
+<span class="variable">x_line</span> = np.<span class="function">linspace</span>(df[<span class="string">'ingresos_anuales'</span>].<span class="function">min</span>(), df[<span class="string">'ingresos_anuales'</span>].<span class="function">max</span>(), <span class="number">100</span>)
+<span class="variable">y_line</span> = modelo_simple.intercept_ + modelo_simple.coef_[<span class="number">0</span>] * x_line
+plt.<span class="function">plot</span>(x_line, y_line, color=<span class="string">'#e74c3c'</span>, linewidth=<span class="number">2.5</span>, label=<span class="string">'Modelo: y = -66,756 + 0.43x'</span>)
+
+plt.<span class="function">xlabel</span>(<span class="string">'Ingresos Anuales (COP)'</span>)
+plt.<span class="function">ylabel</span>(<span class="string">'Monto del Prestamo (COP)'</span>)
+plt.<span class="function">title</span>(<span class="string">'Regresion Lineal Simple: Datos vs Modelo Ajustado'</span>)
+plt.<span class="function">legend</span>()
+plt.<span class="function">show</span>()</div>
+    </div>
+
+    <div style="margin:20px 0; text-align:center;">
+        <img src="img_regresion_simple.png" alt="Regresion lineal simple ajustada" style="max-width:100%; border-radius:var(--radius); box-shadow:var(--shadow-md);">
+    </div>
+
+    <div class="callout tip" style="margin-top:16px;">
+        <div class="callout-icon">&#128161;</div>
+        <div>
+            <h4>Lectura del grafico</h4>
+            <p>Los puntos verdes son los datos reales. La linea roja es nuestro modelo. Observa como la linea <strong>atraviesa el centro</strong> de la nube de puntos &mdash; eso es exactamente lo que hace OLS: minimizar la distancia entre los puntos y la linea.</p>
+        </div>
+    </div>
+
     <div class="formula-box">
         monto_prestamo = -66,756 + 0.4268 &middot; ingresos_anuales + &epsilon;
     </div>
@@ -1597,6 +1687,54 @@ R²: 0.601</div>
             <li><strong>puntaje_credito (-386.34):</strong> "Manteniendo ingresos y edad constantes, cada punto adicional en el puntaje reduce el monto solicitado en $386 COP." Un efecto leve.</li>
             <li><strong>edad (2,805.28):</strong> "Manteniendo lo demas constante, cada ano adicional de edad aumenta el prestamo en ~$2,805 COP." Un efecto marginal.</li>
         </ul>
+    </div>
+
+    <h3 style="margin-top:28px;">Visualizacion 3D: Plano de Regresion</h3>
+    <p>Con dos predictores podemos visualizar el modelo como un <strong>plano en 3D</strong> que se ajusta a la nube de puntos.</p>
+    <div class="code-block">
+        <div class="code-header">
+            <span>python &mdash; grafico_3d_multiple.py</span>
+            <button class="code-copy-btn" onclick="copyCode(this)">Copiar</button>
+        </div>
+        <div class="code-body"><span class="keyword">from</span> mpl_toolkits.mplot3d <span class="keyword">import</span> Axes3D
+
+<span class="comment"># Modelo con solo 2 variables para poder visualizar en 3D</span>
+<span class="variable">X_2v</span> = df[[<span class="string">'ingresos_anuales'</span>, <span class="string">'puntaje_credito'</span>]]
+<span class="variable">modelo_3d</span> = LinearRegression().<span class="function">fit</span>(X_2v, df[<span class="string">'monto_prestamo'</span>])
+
+<span class="comment"># Muestra para el scatter</span>
+<span class="variable">m</span> = df.<span class="function">sample</span>(<span class="number">2000</span>, random_state=<span class="number">42</span>)
+
+<span class="comment"># Crear el plano de prediccion</span>
+<span class="variable">xx</span>, <span class="variable">yy</span> = np.<span class="function">meshgrid</span>(
+    np.<span class="function">linspace</span>(m[<span class="string">'ingresos_anuales'</span>].<span class="function">min</span>(), m[<span class="string">'ingresos_anuales'</span>].<span class="function">max</span>(), <span class="number">20</span>),
+    np.<span class="function">linspace</span>(m[<span class="string">'puntaje_credito'</span>].<span class="function">min</span>(), m[<span class="string">'puntaje_credito'</span>].<span class="function">max</span>(), <span class="number">20</span>)
+)
+<span class="variable">zz</span> = modelo_3d.intercept_ + modelo_3d.coef_[<span class="number">0</span>]*xx + modelo_3d.coef_[<span class="number">1</span>]*yy
+
+<span class="comment"># Graficar</span>
+fig = plt.<span class="function">figure</span>(figsize=(<span class="number">12</span>, <span class="number">8</span>))
+ax = fig.<span class="function">add_subplot</span>(<span class="number">111</span>, projection=<span class="string">'3d'</span>)
+ax.<span class="function">scatter</span>(m[<span class="string">'ingresos_anuales'</span>], m[<span class="string">'puntaje_credito'</span>], m[<span class="string">'monto_prestamo'</span>],
+          alpha=<span class="number">0.3</span>, s=<span class="number">8</span>, color=<span class="string">'#00A99D'</span>, label=<span class="string">'Datos reales'</span>)
+ax.<span class="function">plot_surface</span>(xx, yy, zz, alpha=<span class="number">0.25</span>, color=<span class="string">'#e74c3c'</span>)
+ax.<span class="function">set_xlabel</span>(<span class="string">'Ingresos Anuales'</span>)
+ax.<span class="function">set_ylabel</span>(<span class="string">'Puntaje Credito'</span>)
+ax.<span class="function">set_zlabel</span>(<span class="string">'Monto Prestamo'</span>)
+ax.<span class="function">set_title</span>(<span class="string">'Regresion Multiple: Plano de Prediccion en 3D'</span>)
+plt.<span class="function">show</span>()</div>
+    </div>
+
+    <div style="margin:20px 0; text-align:center;">
+        <img src="img_regresion_3d.png" alt="Regresion multiple plano 3D" style="max-width:100%; border-radius:var(--radius); box-shadow:var(--shadow-md);">
+    </div>
+
+    <div class="callout tip">
+        <div class="callout-icon">&#128161;</div>
+        <div>
+            <h4>De linea a plano</h4>
+            <p>En regresion simple el modelo es una <strong>linea</strong>. Con 2 variables, es un <strong>plano</strong>. Con 3+, es un <strong>hiperplano</strong> (que no podemos dibujar, pero la matematica funciona igual). El plano rojo semi-transparente "corta" la nube de puntos verdes tratando de estar lo mas cerca posible de todos.</p>
+        </div>
     </div>
 </section>
 
@@ -1816,56 +1954,107 @@ R²: 0.601</div>
             <span>python &mdash; regresion_logistica.py</span>
             <button class="code-copy-btn" onclick="copyCode(this)">Copiar</button>
         </div>
-        <div class="code-body"><span class="comment"># --- 1. Preparar las variables (ya las creamos en Paso 4) ---</span>
+        <div class="code-body"><span class="comment"># --- 1. Definir variables (usamos las columnas directas, sin crear nuevas) ---</span>
 <span class="variable">Y</span> = df[<span class="string">'no_pago_numeric'</span>]
-<span class="variable">X</span> = df[[<span class="string">'puntaje_credito'</span>, <span class="string">'dti_ratio'</span>, <span class="string">'edad'</span>]]
+<span class="variable">X</span> = df[[<span class="string">'puntaje_credito'</span>, <span class="string">'monto_prestamo'</span>, <span class="string">'ingresos_anuales'</span>]]
 
 <span class="comment"># --- 2. Dividir en entrenamiento (80%) y prueba (20%) ---</span>
 <span class="variable">X_train</span>, <span class="variable">X_test</span>, <span class="variable">y_train</span>, <span class="variable">y_test</span> = train_test_split(
     X, Y, test_size=<span class="number">0.2</span>, random_state=<span class="number">42</span>
 )
 
-<span class="comment"># --- 3. Crear y entrenar el modelo logistico ---</span>
-<span class="variable">modelo_logistico</span> = LogisticRegression(max_iter=<span class="number">1000</span>, random_state=<span class="number">42</span>)
-<span class="variable">modelo_logistico</span>.<span class="function">fit</span>(X_train, y_train)
+<span class="comment"># --- 3. Escalar las variables (importante para regresion logistica) ---</span>
+<span class="variable">scaler</span> = StandardScaler()
+<span class="variable">X_train_s</span> = scaler.<span class="function">fit_transform</span>(X_train)
+<span class="variable">X_test_s</span> = scaler.<span class="function">transform</span>(X_test)
 
-<span class="comment"># --- 4. Ver coeficientes y Odds Ratios ---</span>
-<span class="keyword">print</span>(<span class="string">"--- Coeficientes del Modelo Logistico ---"</span>)
-<span class="keyword">print</span>(<span class="string">f"Intercepto: {modelo_logistico.intercept_[0]:.4f}"</span>)
-<span class="keyword">for</span> nombre, coef <span class="keyword">in</span> <span class="function">zip</span>(X.columns, modelo_logistico.coef_[<span class="number">0</span>]):
-    <span class="keyword">print</span>(<span class="string">f"  {nombre}: coef={coef:.4f}  |  OR={np.exp(coef):.4f}"</span>)
+<span class="comment"># --- 4. Crear y entrenar el modelo logistico ---</span>
+<span class="variable">modelo_logistico</span> = LogisticRegression(max_iter=<span class="number">1000</span>, random_state=<span class="number">42</span>)
+<span class="variable">modelo_logistico</span>.<span class="function">fit</span>(X_train_s, y_train)
 
 <span class="comment"># --- 5. Evaluar en datos de prueba ---</span>
-<span class="keyword">print</span>(<span class="string">f"\nAccuracy en test: {modelo_logistico.score(X_test, y_test):.3f}"</span>)</div>
+<span class="keyword">print</span>(<span class="string">f"Accuracy en test: {modelo_logistico.score(X_test_s, y_test):.3f}"</span>)
+<span class="keyword">print</span>(<span class="function">classification_report</span>(y_test, modelo_logistico.<span class="function">predict</span>(X_test_s),
+                            target_names=[<span class="string">'Pagado'</span>, <span class="string">'No Pagado'</span>]))</div>
     </div>
 
     <div class="code-block" style="margin-top:12px;">
         <div class="code-header"><span>output</span></div>
-        <div class="code-body" style="color:var(--accent-green);"><span style="color:var(--text-muted);">--- Coeficientes del Modelo Logistico ---</span>
-Intercepto: 3.1777
-  puntaje_credito: coef=-0.0123  |  OR=0.9878
-  dti_ratio:       coef= 7.3934  |  OR=1625.15
-  edad:            coef=-0.0017  |  OR=0.9983
+        <div class="code-body" style="color:var(--accent-green);">Accuracy en test: 0.820
 
-Accuracy en test: 0.827</div>
+              precision    recall  f1-score   support
+      Pagado       0.84      0.94      0.88    145077
+   No Pagado       0.74      0.50      0.60     52923
+    accuracy                           0.82    198000</div>
     </div>
 
     <div class="callout tip" style="margin-top:16px;">
         <div class="callout-icon">&#128161;</div>
         <div>
-            <h4>Novedad: train_test_split</h4>
-            <p>A diferencia de la regresion lineal, aqui <strong>dividimos los datos</strong> en entrenamiento (80%) y prueba (20%). Esto es crucial para evaluar si el modelo generaliza bien a datos que <em>nunca ha visto</em>. Es una practica estandar en ML.</p>
+            <h4>&iquest;Por que usamos StandardScaler?</h4>
+            <p>Nuestras variables estan en escalas muy diferentes: <code>puntaje_credito</code> va de 300 a 850, pero <code>ingresos_anuales</code> llega a miles de millones. <strong>StandardScaler</strong> las transforma para que todas tengan media 0 y desviacion 1. Sin este paso, la regresion logistica le daria toda la atencion a las variables con numeros grandes, ignorando las pequenas.</p>
+        </div>
+    </div>
+
+    <div class="callout info" style="margin-top:12px;">
+        <div class="callout-icon">&#128270;</div>
+        <div>
+            <h4>train_test_split: evaluar con datos nuevos</h4>
+            <p>Dividimos los datos en <strong>80% entrenamiento</strong> y <strong>20% prueba</strong>. El modelo aprende con un grupo y lo evaluamos con datos que <em>nunca ha visto</em>. Si el Accuracy es similar en ambos, el modelo generaliza bien.</p>
         </div>
     </div>
 
     <div class="card" style="margin-top:20px;">
-        <h3>Odds Ratios &mdash; Interpretacion de Coeficientes</h3>
-        <p style="margin-bottom:12px;">Los coeficientes se interpretan como <strong>Odds Ratios (OR)</strong>, calculados como e<sup>coeficiente</sup>:</p>
-        <ul style="padding-left:20px;">
-            <li><strong>puntaje_credito (OR &asymp; 0.988):</strong> "Por cada punto adicional en puntaje_credito, los 'odds' de no pagar <strong>disminuyen</strong> un 1.2%. Es un factor <strong>protector</strong>."</li>
-            <li><strong>dti_ratio (OR &asymp; 1,625):</strong> "Un aumento de una unidad en el dti_ratio incrementa los odds de no pago en <strong>1,625 veces</strong>. Es el predictor de riesgo mas fuerte del modelo."</li>
-            <li><strong>edad (OR &asymp; 0.998):</strong> El efecto es practicamente nulo. La edad casi no influye en la probabilidad de impago.</li>
+        <h3>Interpretacion de Resultados</h3>
+        <ul style="padding-left:20px; margin-top:8px;">
+            <li><strong>Accuracy = 82%:</strong> El modelo clasifica correctamente 8 de cada 10 clientes.</li>
+            <li><strong>Precision "No Pagado" = 74%:</strong> Cuando el modelo dice "este cliente no pagara", acierta el 74% de las veces.</li>
+            <li><strong>Recall "No Pagado" = 50%:</strong> De todos los clientes que realmente no pagaron, el modelo detecta la mitad. Aqui hay espacio para mejorar (con mas variables o modelos mas complejos del Tema 4).</li>
         </ul>
+    </div>
+
+    <h3 style="margin-top:28px;">Visualizacion: Probabilidad de Impago en 3D</h3>
+    <p>Veamos como el modelo "ve" el riesgo de cada cliente en funcion de dos variables clave.</p>
+    <div class="code-block">
+        <div class="code-header">
+            <span>python &mdash; grafico_3d_logistica.py</span>
+            <button class="code-copy-btn" onclick="copyCode(this)">Copiar</button>
+        </div>
+        <div class="code-body"><span class="keyword">from</span> mpl_toolkits.mplot3d <span class="keyword">import</span> Axes3D
+
+<span class="comment"># Crear malla de puntaje_credito x monto_prestamo</span>
+<span class="variable">p_range</span> = np.<span class="function">linspace</span>(<span class="number">300</span>, <span class="number">850</span>, <span class="number">50</span>)
+<span class="variable">m_range</span> = np.<span class="function">linspace</span>(<span class="number">1_000_000</span>, <span class="number">80_000_000</span>, <span class="number">50</span>)
+<span class="variable">pp</span>, <span class="variable">mm</span> = np.<span class="function">meshgrid</span>(p_range, m_range)
+
+<span class="comment"># Predecir probabilidad para cada punto (ingresos fijos en $50M)</span>
+<span class="variable">grid</span> = np.<span class="function">column_stack</span>([pp.<span class="function">ravel</span>(), mm.<span class="function">ravel</span>(),
+                       np.<span class="function">full</span>(pp.<span class="function">size</span>, <span class="number">50_000_000</span>)])
+<span class="variable">grid_s</span> = scaler.<span class="function">transform</span>(grid)
+<span class="variable">proba</span> = modelo_logistico.<span class="function">predict_proba</span>(grid_s)[:, <span class="number">1</span>].<span class="function">reshape</span>(pp.shape)
+
+<span class="comment"># Graficar superficie de probabilidad</span>
+fig = plt.<span class="function">figure</span>(figsize=(<span class="number">12</span>, <span class="number">8</span>))
+ax = fig.<span class="function">add_subplot</span>(<span class="number">111</span>, projection=<span class="string">'3d'</span>)
+surf = ax.<span class="function">plot_surface</span>(pp, mm/<span class="number">1e6</span>, proba, cmap=<span class="string">'RdYlGn_r'</span>, alpha=<span class="number">0.85</span>)
+ax.<span class="function">set_xlabel</span>(<span class="string">'Puntaje de Credito'</span>)
+ax.<span class="function">set_ylabel</span>(<span class="string">'Monto Prestamo (Millones)'</span>)
+ax.<span class="function">set_zlabel</span>(<span class="string">'P(No Pago)'</span>)
+ax.<span class="function">set_title</span>(<span class="string">'Superficie de Probabilidad de Impago\\n(Ingresos fijos en $50M)'</span>)
+fig.<span class="function">colorbar</span>(surf, shrink=<span class="number">0.5</span>, label=<span class="string">'Probabilidad'</span>)
+plt.<span class="function">show</span>()</div>
+    </div>
+
+    <div style="margin:20px 0; text-align:center;">
+        <img src="img_logistica_3d.png" alt="Superficie de probabilidad logistica 3D" style="max-width:100%; border-radius:var(--radius); box-shadow:var(--shadow-md);">
+    </div>
+
+    <div class="callout tip">
+        <div class="callout-icon">&#128161;</div>
+        <div>
+            <h4>Lectura del grafico 3D</h4>
+            <p>La superficie muestra la <strong>probabilidad de no pago</strong>. Zona <strong style="color:#e74c3c;">roja</strong> = alto riesgo (puntaje bajo + prestamo alto). Zona <strong style="color:#2a7d5f;">verde</strong> = bajo riesgo (puntaje alto + prestamo bajo). El modelo aprende que la combinacion de ambas variables determina el riesgo, no una sola.</p>
+        </div>
     </div>
 
     <h3 style="margin-top:32px;">La Matriz de Confusion: El Marcador del Partido</h3>
@@ -1900,17 +2089,17 @@ Accuracy en test: 0.827</div>
                     <div class="cm-label">Pred: Pago</div>
                     <div class="cm-label">Pred: No Pago</div>
                     <div class="cm-label" style="writing-mode:vertical-rl;transform:rotate(180deg);font-size:0.6rem;">Real: Pago</div>
-                    <div class="cm-cell cm-tn" id="cmTN">15186</div>
-                    <div class="cm-cell cm-fp" id="cmFP">695</div>
+                    <div class="cm-cell cm-tn" id="cmTN">135696</div>
+                    <div class="cm-cell cm-fp" id="cmFP">9381</div>
                     <div class="cm-label" style="writing-mode:vertical-rl;transform:rotate(180deg);font-size:0.6rem;">Real: No Pago</div>
-                    <div class="cm-cell cm-fn" id="cmFN">1146</div>
-                    <div class="cm-cell cm-tp" id="cmTP">2973</div>
+                    <div class="cm-cell cm-fn" id="cmFN">26211</div>
+                    <div class="cm-cell cm-tp" id="cmTP">26712</div>
                 </div>
                 <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
-                    <div class="stat-box"><div class="stat-box-label">Accuracy</div><div class="stat-box-value" id="cmAcc" style="font-size:1rem;">90.8%</div></div>
-                    <div class="stat-box"><div class="stat-box-label">Precision</div><div class="stat-box-value" id="cmPrec" style="font-size:1rem;">81.1%</div></div>
-                    <div class="stat-box" style="border:2px solid var(--accent-rose);"><div class="stat-box-label" style="color:var(--accent-rose);">Recall</div><div class="stat-box-value" id="cmRecall" style="font-size:1rem;color:var(--accent-rose);">72.2%</div></div>
-                    <div class="stat-box"><div class="stat-box-label">F1-Score</div><div class="stat-box-value" id="cmF1" style="font-size:1rem;">76.4%</div></div>
+                    <div class="stat-box"><div class="stat-box-label">Accuracy</div><div class="stat-box-value" id="cmAcc" style="font-size:1rem;">82.0%</div></div>
+                    <div class="stat-box"><div class="stat-box-label">Precision</div><div class="stat-box-value" id="cmPrec" style="font-size:1rem;">74.0%</div></div>
+                    <div class="stat-box" style="border:2px solid var(--accent-rose);"><div class="stat-box-label" style="color:var(--accent-rose);">Recall</div><div class="stat-box-value" id="cmRecall" style="font-size:1rem;color:var(--accent-rose);">50.5%</div></div>
+                    <div class="stat-box"><div class="stat-box-label">F1-Score</div><div class="stat-box-value" id="cmF1" style="font-size:1rem;">60.0%</div></div>
                 </div>
             </div>
             <div class="chart-wrap">
@@ -1971,8 +2160,8 @@ Accuracy en test: 0.827</div>
         <p>Imagina que eres un oficial de credito y debes decidir si aprobar un prestamo. Tu proceso mental seria algo asi:</p>
         <ol style="padding-left:20px; margin-top:8px;">
             <li>&iquest;El puntaje de credito es mayor a 600? &rarr; Si: probablemente aprobado</li>
-            <li>&iquest;El DTI ratio es menor a 0.5? &rarr; Si: menos riesgo</li>
-            <li>&iquest;Tiene mas de 5 anos de experiencia? &rarr; Si: aprobar</li>
+            <li>&iquest;El monto del prestamo es menor al 40% de sus ingresos? &rarr; Si: menos riesgo</li>
+            <li>&iquest;Tiene mas de 25 anos? &rarr; Si: aprobar</li>
         </ol>
         <p style="margin-top:8px;">Un arbol de decision <strong>automatiza</strong> exactamente este proceso, encontrando las mejores preguntas y los mejores puntos de corte.</p>
     </div>
@@ -2007,7 +2196,7 @@ Accuracy en test: 0.827</div>
 <span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> classification_report
 
 <span class="comment"># Preparar los datos</span>
-<span class="variable">X</span> = df[[<span class="string">'puntaje_credito'</span>, <span class="string">'dti_ratio'</span>, <span class="string">'edad'</span>, <span class="string">'ingresos_anuales'</span>]]
+<span class="variable">X</span> = df[[<span class="string">'puntaje_credito'</span>, <span class="string">'monto_prestamo'</span>, <span class="string">'ingresos_anuales'</span>]]
 <span class="variable">y</span> = df[<span class="string">'no_pago_numeric'</span>]
 
 <span class="variable">X_train</span>, <span class="variable">X_test</span>, <span class="variable">y_train</span>, <span class="variable">y_test</span> = <span class="function">train_test_split</span>(X, y, test_size=<span class="number">0.3</span>, random_state=<span class="number">42</span>)
@@ -2268,7 +2457,7 @@ rf.<span class="function">fit</span>(X_train, y_train)
     <div class="card-grid-3" style="margin:20px 0;">
         <div class="card card-accent purple">
             <h3>Capa de Entrada</h3>
-            <p>Recibe los datos crudos. Una neurona por cada feature (ej. puntaje_credito, dti_ratio, edad).</p>
+            <p>Recibe los datos crudos. Una neurona por cada feature (ej. puntaje_credito, monto_prestamo, ingresos).</p>
         </div>
         <div class="card card-accent">
             <h3>Capas Ocultas</h3>
@@ -2935,7 +3124,7 @@ const allTrivia = {
     ],
     final: [
         { q: "Un banco quiere predecir si un cliente entrara en mora. De todos los modelos que estudiamos, el flujo correcto de analisis seria:", o: ["Aplicar directamente una red neuronal profunda", "1. Explorar correlaciones, 2. Probar regresion logistica como baseline, 3. Comparar con Random Forest y Gradient Boosting", "Usar solo regresion lineal simple", "Elegir el modelo con mayor accuracy"], a: 1, e: "El flujo ideal es: comenzar con exploracion (correlacion, graficos), establecer un baseline simple (logistica), y luego comparar con modelos mas sofisticados usando metricas como F1 y Recall, no solo accuracy." },
-        { q: "En nuestro dataset de credito, el dti_ratio (deuda/ingresos) resulto ser el predictor mas poderoso de mora. Esto ilustra el concepto de:", o: ["Correlacion espuria", "Ingenieria de features (crear variables derivadas que capturan mejor el fenomeno)", "Overfitting", "Multicolinealidad"], a: 1, e: "dti_ratio es una variable que creamos (feature engineering) dividiendo monto_prestamo entre ingresos_anuales. A veces las variables mas poderosas no estan en los datos originales, sino que las creamos combinando otras." },
+        { q: "En nuestro dataset de credito, usamos StandardScaler antes de la regresion logistica. Esto fue necesario porque:", o: ["Los datos tenian valores nulos", "Las variables estaban en escalas muy diferentes (puntaje: 300-850, ingresos: millones)", "El modelo necesitaba mas variables", "Es obligatorio para cualquier modelo de ML"], a: 1, e: "StandardScaler transforma las variables para que tengan media 0 y desviacion 1. Sin escalar, la regresion logistica le da toda la atencion a variables con numeros grandes (ingresos) e ignora las pequenas (puntaje)." },
         { q: "Si entrenas un modelo con accuracy de 99% en entrenamiento pero 60% en test, probablemente tienes:", o: ["Un modelo perfecto", "Underfitting (el modelo es demasiado simple)", "Overfitting (el modelo memorizo los datos de entrenamiento)", "Un error en los datos"], a: 2, e: "La gran diferencia entre rendimiento en entrenamiento (99%) y test (60%) es la firma clasica del overfitting: el modelo memorizo los datos de entrenamiento incluyendo el ruido, pero no generaliza a datos nuevos." }
     ]
 };
