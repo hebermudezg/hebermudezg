@@ -1514,19 +1514,23 @@ plt.<span class="function">show</span>()</div>
             <span>python &mdash; paso_6_train_test_split.py</span>
             <button class="code-copy-btn" onclick="copyCode(this)">Copiar</button>
         </div>
-        <div class="code-body"><span class="comment"># Separar en 80% entrenamiento y 20% prueba</span>
-<span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> train_test_split
+        <div class="code-body"><span class="comment"># Definir X (predictores) e y (objetivo)</span>
+<span class="variable">X</span> = df[[<span class="string">'ingresos_anuales'</span>]]
+<span class="variable">y</span> = df[<span class="string">'monto_prestamo'</span>]
 
-<span class="variable">train</span>, <span class="variable">test</span> = train_test_split(df, test_size=<span class="number">0.2</span>, random_state=<span class="number">42</span>)
+<span class="comment"># Separar en 80% entrenamiento y 20% prueba</span>
+<span class="variable">X_train</span>, <span class="variable">X_test</span>, <span class="variable">y_train</span>, <span class="variable">y_test</span> = train_test_split(
+    X, y, test_size=<span class="number">0.2</span>, random_state=<span class="number">42</span>
+)
 
-<span class="keyword">print</span>(<span class="string">f"Entrenamiento: {len(train):,} registros ({len(train)/len(df)*100:.0f}%)"</span>)
-<span class="keyword">print</span>(<span class="string">f"Prueba:        {len(test):,} registros ({len(test)/len(df)*100:.0f}%)"</span>)</div>
+<span class="keyword">print</span>(<span class="string">f"X_train: {X_train.shape}  y_train: {y_train.shape}"</span>)
+<span class="keyword">print</span>(<span class="string">f"X_test:  {X_test.shape}   y_test:  {y_test.shape}"</span>)</div>
     </div>
 
     <div class="code-block" style="margin-top:12px;">
         <div class="code-header"><span>output</span></div>
-        <div class="code-body" style="color:var(--accent-green);">Entrenamiento: 8,000 registros (80%)
-Prueba:        2,000 registros (20%)</div>
+        <div class="code-body" style="color:var(--accent-green);">X_train: (8000, 1)  y_train: (8000,)
+X_test:  (2000, 1)   y_test:  (2000,)</div>
     </div>
 
     <div class="card" style="margin-top:16px;">
@@ -1542,7 +1546,7 @@ Prueba:        2,000 registros (20%)</div>
         <div class="callout-icon">&#9989;</div>
         <div>
             <h4>Datos particionados y listos!</h4>
-            <p>De aqui en adelante, <strong>todos los modelos</strong> se entrenan con <code>train</code> y se evaluan con <code>test</code>. Recuerda el patron: <code>crear &rarr; fit(train) &rarr; predict(test) &rarr; evaluar</code>.</p>
+            <p>De aqui en adelante, <strong>todos los modelos</strong> siguen el mismo patron: <code>X_train, X_test, y_train, y_test = train_test_split(X, y)</code> y luego <code>fit(X_train) &rarr; predict(X_test) &rarr; evaluar</code>.</p>
         </div>
     </div>
 
@@ -1552,11 +1556,10 @@ Prueba:        2,000 registros (20%)</div>
             <span>python &mdash; paso_7_regresion_simple.py</span>
             <button class="code-copy-btn" onclick="copyCode(this)">Copiar</button>
         </div>
-        <div class="code-body"><span class="comment"># Definir variables</span>
-<span class="variable">X_train</span> = train[[<span class="string">'ingresos_anuales'</span>]]
-<span class="variable">X_test</span>  = test[[<span class="string">'ingresos_anuales'</span>]]
-<span class="variable">y_train</span> = train[<span class="string">'monto_prestamo'</span>]
-<span class="variable">y_test</span>  = test[<span class="string">'monto_prestamo'</span>]
+        <div class="code-body"><span class="comment"># Definir variables y particionar</span>
+<span class="variable">X</span> = df[[<span class="string">'ingresos_anuales'</span>]]
+<span class="variable">y</span> = df[<span class="string">'monto_prestamo'</span>]
+<span class="variable">X_train</span>, <span class="variable">X_test</span>, <span class="variable">y_train</span>, <span class="variable">y_test</span> = train_test_split(X, y, test_size=<span class="number">0.2</span>, random_state=<span class="number">42</span>)
 
 <span class="comment"># Crear y entrenar SOLO con datos de entrenamiento</span>
 <span class="variable">modelo_simple</span> = LinearRegression()
@@ -1712,11 +1715,10 @@ plt.<span class="function">show</span>()</div>
             <span>python &mdash; regresion_multiple.py</span>
             <button class="code-copy-btn" onclick="copyCode(this)">Copiar</button>
         </div>
-        <div class="code-body"><span class="comment"># --- 1. Preparar variables con la misma particion ---</span>
-<span class="variable">X_train</span> = train[[<span class="string">'edad'</span>, <span class="string">'antiguedad_laboral'</span>, <span class="string">'ingresos_anuales'</span>, <span class="string">'puntaje_credito'</span>]]
-<span class="variable">X_test</span>  = test[[<span class="string">'edad'</span>, <span class="string">'antiguedad_laboral'</span>, <span class="string">'ingresos_anuales'</span>, <span class="string">'puntaje_credito'</span>]]
-<span class="variable">y_train</span> = train[<span class="string">'monto_prestamo'</span>]
-<span class="variable">y_test</span>  = test[<span class="string">'monto_prestamo'</span>]
+        <div class="code-body"><span class="comment"># --- 1. Definir variables y particionar ---</span>
+<span class="variable">X</span> = df[[<span class="string">'edad'</span>, <span class="string">'antiguedad_laboral'</span>, <span class="string">'ingresos_anuales'</span>, <span class="string">'puntaje_credito'</span>]]
+<span class="variable">y</span> = df[<span class="string">'monto_prestamo'</span>]
+<span class="variable">X_train</span>, <span class="variable">X_test</span>, <span class="variable">y_train</span>, <span class="variable">y_test</span> = train_test_split(X, y, test_size=<span class="number">0.2</span>, random_state=<span class="number">42</span>)
 
 <span class="comment"># --- 2. Entrenar y evaluar ---</span>
 <span class="variable">modelo_multiple</span> = LinearRegression()
@@ -2029,11 +2031,10 @@ plt.<span class="function">show</span>()</div>
 <span class="variable">df</span>[<span class="string">'no_pago'</span>] = (df[<span class="string">'estado_pago'</span>] == <span class="string">'No Pagado'</span>).<span class="function">astype</span>(<span class="keyword">int</span>)
 <span class="comment"># 1 = No Pago (riesgo),  0 = Pago (safe)</span>
 
-<span class="comment"># --- 2. Usar la misma particion train/test del Paso 6 ---</span>
-<span class="variable">X_train</span> = train[[<span class="string">'puntaje_credito'</span>, <span class="string">'monto_prestamo'</span>, <span class="string">'ingresos_anuales'</span>, <span class="string">'antiguedad_laboral'</span>]]
-<span class="variable">X_test</span>  = test[[<span class="string">'puntaje_credito'</span>, <span class="string">'monto_prestamo'</span>, <span class="string">'ingresos_anuales'</span>, <span class="string">'antiguedad_laboral'</span>]]
-<span class="variable">y_train</span> = train[<span class="string">'no_pago'</span>]
-<span class="variable">y_test</span>  = test[<span class="string">'no_pago'</span>]
+<span class="comment"># --- 2. Definir variables y particionar ---</span>
+<span class="variable">X</span> = df[[<span class="string">'puntaje_credito'</span>, <span class="string">'monto_prestamo'</span>, <span class="string">'ingresos_anuales'</span>, <span class="string">'antiguedad_laboral'</span>]]
+<span class="variable">y</span> = df[<span class="string">'no_pago'</span>]
+<span class="variable">X_train</span>, <span class="variable">X_test</span>, <span class="variable">y_train</span>, <span class="variable">y_test</span> = train_test_split(X, y, test_size=<span class="number">0.2</span>, random_state=<span class="number">42</span>)
 
 <span class="comment"># --- 3. Escalar las variables (importante para regresion logistica) ---</span>
 <span class="variable">scaler</span> = StandardScaler()
