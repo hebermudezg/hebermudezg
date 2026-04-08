@@ -1482,64 +1482,116 @@ plt.<span class="function">title</span>(<span class="string">'Ingresos vs Monto 
 plt.<span class="function">show</span>()</div>
     </div>
 
-    <div class="callout success">
-        <div class="callout-icon">&#9989;</div>
-        <div>
-            <h4>Datos listos!</h4>
-            <p>Ahora que tenemos los datos cargados, limpios y explorados, podemos construir nuestro primer modelo con <strong>scikit-learn</strong>. Recuerda el patron: <code>crear &rarr; fit &rarr; predict</code>.</p>
+    <h3 style="margin-top:24px;">Paso 6: Particionar el Dataset &mdash; Train / Test Split</h3>
+
+    <p>Antes de entrenar cualquier modelo, debemos <strong>separar los datos</strong>. &iquest;Por que? Porque si evaluamos el modelo con los mismos datos que uso para aprender, <strong>no sabemos si realmente aprendio o solo memorizo</strong>.</p>
+
+    <div class="card-grid" style="margin:20px 0;">
+        <div class="card card-accent green">
+            <h3>&#128214; Datos de Entrenamiento (80%)</h3>
+            <p>El modelo <strong>aprende</strong> con estos datos. Es como el material de estudio: lee los patrones, ajusta los coeficientes y construye su "conocimiento".</p>
+        </div>
+        <div class="card card-accent purple">
+            <h3>&#128203; Datos de Prueba (20%)</h3>
+            <p>El modelo <strong>se evalua</strong> con datos que <em>nunca ha visto</em>. Es como el examen final: demuestra si realmente aprendio o solo memorizo.</p>
         </div>
     </div>
 
-    <h3 style="margin-top:24px;">Paso 6: Construir el Modelo de Regresion Simple</h3>
+    <div class="callout tip">
+        <div class="callout-icon">&#128161;</div>
+        <div>
+            <h4>Analogia: Estudiar vs Presentar el Examen</h4>
+            <p>Si un estudiante ve las <strong>mismas preguntas</strong> del examen mientras estudia, sacara 100%. Pero eso no prueba que entendio. Lo mismo pasa con los modelos: si les damos los mismos datos para entrenar y evaluar, su "calificacion" sera artificialmente alta. La solucion: <strong>separar datos que el modelo nunca ve durante el entrenamiento.</strong></p>
+        </div>
+    </div>
+
     <div class="code-block">
         <div class="code-header">
-            <span>python &mdash; paso_6_regresion_simple.py</span>
+            <span>python &mdash; paso_6_train_test_split.py</span>
+            <button class="code-copy-btn" onclick="copyCode(this)">Copiar</button>
+        </div>
+        <div class="code-body"><span class="comment"># Separar en 80% entrenamiento y 20% prueba</span>
+<span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> train_test_split
+
+<span class="variable">train</span>, <span class="variable">test</span> = train_test_split(df, test_size=<span class="number">0.2</span>, random_state=<span class="number">42</span>)
+
+<span class="keyword">print</span>(<span class="string">f"Entrenamiento: {len(train):,} registros ({len(train)/len(df)*100:.0f}%)"</span>)
+<span class="keyword">print</span>(<span class="string">f"Prueba:        {len(test):,} registros ({len(test)/len(df)*100:.0f}%)"</span>)</div>
+    </div>
+
+    <div class="code-block" style="margin-top:12px;">
+        <div class="code-header"><span>output</span></div>
+        <div class="code-body" style="color:var(--accent-green);">Entrenamiento: 8,000 registros (80%)
+Prueba:        2,000 registros (20%)</div>
+    </div>
+
+    <div class="card" style="margin-top:16px;">
+        <h3>Reglas Clave del Particionamiento</h3>
+        <ul style="padding-left:20px; margin-top:8px;">
+            <li><strong>random_state=42:</strong> La semilla fija garantiza que la particion sea <em>siempre la misma</em>. Asi los resultados son reproducibles.</li>
+            <li><strong>80/20 es el estandar:</strong> Lo mas comun es reservar entre 20-30% para prueba. Con 10,000 registros, 2,000 para test es suficiente.</li>
+            <li><strong>Entrenar SOLO con train:</strong> El modelo nunca debe "ver" los datos de test durante el entrenamiento. Si R&#178; en train &asymp; R&#178; en test &rarr; el modelo generaliza bien.</li>
+        </ul>
+    </div>
+
+    <div class="callout success">
+        <div class="callout-icon">&#9989;</div>
+        <div>
+            <h4>Datos particionados y listos!</h4>
+            <p>De aqui en adelante, <strong>todos los modelos</strong> se entrenan con <code>train</code> y se evaluan con <code>test</code>. Recuerda el patron: <code>crear &rarr; fit(train) &rarr; predict(test) &rarr; evaluar</code>.</p>
+        </div>
+    </div>
+
+    <h3 style="margin-top:24px;">Paso 7: Construir el Modelo de Regresion Simple</h3>
+    <div class="code-block">
+        <div class="code-header">
+            <span>python &mdash; paso_7_regresion_simple.py</span>
             <button class="code-copy-btn" onclick="copyCode(this)">Copiar</button>
         </div>
         <div class="code-body"><span class="keyword">from</span> scipy <span class="keyword">import</span> stats
 
-<span class="comment"># Definir nuestras variables X (independiente) e Y (dependiente)</span>
-<span class="variable">Y</span> = df[<span class="string">'monto_prestamo'</span>]
-<span class="variable">X</span> = df[[<span class="string">'ingresos_anuales'</span>]]  <span class="comment"># Doble corchete: sklearn espera un DataFrame/matriz 2D</span>
+<span class="comment"># Definir variables</span>
+<span class="variable">X_train</span> = train[[<span class="string">'ingresos_anuales'</span>]]
+<span class="variable">X_test</span>  = test[[<span class="string">'ingresos_anuales'</span>]]
+<span class="variable">y_train</span> = train[<span class="string">'monto_prestamo'</span>]
+<span class="variable">y_test</span>  = test[<span class="string">'monto_prestamo'</span>]
 
-<span class="comment"># Crear y entrenar el modelo</span>
+<span class="comment"># Crear y entrenar SOLO con datos de entrenamiento</span>
 <span class="variable">modelo_simple</span> = LinearRegression()
-<span class="variable">modelo_simple</span>.<span class="function">fit</span>(X, Y)
+<span class="variable">modelo_simple</span>.<span class="function">fit</span>(X_train, y_train)
 
-<span class="comment"># --- Resumen completo del modelo ---</span>
-<span class="variable">Y_pred</span> = modelo_simple.<span class="function">predict</span>(X)
-<span class="variable">n</span> = <span class="function">len</span>(Y)
-<span class="variable">r2</span> = modelo_simple.<span class="function">score</span>(X, Y)
-<span class="variable">rmse</span> = np.<span class="function">sqrt</span>(mean_squared_error(Y, Y_pred))
+<span class="comment"># Evaluar en AMBOS conjuntos</span>
+<span class="variable">r2_train</span> = modelo_simple.<span class="function">score</span>(X_train, y_train)
+<span class="variable">r2_test</span>  = modelo_simple.<span class="function">score</span>(X_test, y_test)
+<span class="variable">rmse_train</span> = np.<span class="function">sqrt</span>(mean_squared_error(y_train, modelo_simple.<span class="function">predict</span>(X_train)))
+<span class="variable">rmse_test</span>  = np.<span class="function">sqrt</span>(mean_squared_error(y_test, modelo_simple.<span class="function">predict</span>(X_test)))
 
-<span class="comment"># Prueba F: &iquest;el modelo es mejor que solo usar la media?</span>
-<span class="variable">ss_res</span> = np.<span class="function">sum</span>((Y - Y_pred)**<span class="number">2</span>)
-<span class="variable">ss_tot</span> = np.<span class="function">sum</span>((Y - Y.<span class="function">mean</span>())**<span class="number">2</span>)
+<span class="comment"># Prueba F y t (sobre datos de entrenamiento)</span>
+<span class="variable">y_pred_tr</span> = modelo_simple.<span class="function">predict</span>(X_train)
+<span class="variable">n</span> = <span class="function">len</span>(y_train)
+<span class="variable">ss_res</span> = np.<span class="function">sum</span>((y_train - y_pred_tr)**<span class="number">2</span>)
+<span class="variable">ss_tot</span> = np.<span class="function">sum</span>((y_train - y_train.<span class="function">mean</span>())**<span class="number">2</span>)
 <span class="variable">f_stat</span> = ((ss_tot - ss_res) / <span class="number">1</span>) / (ss_res / (n - <span class="number">2</span>))
-<span class="variable">f_pvalue</span> = <span class="number">1</span> - stats.f.<span class="function">cdf</span>(f_stat, <span class="number">1</span>, n - <span class="number">2</span>)
-
-<span class="comment"># Prueba t: &iquest;la pendiente es diferente de cero?</span>
-<span class="variable">se_b1</span> = np.<span class="function">sqrt</span>(ss_res / (n-<span class="number">2</span>) / np.<span class="function">sum</span>((X.values[:,<span class="number">0</span>] - X.values[:,<span class="number">0</span>].<span class="function">mean</span>())**<span class="number">2</span>))
+<span class="variable">se_b1</span> = np.<span class="function">sqrt</span>(ss_res / (n-<span class="number">2</span>) / np.<span class="function">sum</span>((X_train.values[:,<span class="number">0</span>] - X_train.values[:,<span class="number">0</span>].<span class="function">mean</span>())**<span class="number">2</span>))
 <span class="variable">t_stat</span> = modelo_simple.coef_[<span class="number">0</span>] / se_b1
-<span class="variable">t_pvalue</span> = <span class="number">2</span> * (<span class="number">1</span> - stats.t.<span class="function">cdf</span>(<span class="function">abs</span>(t_stat), n - <span class="number">2</span>))
 
 <span class="keyword">print</span>(<span class="string">"========== RESUMEN DEL MODELO =========="</span>)
 <span class="keyword">print</span>(<span class="string">f"Intercepto (beta_0): ${modelo_simple.intercept_:>13,.2f} COP"</span>)
 <span class="keyword">print</span>(<span class="string">f"Pendiente  (beta_1): {modelo_simple.coef_[0]:>14.4f}"</span>)
-<span class="keyword">print</span>(<span class="string">f"R²:                  {r2:>13.3f}"</span>)
-<span class="keyword">print</span>(<span class="string">f"RMSE:                ${rmse:>12,.0f} COP"</span>)
+<span class="keyword">print</span>(<span class="string">f"R² entrenamiento:    {r2_train:>13.3f}"</span>)
+<span class="keyword">print</span>(<span class="string">f"R² prueba:           {r2_test:>13.3f}"</span>)
+<span class="keyword">print</span>(<span class="string">f"RMSE entrenamiento:  ${rmse_train:>12,.0f} COP"</span>)
+<span class="keyword">print</span>(<span class="string">f"RMSE prueba:         ${rmse_test:>12,.0f} COP"</span>)
 <span class="keyword">print</span>(<span class="string">f"F-statistic:         {f_stat:>13.1f}"</span>)
-<span class="keyword">print</span>(<span class="string">f"Prob(F):             {f_pvalue:>13.2e}"</span>)
 <span class="keyword">print</span>(<span class="string">f"t(beta_1):           {t_stat:>13.1f}"</span>)
-<span class="keyword">print</span>(<span class="string">f"P-value(beta_1):     {t_pvalue:>13.2e}"</span>)
-<span class="keyword">print</span>(<span class="string">f"Observaciones:       {n:>13,}"</span>)</div>
+<span class="keyword">print</span>(<span class="string">f"Observaciones train: {n:>13,}"</span>)</div>
     </div>
 
     <div class="callout tip" style="margin-top:16px;">
         <div class="callout-icon">&#128161;</div>
         <div>
             <h4>sklearn + scipy = resumen completo</h4>
-            <p>sklearn entrena el modelo, pero no calcula p-values automaticamente. Con <code>scipy.stats</code> podemos calcular la <strong>prueba F</strong> (si el modelo es util) y la <strong>prueba t</strong> (si la pendiente es distinta de cero). Ambas son fundamentales para validar el modelo.</p>
+            <p>sklearn entrena el modelo, pero no calcula p-values automaticamente. Con <code>scipy.stats</code> podemos calcular la <strong>prueba F</strong> (si el modelo es util) y la <strong>prueba t</strong> (si la pendiente es distinta de cero).</p>
         </div>
     </div>
 
@@ -1548,62 +1600,61 @@ plt.<span class="function">show</span>()</div>
     <div class="code-block" style="margin:12px 0;">
         <div class="code-header"><span>output</span></div>
         <div class="code-body" style="color:var(--accent-green);">========== RESUMEN DEL MODELO ==========
-<span style="color:var(--text-muted);">Intercepto (beta_0):</span> $  -728,177.21 COP
-<span style="color:var(--text-muted);">Pendiente  (beta_1):</span>         0.4778
-<span style="color:var(--text-muted);">R²:</span>                          0.473
-<span style="color:var(--text-muted);">RMSE:</span>                $   4,612,492 COP
-<span style="color:var(--text-muted);">F-statistic:</span>               8,977.2
-<span style="color:var(--text-muted);">Prob(F):</span>                  0.00e+00
-<span style="color:var(--text-muted);">t(beta_1):</span>                    94.7
-<span style="color:var(--text-muted);">P-value(beta_1):</span>          0.00e+00
-<span style="color:var(--text-muted);">Observaciones:</span>              10,000</div>
+<span style="color:var(--text-muted);">Intercepto (beta_0):</span> $  -792,724.96 COP
+<span style="color:var(--text-muted);">Pendiente  (beta_1):</span>         0.4788
+<span style="color:var(--text-muted);">R² entrenamiento:</span>            0.475
+<span style="color:var(--text-muted);">R² prueba:</span>                   0.466
+<span style="color:var(--text-muted);">RMSE entrenamiento:</span>  $   4,593,190 COP
+<span style="color:var(--text-muted);">RMSE prueba:</span>         $   4,689,585 COP
+<span style="color:var(--text-muted);">F-statistic:</span>               7,236.4
+<span style="color:var(--text-muted);">t(beta_1):</span>                    85.1
+<span style="color:var(--text-muted);">Observaciones train:</span>         8,000</div>
     </div>
 
     <h3 style="margin-top:28px;">Analisis de los Resultados</h3>
 
     <div class="card-grid" style="margin:16px 0;">
         <div class="card card-accent green">
-            <h3>R&#178; = 0.473</h3>
-            <p>El <strong>47.3%</strong> de la variabilidad en el monto_prestamo es explicada por los ingresos_anuales. Para un modelo de una sola variable, es un buen comienzo. El 53% restante depende de otros factores.</p>
+            <h3>R&#178; train = 0.475 &asymp; R&#178; test = 0.466</h3>
+            <p>Ambos R&#178; son similares &mdash; <strong>el modelo generaliza bien!</strong> No memorizo los datos de entrenamiento. Si fueran muy diferentes (ej. train=0.90, test=0.40), tendriamos <strong>overfitting</strong>.</p>
         </div>
         <div class="card card-accent blue">
-            <h3>Prob(F) = 0.00</h3>
-            <p>La prueba F pregunta: <em>"&iquest;este modelo es mejor que simplemente usar el promedio?"</em> Un p-value de <strong>0.00</strong> confirma que SI, la relacion es <strong>estadisticamente significativa</strong>.</p>
+            <h3>F = 7,236 &rarr; el modelo SI sirve</h3>
+            <p>La prueba F pregunta: <em>"&iquest;este modelo es mejor que solo usar el promedio?"</em> Un F tan alto confirma que la relacion es <strong>real y significativa</strong>.</p>
         </div>
     </div>
 
     <div class="card-grid" style="margin:8px 0;">
         <div class="card card-accent purple">
-            <h3>t(beta_1) = 94.7, p &asymp; 0</h3>
-            <p>La prueba t pregunta: <em>"&iquest;la pendiente podria ser cero (sin relacion)?"</em> Con t = 94.7 y p-value &asymp; 0, <strong>rechazamos contundentemente</strong> que beta_1 sea cero. La pendiente es real.</p>
+            <h3>t(&beta;&#8321;) = 85.1 &rarr; la pendiente es real</h3>
+            <p>La prueba t pregunta: <em>"&iquest;la pendiente podria ser cero?"</em> Con t = 85.1, <strong>rechazamos contundentemente</strong> que &beta;&#8321; sea cero. La relacion ingresos&rarr;monto existe.</p>
         </div>
         <div class="card card-accent amber">
-            <h3>RMSE = $4,612,492</h3>
-            <p>En promedio, nuestras predicciones se desvian <strong>$4.6 millones</strong> del valor real. Dado que los prestamos promedian ~$15M, es un error del ~30%.</p>
+            <h3>RMSE test = $4,689,585</h3>
+            <p>En datos nuevos, las predicciones se desvian <strong>~$4.7 millones</strong> del valor real. Dado que los prestamos promedian ~$15M, es un error del ~31%.</p>
         </div>
     </div>
 
     <div class="card card-accent">
         <h3>Coeficientes del Modelo</h3>
         <ul style="padding-left:20px; margin-top:8px;">
-            <li><strong>modelo.intercept_ (&beta;&#8320;) = -$728,177 COP:</strong> El intercepto (monto base cuando ingresos son cero). No tiene interpretacion practica aqui, pero es necesario matematicamente para posicionar la linea.</li>
-            <li><strong>modelo.coef_[0] (&beta;&#8321;) = 0.4778:</strong> <em>"Por cada peso adicional de ingresos anuales, esperamos que el monto del prestamo solicitado aumente, en promedio, en $0.48 COP."</em> O visto de otra forma: por cada $1,000,000 mas de ingreso, el prestamo sube ~$478,000.</li>
+            <li><strong>intercept_ (&beta;&#8320;) = -$792,725 COP:</strong> El intercepto. No tiene interpretacion practica, pero posiciona la linea matematicamente.</li>
+            <li><strong>coef_[0] (&beta;&#8321;) = 0.4788:</strong> <em>"Por cada peso adicional de ingresos anuales, el monto del prestamo sube en promedio $0.48 COP."</em> Es decir: por cada $1,000,000 mas de ingreso, el prestamo sube ~$479,000.</li>
         </ul>
     </div>
 
-    <h3 style="margin-top:24px;">Paso 7: Hacer Predicciones</h3>
-    <p>La verdadera utilidad del modelo: <strong>predecir</strong> para nuevos datos.</p>
+    <h3 style="margin-top:24px;">Paso 8: Hacer Predicciones</h3>
+    <p>La verdadera utilidad del modelo: <strong>predecir</strong> para datos nuevos.</p>
     <div class="code-block">
         <div class="code-header">
-            <span>python &mdash; paso_7_predicciones.py</span>
+            <span>python &mdash; paso_8_predicciones.py</span>
             <button class="code-copy-btn" onclick="copyCode(this)">Copiar</button>
         </div>
         <div class="code-body"><span class="comment"># Predecir para un cliente con ingresos de $50,000,000 COP</span>
-<span class="variable">ingreso_nuevo</span> = [[<span class="number">50_000_000</span>]]
-<span class="variable">prediccion</span> = modelo_simple.<span class="function">predict</span>(ingreso_nuevo)
+<span class="variable">prediccion</span> = modelo_simple.<span class="function">predict</span>([[<span class="number">50000000</span>]])
 
 <span class="keyword">print</span>(<span class="string">f"Para ingresos de $50M, el modelo predice un prestamo de: ${prediccion[0]:,.0f} COP"</span>)
-<span class="comment"># Resultado: $23,162,693 COP</span></div>
+<span class="comment"># Resultado: $23,148,066 COP</span></div>
     </div>
 
     <h3 style="margin-top:24px;">Paso 8: Visualizar el Modelo Ajustado</h3>
@@ -1623,7 +1674,7 @@ plt.<span class="function">scatter</span>(muestra[<span class="string">'ingresos
 <span class="comment"># Linea del modelo</span>
 <span class="variable">x_line</span> = np.<span class="function">linspace</span>(df[<span class="string">'ingresos_anuales'</span>].<span class="function">min</span>(), df[<span class="string">'ingresos_anuales'</span>].<span class="function">max</span>(), <span class="number">100</span>)
 <span class="variable">y_line</span> = modelo_simple.intercept_ + modelo_simple.coef_[<span class="number">0</span>] * x_line
-plt.<span class="function">plot</span>(x_line, y_line, color=<span class="string">'#e74c3c'</span>, linewidth=<span class="number">2.5</span>, label=<span class="string">'Modelo: y = -728,177 + 0.48x'</span>)
+plt.<span class="function">plot</span>(x_line, y_line, color=<span class="string">'#e74c3c'</span>, linewidth=<span class="number">2.5</span>, label=<span class="string">'Modelo: y = -792,725 + 0.48x'</span>)
 
 plt.<span class="function">xlabel</span>(<span class="string">'Ingresos Anuales (COP)'</span>)
 plt.<span class="function">ylabel</span>(<span class="string">'Monto del Prestamo (COP)'</span>)
@@ -1645,7 +1696,7 @@ plt.<span class="function">show</span>()</div>
     </div>
 
     <div class="formula-box">
-        monto_prestamo = -728,177 + 0.478 &middot; ingresos_anuales + &epsilon;
+        monto_prestamo = -792,725 + 0.479 &middot; ingresos_anuales + &epsilon;
     </div>
 </section>
 
@@ -1691,42 +1742,52 @@ plt.<span class="function">show</span>()</div>
             <span>python &mdash; regresion_multiple.py</span>
             <button class="code-copy-btn" onclick="copyCode(this)">Copiar</button>
         </div>
-        <div class="code-body"><span class="comment"># --- 1. Construccion del Modelo de Regresion Multiple ---</span>
-<span class="variable">Y</span> = df[<span class="string">'monto_prestamo'</span>]
-<span class="variable">X</span> = df[[<span class="string">'edad'</span>, <span class="string">'antiguedad_laboral'</span>, <span class="string">'ingresos_anuales'</span>, <span class="string">'puntaje_credito'</span>]]
+        <div class="code-body"><span class="comment"># --- 1. Preparar variables con la misma particion ---</span>
+<span class="variable">X_train</span> = train[[<span class="string">'edad'</span>, <span class="string">'antiguedad_laboral'</span>, <span class="string">'ingresos_anuales'</span>, <span class="string">'puntaje_credito'</span>]]
+<span class="variable">X_test</span>  = test[[<span class="string">'edad'</span>, <span class="string">'antiguedad_laboral'</span>, <span class="string">'ingresos_anuales'</span>, <span class="string">'puntaje_credito'</span>]]
+<span class="variable">y_train</span> = train[<span class="string">'monto_prestamo'</span>]
+<span class="variable">y_test</span>  = test[<span class="string">'monto_prestamo'</span>]
 
-<span class="comment"># Mismo patron: crear, entrenar, evaluar</span>
+<span class="comment"># --- 2. Entrenar y evaluar ---</span>
 <span class="variable">modelo_multiple</span> = LinearRegression()
-<span class="variable">modelo_multiple</span>.<span class="function">fit</span>(X, Y)
+<span class="variable">modelo_multiple</span>.<span class="function">fit</span>(X_train, y_train)
 
-<span class="comment"># --- 2. Ver los resultados ---</span>
 <span class="keyword">print</span>(<span class="string">"--- Resultados del Modelo de Regresion Multiple ---"</span>)
 <span class="keyword">print</span>(<span class="string">f"Intercepto: ${modelo_multiple.intercept_:,.2f}"</span>)
-<span class="keyword">for</span> nombre, coef <span class="keyword">in</span> <span class="function">zip</span>(X.columns, modelo_multiple.coef_):
+<span class="keyword">for</span> nombre, coef <span class="keyword">in</span> <span class="function">zip</span>(X_train.columns, modelo_multiple.coef_):
     <span class="keyword">print</span>(<span class="string">f"  {nombre}: {coef:.4f}"</span>)
-<span class="keyword">print</span>(<span class="string">f"\nR²: {modelo_multiple.score(X, Y):.3f}"</span>)</div>
+<span class="keyword">print</span>(<span class="string">f"\nR² entrenamiento: {modelo_multiple.score(X_train, y_train):.3f}"</span>)
+<span class="keyword">print</span>(<span class="string">f"R² prueba:        {modelo_multiple.score(X_test, y_test):.3f}"</span>)</div>
     </div>
 
     <div class="code-block" style="margin-top:12px;">
         <div class="code-header"><span>output</span></div>
         <div class="code-body" style="color:var(--accent-green);"><span style="color:var(--text-muted);">--- Resultados del Modelo de Regresion Multiple ---</span>
-Intercepto: $-1,630,973
-  edad: 69,792.15
-  antiguedad_laboral: -18,461.20
-  ingresos_anuales: 0.4280
-  puntaje_credito: -690.75
+Intercepto: $-1,400,609.27
+  edad: 75,611.32
+  antiguedad_laboral: -28,047.95
+  ingresos_anuales: 0.4287
+  puntaje_credito: -910.61
 
-R²: 0.476</div>
+R² entrenamiento: 0.478
+R² prueba:        0.467</div>
     </div>
 
     <div class="card" style="margin-top:20px;">
         <h3>Interpretacion de Coeficientes</h3>
         <ul style="padding-left:20px; margin-top:8px;">
-            <li><strong>ingresos_anuales (0.4280):</strong> "Manteniendo todo lo demas constante, por cada peso adicional en ingresos, el monto del prestamo sube ~$0.43." Sigue siendo el predictor mas fuerte (r = 0.69).</li>
-            <li><strong>edad (69,792):</strong> "Manteniendo lo demas constante, cada ano adicional de edad aumenta el prestamo en ~$70,000 COP." Personas mayores solicitan prestamos mas grandes (vivienda, negocio).</li>
-            <li><strong>antiguedad_laboral (-18,461):</strong> Coeficiente negativo porque ya esta "capturada" por edad e ingresos (multicolinealidad: r = 0.84 con edad).</li>
-            <li><strong>puntaje_credito (-691):</strong> Efecto leve. El puntaje importa mas para clasificar pagos (Tema 3) que para predecir montos.</li>
+            <li><strong>ingresos_anuales (0.4287):</strong> "Manteniendo todo lo demas constante, por cada peso adicional en ingresos, el monto del prestamo sube ~$0.43." Sigue siendo el predictor mas fuerte (r = 0.69).</li>
+            <li><strong>edad (75,611):</strong> "Manteniendo lo demas constante, cada ano adicional de edad aumenta el prestamo en ~$76,000 COP." Personas mayores solicitan prestamos mas grandes (vivienda, negocio).</li>
+            <li><strong>antiguedad_laboral (-28,048):</strong> Coeficiente negativo porque ya esta "capturada" por edad e ingresos (multicolinealidad: r = 0.84 con edad).</li>
+            <li><strong>puntaje_credito (-911):</strong> Efecto leve. El puntaje importa mas para clasificar pagos (Tema 3) que para predecir montos.</li>
         </ul>
+        <div class="callout success" style="margin-top:12px;">
+            <div class="callout-icon">&#9989;</div>
+            <div>
+                <h4>R&#178; train &asymp; R&#178; test &rarr; No hay overfitting</h4>
+                <p>0.478 vs 0.467: el modelo generaliza bien. El ligero aumento vs regresion simple (0.475&rarr;0.478) nos dice que agregar edad, antiguedad y puntaje <strong>ayuda poco</strong> a predecir el monto del prestamo: los ingresos ya explican casi todo.</p>
+            </div>
+        </div>
     </div>
 
     <h3 style="margin-top:28px;">Visualizacion 3D: Plano de Regresion</h3>
@@ -1810,17 +1871,17 @@ plt.<span class="function">show</span>()</div>
             <button class="code-copy-btn" onclick="copyCode(this)">Copiar</button>
         </div>
         <div class="code-body"><span class="comment"># Calcular predicciones y luego el RMSE</span>
-<span class="variable">Y_pred</span> = modelo_multiple.<span class="function">predict</span>(X)
-<span class="variable">rmse</span> = np.<span class="function">sqrt</span>(mean_squared_error(Y, Y_pred))
-<span class="keyword">print</span>(<span class="string">f"El RMSE de nuestro modelo es: ${rmse:,.0f} COP"</span>)
-<span class="comment"># Resultado: RMSE &asymp; $4,600,638 COP</span></div>
+<span class="variable">y_pred_test</span> = modelo_multiple.<span class="function">predict</span>(X_test)
+<span class="variable">rmse_test</span> = np.<span class="function">sqrt</span>(mean_squared_error(y_test, y_pred_test))
+<span class="keyword">print</span>(<span class="string">f"RMSE en datos de prueba: ${rmse_test:,.0f} COP"</span>)
+<span class="comment"># Resultado: RMSE &asymp; $4,682,862 COP</span></div>
     </div>
 
     <div class="callout tip">
         <div class="callout-icon">&#128161;</div>
         <div>
             <h4>Interpretacion del RMSE</h4>
-            <p>Un RMSE de <strong>$4,600,000 COP</strong> significa: "En promedio, las predicciones de nuestro modelo sobre el monto_prestamo se desvian unos <strong>4.6 millones</strong> del valor real." Dado que los prestamos promedian ~$15M, este error es razonable para un modelo con 4 variables.</p>
+            <p>Un RMSE de <strong>$4,683,000 COP</strong> en datos de prueba significa: "En promedio, las predicciones se desvian unos <strong>4.7 millones</strong> del valor real." Dado que los prestamos promedian ~$15M, es un error del ~31%. Evaluamos con <strong>datos de prueba</strong> para medir el rendimiento real.</p>
         </div>
     </div>
 
@@ -1998,14 +2059,11 @@ plt.<span class="function">show</span>()</div>
 <span class="variable">df</span>[<span class="string">'no_pago'</span>] = (df[<span class="string">'estado_pago'</span>] == <span class="string">'No Pagado'</span>).<span class="function">astype</span>(<span class="keyword">int</span>)
 <span class="comment"># 1 = No Pago (riesgo),  0 = Pago (safe)</span>
 
-<span class="comment"># --- 2. Definir variables (columnas directas del dataset) ---</span>
-<span class="variable">Y</span> = df[<span class="string">'no_pago'</span>]
-<span class="variable">X</span> = df[[<span class="string">'puntaje_credito'</span>, <span class="string">'monto_prestamo'</span>, <span class="string">'ingresos_anuales'</span>, <span class="string">'antiguedad_laboral'</span>]]
-
-<span class="comment"># --- 2. Dividir en entrenamiento (80%) y prueba (20%) ---</span>
-<span class="variable">X_train</span>, <span class="variable">X_test</span>, <span class="variable">y_train</span>, <span class="variable">y_test</span> = train_test_split(
-    X, Y, test_size=<span class="number">0.2</span>, random_state=<span class="number">42</span>
-)
+<span class="comment"># --- 2. Usar la misma particion train/test del Paso 6 ---</span>
+<span class="variable">X_train</span> = train[[<span class="string">'puntaje_credito'</span>, <span class="string">'monto_prestamo'</span>, <span class="string">'ingresos_anuales'</span>, <span class="string">'antiguedad_laboral'</span>]]
+<span class="variable">X_test</span>  = test[[<span class="string">'puntaje_credito'</span>, <span class="string">'monto_prestamo'</span>, <span class="string">'ingresos_anuales'</span>, <span class="string">'antiguedad_laboral'</span>]]
+<span class="variable">y_train</span> = train[<span class="string">'no_pago'</span>]
+<span class="variable">y_test</span>  = test[<span class="string">'no_pago'</span>]
 
 <span class="comment"># --- 3. Escalar las variables (importante para regresion logistica) ---</span>
 <span class="variable">scaler</span> = StandardScaler()
@@ -2016,15 +2074,17 @@ plt.<span class="function">show</span>()</div>
 <span class="variable">modelo_logistico</span> = LogisticRegression(max_iter=<span class="number">1000</span>, random_state=<span class="number">42</span>)
 <span class="variable">modelo_logistico</span>.<span class="function">fit</span>(X_train_s, y_train)
 
-<span class="comment"># --- 5. Evaluar en datos de prueba ---</span>
-<span class="keyword">print</span>(<span class="string">f"Accuracy en test: {modelo_logistico.score(X_test_s, y_test):.3f}"</span>)
+<span class="comment"># --- 5. Evaluar en AMBOS conjuntos ---</span>
+<span class="keyword">print</span>(<span class="string">f"Accuracy entrenamiento: {modelo_logistico.score(X_train_s, y_train):.3f}"</span>)
+<span class="keyword">print</span>(<span class="string">f"Accuracy prueba:        {modelo_logistico.score(X_test_s, y_test):.3f}"</span>)
 <span class="keyword">print</span>(<span class="function">classification_report</span>(y_test, modelo_logistico.<span class="function">predict</span>(X_test_s),
                             target_names=[<span class="string">'Pagado'</span>, <span class="string">'No Pagado'</span>]))</div>
     </div>
 
     <div class="code-block" style="margin-top:12px;">
         <div class="code-header"><span>output</span></div>
-        <div class="code-body" style="color:var(--accent-green);">Accuracy en test: 0.762
+        <div class="code-body" style="color:var(--accent-green);">Accuracy entrenamiento: 0.753
+Accuracy prueba:        0.762
 
               precision    recall  f1-score   support
       Pagado       0.78      0.92      0.84      1400
@@ -2620,6 +2680,7 @@ modelo_nn.<span class="function">compile</span>(
             <li><strong>Video:</strong> <a href="https://www.youtube.com/watch?v=Sb8XVheowVQ" target="_blank" style="color:var(--accent-blue);">Modelos para entender una realidad caotica | DotCSV</a></li>
             <li><strong>Video:</strong> <a href="https://www.youtube.com/watch?v=MRIv2IwFTPg" target="_blank" style="color:var(--accent-blue);">&iquest;Que es una Red Neuronal? Parte 1: La Neurona | DotCSV</a></li>
             <li><strong>Recurso interactivo:</strong> <a href="https://mlu-explain.github.io/" target="_blank" style="color:var(--accent-blue);">MLU-Explain (Amazon)</a> &mdash; Explicaciones visuales e interactivas de conceptos de Machine Learning: regresion lineal, arboles de decision, bias-variance, ROC/AUC y mas.</li>
+            <li><strong>Recurso interactivo:</strong> <a href="https://playground.tensorflow.org/#activation=tanh&batchSize=10&dataset=circle&regDataset=reg-plane&learningRate=0.03&regularizationRate=0&noise=0&networkShape=4,2&seed=0.86412&showTestData=false&discretize=false&percTrainData=50&x=true&y=true&xTimesY=false&xSquared=false&ySquared=false&cosX=false&sinX=false&cosY=false&sinY=false&collectStats=false&problem=classification&initZero=false&hideText=false" target="_blank" style="color:var(--accent-blue);">TensorFlow Playground</a> &mdash; Experimenta con redes neuronales en el navegador: ajusta capas, neuronas, funciones de activacion y datasets. Visualiza en tiempo real como la red aprende a separar las clases.</li>
         </ul>
     </div>
 </section>
@@ -3144,7 +3205,7 @@ const allTrivia = {
     ],
     t2s2: [
         { q: "Al comparar dos modelos con diferente numero de variables, debemos usar:", o: ["R-cuadrado simple", "R-cuadrado Ajustado", "Solo el RMSE", "El numero de variables"], a: 1, e: "El R-cuadrado Ajustado penaliza la inclusion de variables inutiles, a diferencia del R-cuadrado simple que siempre sube al anadir variables." },
-        { q: "Un RMSE de $4,600,000 COP en el modelo de monto_prestamo significa:", o: ["El modelo acierta el 4.6% de las veces", "Las predicciones se desvian en promedio $4.6 millones del valor real", "El modelo tiene 4.6 millones de variables", "Es un modelo perfecto"], a: 1, e: "El RMSE se expresa en las mismas unidades que Y. Aqui significa que, en promedio, nuestras predicciones sobre el monto del prestamo se desvian unos $4.6 millones del valor real." },
+        { q: "Un RMSE de $4,683,000 COP en datos de prueba del modelo de monto_prestamo significa:", o: ["El modelo acierta el 4.7% de las veces", "En datos nuevos, las predicciones se desvian en promedio $4.7 millones del valor real", "El modelo tiene 4.7 millones de variables", "Es un modelo perfecto"], a: 1, e: "El RMSE se expresa en las mismas unidades que Y. Medimos en datos de prueba para evaluar el rendimiento real. Aqui significa que, en promedio, nuestras predicciones sobre el monto del prestamo se desvian unos $4.7 millones del valor real." },
         { q: "Los supuestos LINE incluyen todos EXCEPTO:", o: ["Linealidad", "Independencia de errores", "Normalidad de errores", "Multicolinealidad perfecta"], a: 3, e: "LINE = Linealidad, Independencia, Normalidad, Equal variance (Homocedasticidad). La multicolinealidad perfecta no es un supuesto, sino un problema a evitar." }
     ],
     t3s2: [
