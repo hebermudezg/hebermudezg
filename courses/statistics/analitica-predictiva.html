@@ -2203,6 +2203,17 @@ plt.<span class="function">show</span>()</div>
                     </td>
                     <td></td>
                 </tr>
+                <!-- Accuracy row -->
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td colspan="2" style="text-align:center; padding:12px 8px; background:var(--accent-main-dim); border-top:2px dashed var(--accent-main); border-radius:0 0 var(--radius) var(--radius);">
+                        <div style="font-weight:700; font-size:0.85rem; color:var(--accent-main);">Accuracy (Exactitud)</div>
+                        <div style="font-size:0.85rem; color:var(--text-muted); margin-top:3px;"><sup>TP + TN</sup>&frasl;<sub>TP + TN + FP + FN</sub></div>
+                        <div style="font-size:0.72rem; color:var(--text-dim); margin-top:4px;">Diagonal principal &divide; Total</div>
+                    </td>
+                    <td></td>
+                </tr>
             </tbody>
         </table>
     </div>
@@ -2210,6 +2221,10 @@ plt.<span class="function">show</span>()</div>
     <!-- Explicacion de metricas -->
     <div class="card" style="margin:20px 0;">
         <h4 style="margin-bottom:12px;"><i class="fa-solid fa-bullseye" style="color:var(--accent-main); margin-right:6px;"></i> Metricas Clave Explicadas</h4>
+        <div style="padding:14px; background:var(--accent-main-dim); border-radius:8px; border-left:3px solid var(--accent-main); margin-bottom:12px;">
+            <strong style="color:var(--accent-main);">Accuracy (Exactitud)</strong>
+            <p style="font-size:0.85rem; margin-top:4px;">La suma de la <strong>diagonal principal</strong> (TP + TN) dividida entre el total. Es el porcentaje global de aciertos. Simple y facil de entender, pero <strong>puede ser enganosa con datos desbalanceados</strong>.</p>
+        </div>
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
             <div style="padding:12px; background:var(--accent-green-dim); border-radius:8px; border-left:3px solid var(--accent-green);">
                 <strong style="color:var(--accent-green);">Sensitivity (Recall)</strong>
@@ -2303,6 +2318,14 @@ plt.<span class="function">show</span>()</div>
             <button class="trivia-nav-btn" id="trivia-t3s3-next" onclick="triviaNext('t3s3')">Siguiente &rarr;</button>
         </div>
     </div>
+    <!-- ACTIVIDAD: NOTEBOOK DESCARGABLE -->
+    <div class="card" style="margin-top:28px; border:2px solid var(--accent-main); background:var(--accent-main-dim);">
+        <h3 style="margin-bottom:8px;"><i class="fa-solid fa-laptop-code" style="color:var(--accent-main); margin-right:8px;"></i> Actividad Practica: Predice un Nuevo Cliente</h3>
+        <p>Descarga este notebook con todo el codigo de los Pasos 1&ndash;9. Al final encontraras una actividad donde <strong>tu eliges las variables</strong> de un cliente nuevo y los modelos predicen el monto del prestamo y si pagara o no.</p>
+        <p style="margin-top:8px; font-size:0.88rem; color:var(--text-muted);">Abrelo en <strong>Google Colab</strong>, <strong>Databricks</strong> o <strong>Jupyter</strong>. Los datos se cargan directamente desde la URL &mdash; no necesitas descargar el CSV.</p>
+        <a href="taller_unidad_3.ipynb" download style="display:inline-flex;align-items:center;gap:10px;background:var(--accent-main);color:#fff;padding:12px 24px;border-radius:10px;font-weight:700;font-size:0.95rem;text-decoration:none;margin-top:12px;transition:all 0.2s;box-shadow:var(--shadow-sm);" onmouseover="this.style.filter='brightness(1.15)';this.style.transform='translateY(-1px)'" onmouseout="this.style.filter='';this.style.transform=''"><i class="fa-solid fa-download"></i> Descargar Notebook (.ipynb)</a>
+    </div>
+
 </section>
 
 <!-- ============================================================ -->
