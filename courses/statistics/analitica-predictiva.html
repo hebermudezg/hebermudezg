@@ -1347,12 +1347,8 @@ plt.<span class="function">rcParams</span>[<span class="string">'figure.figsize'
             <span>python &mdash; paso_2_cargar_datos.py</span>
             <button class="code-copy-btn" onclick="copyCode(this)">Copiar</button>
         </div>
-        <div class="code-body"><span class="comment"># Cargar el dataset completo (nuestra "poblacion")</span>
-<span class="variable">df</span> = pd.<span class="function">read_csv</span>(<span class="string">'credit_risk_data.csv'</span>)
-<span class="comment"># Databricks: df = spark.table('credit_risk_data').toPandas()</span>
-
-<span class="keyword">print</span>(<span class="string">f"Dataset cargado: {df.shape[0]:,} filas x {df.shape[1]} columnas"</span>)
-<span class="keyword">print</span>(df.<span class="function">head</span>(<span class="number">3</span>))</div>
+        <div class="code-body"><span class="variable">df</span> = pd.<span class="function">read_csv</span>(<span class="string">'credit_risk_data.csv'</span>)
+<span class="comment"># Databricks: df = spark.table('credit_risk_data').toPandas()</span></div>
     </div>
 
     <h3 style="margin-top:24px;">Paso 3: Explorar el Dataset</h3>
