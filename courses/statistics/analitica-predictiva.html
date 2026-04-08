@@ -1496,27 +1496,50 @@ plt.<span class="function">show</span>()</div>
             <span>python &mdash; paso_6_regresion_simple.py</span>
             <button class="code-copy-btn" onclick="copyCode(this)">Copiar</button>
         </div>
-        <div class="code-body"><span class="comment"># Definir nuestras variables X (independiente) e Y (dependiente)</span>
+        <div class="code-body"><span class="keyword">from</span> scipy <span class="keyword">import</span> stats
+
+<span class="comment"># Definir nuestras variables X (independiente) e Y (dependiente)</span>
 <span class="variable">Y</span> = df[<span class="string">'monto_prestamo'</span>]
 <span class="variable">X</span> = df[[<span class="string">'ingresos_anuales'</span>]]  <span class="comment"># Doble corchete: sklearn espera un DataFrame/matriz 2D</span>
 
-<span class="comment"># Crear el modelo de Regresion Lineal</span>
+<span class="comment"># Crear y entrenar el modelo</span>
 <span class="variable">modelo_simple</span> = LinearRegression()
-
-<span class="comment"># Entrenar (ajustar) el modelo con nuestros datos</span>
 <span class="variable">modelo_simple</span>.<span class="function">fit</span>(X, Y)
 
-<span class="comment"># Ver los resultados</span>
-<span class="keyword">print</span>(<span class="string">f"Intercepto (beta_0): ${modelo_simple.intercept_:,.2f} COP"</span>)
-<span class="keyword">print</span>(<span class="string">f"Pendiente  (beta_1):  {modelo_simple.coef_[0]:.4f}"</span>)
-<span class="keyword">print</span>(<span class="string">f"R²:                  {modelo_simple.score(X, Y):.3f}"</span>)</div>
+<span class="comment"># --- Resumen completo del modelo ---</span>
+<span class="variable">Y_pred</span> = modelo_simple.<span class="function">predict</span>(X)
+<span class="variable">n</span> = <span class="function">len</span>(Y)
+<span class="variable">r2</span> = modelo_simple.<span class="function">score</span>(X, Y)
+<span class="variable">rmse</span> = np.<span class="function">sqrt</span>(mean_squared_error(Y, Y_pred))
+
+<span class="comment"># Prueba F: &iquest;el modelo es mejor que solo usar la media?</span>
+<span class="variable">ss_res</span> = np.<span class="function">sum</span>((Y - Y_pred)**<span class="number">2</span>)
+<span class="variable">ss_tot</span> = np.<span class="function">sum</span>((Y - Y.<span class="function">mean</span>())**<span class="number">2</span>)
+<span class="variable">f_stat</span> = ((ss_tot - ss_res) / <span class="number">1</span>) / (ss_res / (n - <span class="number">2</span>))
+<span class="variable">f_pvalue</span> = <span class="number">1</span> - stats.f.<span class="function">cdf</span>(f_stat, <span class="number">1</span>, n - <span class="number">2</span>)
+
+<span class="comment"># Prueba t: &iquest;la pendiente es diferente de cero?</span>
+<span class="variable">se_b1</span> = np.<span class="function">sqrt</span>(ss_res / (n-<span class="number">2</span>) / np.<span class="function">sum</span>((X.values[:,<span class="number">0</span>] - X.values[:,<span class="number">0</span>].<span class="function">mean</span>())**<span class="number">2</span>))
+<span class="variable">t_stat</span> = modelo_simple.coef_[<span class="number">0</span>] / se_b1
+<span class="variable">t_pvalue</span> = <span class="number">2</span> * (<span class="number">1</span> - stats.t.<span class="function">cdf</span>(<span class="function">abs</span>(t_stat), n - <span class="number">2</span>))
+
+<span class="keyword">print</span>(<span class="string">"========== RESUMEN DEL MODELO =========="</span>)
+<span class="keyword">print</span>(<span class="string">f"Intercepto (beta_0): ${modelo_simple.intercept_:>13,.2f} COP"</span>)
+<span class="keyword">print</span>(<span class="string">f"Pendiente  (beta_1): {modelo_simple.coef_[0]:>14.4f}"</span>)
+<span class="keyword">print</span>(<span class="string">f"R²:                  {r2:>13.3f}"</span>)
+<span class="keyword">print</span>(<span class="string">f"RMSE:                ${rmse:>12,.0f} COP"</span>)
+<span class="keyword">print</span>(<span class="string">f"F-statistic:         {f_stat:>13.1f}"</span>)
+<span class="keyword">print</span>(<span class="string">f"Prob(F):             {f_pvalue:>13.2e}"</span>)
+<span class="keyword">print</span>(<span class="string">f"t(beta_1):           {t_stat:>13.1f}"</span>)
+<span class="keyword">print</span>(<span class="string">f"P-value(beta_1):     {t_pvalue:>13.2e}"</span>)
+<span class="keyword">print</span>(<span class="string">f"Observaciones:       {n:>13,}"</span>)</div>
     </div>
 
     <div class="callout tip" style="margin-top:16px;">
         <div class="callout-icon">&#128161;</div>
         <div>
-            <h4>&iquest;Notaste la diferencia?</h4>
-            <p>Con sklearn <strong>no necesitas agregar una constante manualmente</strong> (como en statsmodels con <code>sm.add_constant</code>). El intercepto se calcula automaticamente. Ademas, usamos <strong>doble corchete</strong> <code>df[['columna']]</code> porque sklearn espera una matriz 2D, no una serie 1D.</p>
+            <h4>sklearn + scipy = resumen completo</h4>
+            <p>sklearn entrena el modelo, pero no calcula p-values automaticamente. Con <code>scipy.stats</code> podemos calcular la <strong>prueba F</strong> (si el modelo es util) y la <strong>prueba t</strong> (si la pendiente es distinta de cero). Ambas son fundamentales para validar el modelo.</p>
         </div>
     </div>
 
@@ -1524,9 +1547,16 @@ plt.<span class="function">show</span>()</div>
 
     <div class="code-block" style="margin:12px 0;">
         <div class="code-header"><span>output</span></div>
-        <div class="code-body" style="color:var(--accent-green);"><span style="color:var(--text-muted);">Intercepto (beta_0):</span> $-728,177 COP
-<span style="color:var(--text-muted);">Pendiente  (beta_1):</span>  0.4778
-<span style="color:var(--text-muted);">R²:</span>                  0.473</div>
+        <div class="code-body" style="color:var(--accent-green);">========== RESUMEN DEL MODELO ==========
+<span style="color:var(--text-muted);">Intercepto (beta_0):</span> $  -728,177.21 COP
+<span style="color:var(--text-muted);">Pendiente  (beta_1):</span>         0.4778
+<span style="color:var(--text-muted);">R²:</span>                          0.473
+<span style="color:var(--text-muted);">RMSE:</span>                $   4,612,492 COP
+<span style="color:var(--text-muted);">F-statistic:</span>               8,977.2
+<span style="color:var(--text-muted);">Prob(F):</span>                  0.00e+00
+<span style="color:var(--text-muted);">t(beta_1):</span>                    94.7
+<span style="color:var(--text-muted);">P-value(beta_1):</span>          0.00e+00
+<span style="color:var(--text-muted);">Observaciones:</span>              10,000</div>
     </div>
 
     <h3 style="margin-top:28px;">Analisis de los Resultados</h3>
@@ -1537,8 +1567,19 @@ plt.<span class="function">show</span>()</div>
             <p>El <strong>47.3%</strong> de la variabilidad en el monto_prestamo es explicada por los ingresos_anuales. Para un modelo de una sola variable, es un buen comienzo. El 53% restante depende de otros factores.</p>
         </div>
         <div class="card card-accent blue">
-            <h3>modelo.score(X, Y)</h3>
-            <p>En sklearn, el metodo <code>.score()</code> calcula el R&#178; automaticamente. <strong>Cuanto mas cercano a 1, mejor el modelo.</strong></p>
+            <h3>Prob(F) = 0.00</h3>
+            <p>La prueba F pregunta: <em>"&iquest;este modelo es mejor que simplemente usar el promedio?"</em> Un p-value de <strong>0.00</strong> confirma que SI, la relacion es <strong>estadisticamente significativa</strong>.</p>
+        </div>
+    </div>
+
+    <div class="card-grid" style="margin:8px 0;">
+        <div class="card card-accent purple">
+            <h3>t(beta_1) = 94.7, p &asymp; 0</h3>
+            <p>La prueba t pregunta: <em>"&iquest;la pendiente podria ser cero (sin relacion)?"</em> Con t = 94.7 y p-value &asymp; 0, <strong>rechazamos contundentemente</strong> que beta_1 sea cero. La pendiente es real.</p>
+        </div>
+        <div class="card card-accent amber">
+            <h3>RMSE = $4,612,492</h3>
+            <p>En promedio, nuestras predicciones se desvian <strong>$4.6 millones</strong> del valor real. Dado que los prestamos promedian ~$15M, es un error del ~30%.</p>
         </div>
     </div>
 
@@ -1582,7 +1623,7 @@ plt.<span class="function">scatter</span>(muestra[<span class="string">'ingresos
 <span class="comment"># Linea del modelo</span>
 <span class="variable">x_line</span> = np.<span class="function">linspace</span>(df[<span class="string">'ingresos_anuales'</span>].<span class="function">min</span>(), df[<span class="string">'ingresos_anuales'</span>].<span class="function">max</span>(), <span class="number">100</span>)
 <span class="variable">y_line</span> = modelo_simple.intercept_ + modelo_simple.coef_[<span class="number">0</span>] * x_line
-plt.<span class="function">plot</span>(x_line, y_line, color=<span class="string">'#e74c3c'</span>, linewidth=<span class="number">2.5</span>, label=<span class="string">'Modelo: y = -66,756 + 0.43x'</span>)
+plt.<span class="function">plot</span>(x_line, y_line, color=<span class="string">'#e74c3c'</span>, linewidth=<span class="number">2.5</span>, label=<span class="string">'Modelo: y = -728,177 + 0.48x'</span>)
 
 plt.<span class="function">xlabel</span>(<span class="string">'Ingresos Anuales (COP)'</span>)
 plt.<span class="function">ylabel</span>(<span class="string">'Monto del Prestamo (COP)'</span>)
@@ -1604,7 +1645,7 @@ plt.<span class="function">show</span>()</div>
     </div>
 
     <div class="formula-box">
-        monto_prestamo = -728,177 + 0.4778 &middot; ingresos_anuales + &epsilon;
+        monto_prestamo = -728,177 + 0.478 &middot; ingresos_anuales + &epsilon;
     </div>
 </section>
 
@@ -3098,7 +3139,7 @@ const allTrivia = {
     t1s3: [
         { q: "En nuestro dataset, si la correlacion entre ingresos_anuales y monto_prestamo es r = 0.775, esto es una correlacion:", o: ["Debil positiva", "Moderada negativa", "Fuerte positiva", "Perfecta positiva"], a: 2, e: "Un r de 0.775 esta entre 0.7 y 1.0, lo que lo clasifica como una correlacion fuerte positiva. Significa que a mayores ingresos, mayor tiende a ser el monto del prestamo solicitado." },
         { q: "El metodo de Minimos Cuadrados Ordinarios (OLS) busca la linea que:", o: ["Pasa por todos los puntos", "Minimiza la suma de los residuos al cuadrado", "Maximiza la distancia a los puntos", "Tiene la pendiente mas grande posible"], a: 1, e: "OLS minimiza la suma de los cuadrados de las distancias verticales (residuos) entre los puntos reales y la linea. Se elevan al cuadrado para evitar que errores positivos y negativos se cancelen." },
-        { q: "Si beta_1 = 0.427 en nuestro modelo de monto_prestamo vs ingresos_anuales, significa que:", o: ["El monto base del prestamo es $0.427", "Por cada peso de ingreso adicional, el monto del prestamo sube en promedio $0.427", "El modelo tiene un error de 0.427", "El R-cuadrado es 0.427"], a: 1, e: "Beta_1 (la pendiente) nos dice cuanto cambia Y por cada unidad de aumento en X. En este caso: por cada peso adicional de ingresos anuales, el monto del prestamo solicitado sube en promedio $0.427 COP. O sea, ~$427,000 por cada millon de ingresos." }
+        { q: "Si beta_1 = 0.478 en nuestro modelo de monto_prestamo vs ingresos_anuales, significa que:", o: ["El monto base del prestamo es $0.478", "Por cada peso de ingreso adicional, el monto del prestamo sube en promedio $0.478", "El modelo tiene un error de 0.478", "El R-cuadrado es 0.478"], a: 1, e: "Beta_1 (la pendiente) nos dice cuanto cambia Y por cada unidad de aumento en X. En este caso: por cada peso adicional de ingresos anuales, el monto del prestamo solicitado sube en promedio $0.478 COP. O sea, ~$478,000 por cada millon de ingresos." }
     ],
     t2s2: [
         { q: "Al comparar dos modelos con diferente numero de variables, debemos usar:", o: ["R-cuadrado simple", "R-cuadrado Ajustado", "Solo el RMSE", "El numero de variables"], a: 1, e: "El R-cuadrado Ajustado penaliza la inclusion de variables inutiles, a diferencia del R-cuadrado simple que siempre sube al anadir variables." },
