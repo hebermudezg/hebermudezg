@@ -1266,7 +1266,56 @@
         </div>
     </div>
 
-    <p>Antes de modelar, debemos <strong>cargar los datos</strong>, <strong>importar las librerias</strong> y <strong>explorar el dataset</strong>. Veamos el proceso completo paso a paso.</p>
+    <p>Antes de modelar, debemos <strong>cargar los datos</strong>, <strong>importar las librerias</strong> y <strong>explorar el dataset</strong>. Pero primero, conozcamos la herramienta estrella que usaremos de aqui en adelante.</p>
+
+    <!-- SKLEARN INTRO CARD -->
+    <div class="card" style="margin:24px 0; border-left:4px solid var(--accent-main); background: linear-gradient(135deg, var(--surface) 0%, #fef6ee 100%);">
+        <div style="display:flex; align-items:center; gap:16px; margin-bottom:16px; flex-wrap:wrap;">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/0/05/Scikit_learn_logo_small.svg" alt="scikit-learn logo" style="height:52px; flex-shrink:0;">
+            <div>
+                <h3 style="margin:0; font-size:1.3rem;">Scikit-learn: La Navaja Suiza del Machine Learning</h3>
+                <span style="font-size:0.8rem; color:var(--text-dim); font-weight:600;">sklearn &middot; Codigo abierto &middot; La libreria mas usada en la industria</span>
+            </div>
+        </div>
+        <p style="margin-bottom:12px;"><strong>Scikit-learn</strong> (o <code>sklearn</code>) es la biblioteca de Python mas popular para Machine Learning. Es como tener una caja de herramientas completa donde cada modelo &mdash;regresion, clasificacion, clustering&mdash; se usa con la <strong>misma interfaz</strong> simple:</p>
+        <div class="code-block" style="margin:12px 0;">
+            <div class="code-header"><span>python &mdash; patron_universal_sklearn.py</span></div>
+            <div class="code-body"><span class="comment"># El patron universal de sklearn: crear &rarr; entrenar &rarr; predecir</span>
+<span class="variable">modelo</span> = Modelo()           <span class="comment"># 1. Crear el modelo</span>
+<span class="variable">modelo</span>.<span class="function">fit</span>(X, y)            <span class="comment"># 2. Entrenarlo con datos</span>
+<span class="variable">predicciones</span> = modelo.<span class="function">predict</span>(X_nuevo)  <span class="comment"># 3. Predecir</span></div>
+        </div>
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(180px, 1fr)); gap:10px; margin-top:12px;">
+            <div style="background:var(--accent-main-dim); padding:10px 14px; border-radius:10px; text-align:center;">
+                <div style="font-size:1.3rem;">&#128230;</div>
+                <div style="font-size:0.78rem; font-weight:700; color:var(--accent-main);">Regresion</div>
+                <div style="font-size:0.72rem; color:var(--text-muted);">LinearRegression</div>
+            </div>
+            <div style="background:var(--accent-blue-dim); padding:10px 14px; border-radius:10px; text-align:center;">
+                <div style="font-size:1.3rem;">&#127993;</div>
+                <div style="font-size:0.78rem; font-weight:700; color:var(--accent-blue);">Clasificacion</div>
+                <div style="font-size:0.72rem; color:var(--text-muted);">LogisticRegression</div>
+            </div>
+            <div style="background:var(--accent-green-dim); padding:10px 14px; border-radius:10px; text-align:center;">
+                <div style="font-size:1.3rem;">&#127795;</div>
+                <div style="font-size:0.78rem; font-weight:700; color:var(--accent-green);">Ensembles</div>
+                <div style="font-size:0.72rem; color:var(--text-muted);">RandomForest, XGBoost</div>
+            </div>
+            <div style="background:var(--accent-purple-dim); padding:10px 14px; border-radius:10px; text-align:center;">
+                <div style="font-size:1.3rem;">&#128200;</div>
+                <div style="font-size:0.78rem; font-weight:700; color:var(--accent-purple);">Metricas</div>
+                <div style="font-size:0.72rem; color:var(--text-muted);">r2_score, RMSE, F1</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="callout tip">
+        <div class="callout-icon">&#128161;</div>
+        <div>
+            <h4>&iquest;Por que sklearn y no statsmodels?</h4>
+            <p><strong>statsmodels</strong> es excelente para analisis estadistico clasico (p-values, intervalos de confianza). Pero en la practica profesional de Machine Learning, <strong>sklearn</strong> domina por su interfaz unificada, velocidad y porque incluye todo el pipeline: desde preprocesamiento hasta evaluacion. <em>Aprende sklearn y podras usar cualquier modelo con el mismo codigo.</em></p>
+        </div>
+    </div>
 
     <h3 style="margin-top:24px;">Paso 1: Importar las Librerias</h3>
     <div class="code-block">
@@ -1280,11 +1329,10 @@
 <span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt
 <span class="keyword">import</span> seaborn <span class="keyword">as</span> sns
 
-<span class="comment"># --- Para modelado estadistico ---</span>
-<span class="keyword">import</span> statsmodels.api <span class="keyword">as</span> sm
-
-<span class="comment"># --- Para Machine Learning (lo usaremos mas adelante) ---</span>
+<span class="comment"># --- Scikit-learn: nuestra navaja suiza de ML ---</span>
+<span class="keyword">from</span> sklearn.linear_model <span class="keyword">import</span> LinearRegression, LogisticRegression
 <span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> train_test_split
+<span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> r2_score, mean_squared_error
 <span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> classification_report, confusion_matrix
 
 <span class="comment"># Configuracion de graficos</span>
@@ -1296,8 +1344,8 @@ plt.<span class="function">rcParams</span>[<span class="string">'figure.figsize'
     <div class="callout info">
         <div class="callout-icon">&#128218;</div>
         <div>
-            <h4>En Databricks: instalar statsmodels primero</h4>
-            <p>Ejecuta <code>%pip install statsmodels</code> en una celda aparte antes de los imports.</p>
+            <h4>sklearn viene preinstalado en Databricks, Colab y Kaggle</h4>
+            <p>A diferencia de otras librerias, <strong>no necesitas instalar nada extra</strong>. Solo haz <code>import</code> y listo. Si por alguna razon no esta disponible: <code>%pip install scikit-learn</code></p>
         </div>
     </div>
 
@@ -1401,7 +1449,7 @@ plt.<span class="function">show</span>()
         <div class="callout-icon">&#9989;</div>
         <div>
             <h4>Datos listos!</h4>
-            <p>Ahora que tenemos los datos cargados, limpios y explorados, podemos construir nuestro primer modelo. Usaremos la biblioteca <strong>statsmodels</strong> porque su resumen de resultados es muy completo y pedagogico.</p>
+            <p>Ahora que tenemos los datos cargados, limpios y explorados, podemos construir nuestro primer modelo con <strong>scikit-learn</strong>. Recuerda el patron: <code>crear &rarr; fit &rarr; predict</code>.</p>
         </div>
     </div>
 
@@ -1413,41 +1461,75 @@ plt.<span class="function">show</span>()
         </div>
         <div class="code-body"><span class="comment"># Definir nuestras variables X (independiente) e Y (dependiente)</span>
 <span class="variable">Y</span> = df[<span class="string">'monto_prestamo'</span>]
-<span class="variable">X</span> = df[<span class="string">'ingresos_anuales'</span>]
+<span class="variable">X</span> = df[[<span class="string">'ingresos_anuales'</span>]]  <span class="comment"># Doble corchete: sklearn espera un DataFrame/matriz 2D</span>
 
-<span class="comment"># statsmodels requiere que anadamos una constante (el intercepto beta_0)</span>
-<span class="variable">X</span> = sm.<span class="function">add_constant</span>(X)
+<span class="comment"># Crear el modelo de Regresion Lineal</span>
+<span class="variable">modelo_simple</span> = LinearRegression()
 
-<span class="comment"># Crear y ajustar (entrenar) el modelo de Minimos Cuadrados Ordinarios (OLS)</span>
-<span class="variable">modelo_simple</span> = sm.<span class="function">OLS</span>(Y, X).<span class="function">fit</span>()
+<span class="comment"># Entrenar (ajustar) el modelo con nuestros datos</span>
+<span class="variable">modelo_simple</span>.<span class="function">fit</span>(X, Y)
 
-<span class="comment"># Imprimir el resumen completo del modelo</span>
-<span class="keyword">print</span>(modelo_simple.<span class="function">summary</span>())</div>
+<span class="comment"># Ver los resultados</span>
+<span class="keyword">print</span>(<span class="string">f"Intercepto (beta_0): ${modelo_simple.intercept_:,.2f} COP"</span>)
+<span class="keyword">print</span>(<span class="string">f"Pendiente  (beta_1):  {modelo_simple.coef_[0]:.4f}"</span>)
+<span class="keyword">print</span>(<span class="string">f"R²:                  {modelo_simple.score(X, Y):.3f}"</span>)</div>
+    </div>
+
+    <div class="callout tip" style="margin-top:16px;">
+        <div class="callout-icon">&#128161;</div>
+        <div>
+            <h4>&iquest;Notaste la diferencia?</h4>
+            <p>Con sklearn <strong>no necesitas agregar una constante manualmente</strong> (como en statsmodels con <code>sm.add_constant</code>). El intercepto se calcula automaticamente. Ademas, usamos <strong>doble corchete</strong> <code>df[['columna']]</code> porque sklearn espera una matriz 2D, no una serie 1D.</p>
+        </div>
+    </div>
+
+    <h3 style="margin-top:28px;">Salida Esperada</h3>
+
+    <div class="code-block" style="margin:12px 0;">
+        <div class="code-header"><span>output</span></div>
+        <div class="code-body" style="color:var(--accent-green);"><span style="color:var(--text-muted);">Intercepto (beta_0):</span> $-66,755.57 COP
+<span style="color:var(--text-muted);">Pendiente  (beta_1):</span>  0.4268
+<span style="color:var(--text-muted);">R²:</span>                  0.601</div>
     </div>
 
     <h3 style="margin-top:28px;">Analisis de los Resultados</h3>
 
     <div class="card-grid" style="margin:16px 0;">
         <div class="card card-accent green">
-            <h3>R-squared: 0.601</h3>
+            <h3>R&#178; = 0.601</h3>
             <p>El <strong>60.1%</strong> de la variabilidad en el monto_prestamo es explicada por los ingresos_anuales. Para un modelo de una sola variable, es un poder predictivo solido.</p>
         </div>
         <div class="card card-accent blue">
-            <h3>Prob (F-statistic): 0.000</h3>
-            <p>La relacion encontrada es <strong>estadisticamente muy significativa</strong> y no se debe al azar.</p>
+            <h3>modelo.score(X, Y)</h3>
+            <p>En sklearn, el metodo <code>.score()</code> calcula el R&#178; automaticamente. <strong>Cuanto mas cercano a 1, mejor el modelo.</strong></p>
         </div>
     </div>
 
     <div class="card card-accent">
         <h3>Coeficientes del Modelo</h3>
         <ul style="padding-left:20px; margin-top:8px;">
-            <li><strong>const (&beta;&#8320;) = -$66,756 COP:</strong> El intercepto (monto base cuando ingresos son cero). No tiene interpretacion practica aqui, pero es necesario matematicamente para posicionar la linea.</li>
-            <li><strong>ingresos_anuales (&beta;&#8321;) = 0.427:</strong> <em>"Por cada peso adicional de ingresos anuales, esperamos que el monto del prestamo solicitado aumente, en promedio, en $0.43 COP."</em> O visto de otra forma: por cada $1,000,000 mas de ingreso, el prestamo sube ~$427,000.</li>
+            <li><strong>modelo.intercept_ (&beta;&#8320;) = -$66,756 COP:</strong> El intercepto (monto base cuando ingresos son cero). No tiene interpretacion practica aqui, pero es necesario matematicamente para posicionar la linea.</li>
+            <li><strong>modelo.coef_[0] (&beta;&#8321;) = 0.4268:</strong> <em>"Por cada peso adicional de ingresos anuales, esperamos que el monto del prestamo solicitado aumente, en promedio, en $0.43 COP."</em> O visto de otra forma: por cada $1,000,000 mas de ingreso, el prestamo sube ~$427,000.</li>
         </ul>
     </div>
 
+    <h3 style="margin-top:24px;">Paso 7: Hacer Predicciones</h3>
+    <p>La verdadera utilidad del modelo: <strong>predecir</strong> para nuevos datos.</p>
+    <div class="code-block">
+        <div class="code-header">
+            <span>python &mdash; paso_7_predicciones.py</span>
+            <button class="code-copy-btn" onclick="copyCode(this)">Copiar</button>
+        </div>
+        <div class="code-body"><span class="comment"># Predecir para un cliente con ingresos de $60,000,000 COP</span>
+<span class="variable">ingreso_nuevo</span> = [[<span class="number">60_000_000</span>]]
+<span class="variable">prediccion</span> = modelo_simple.<span class="function">predict</span>(ingreso_nuevo)
+
+<span class="keyword">print</span>(<span class="string">f"Para ingresos de $60M, el modelo predice un prestamo de: ${prediccion[0]:,.0f} COP"</span>)
+<span class="comment"># Resultado: $25,541,984 COP</span></div>
+    </div>
+
     <div class="formula-box">
-        monto_prestamo = -66,756 + 0.427 &middot; ingresos_anuales + &epsilon;
+        monto_prestamo = -66,756 + 0.4268 &middot; ingresos_anuales + &epsilon;
     </div>
 </section>
 
@@ -1496,20 +1578,36 @@ plt.<span class="function">show</span>()
         <div class="code-body"><span class="comment"># --- 1. Construccion del Modelo de Regresion Multiple ---</span>
 <span class="variable">Y</span> = df[<span class="string">'monto_prestamo'</span>]
 <span class="variable">X</span> = df[[<span class="string">'ingresos_anuales'</span>, <span class="string">'puntaje_credito'</span>, <span class="string">'edad'</span>]]
-<span class="variable">X</span> = sm.<span class="function">add_constant</span>(X)
 
-<span class="variable">modelo_multiple</span> = sm.<span class="function">OLS</span>(Y, X).<span class="function">fit</span>()
+<span class="comment"># Mismo patron: crear, entrenar, evaluar</span>
+<span class="variable">modelo_multiple</span> = LinearRegression()
+<span class="variable">modelo_multiple</span>.<span class="function">fit</span>(X, Y)
 
+<span class="comment"># --- 2. Ver los resultados ---</span>
 <span class="keyword">print</span>(<span class="string">"--- Resultados del Modelo de Regresion Multiple ---"</span>)
-<span class="keyword">print</span>(modelo_multiple.<span class="function">summary</span>())</div>
+<span class="keyword">print</span>(<span class="string">f"Intercepto: ${modelo_multiple.intercept_:,.2f}"</span>)
+<span class="keyword">for</span> nombre, coef <span class="keyword">in</span> <span class="function">zip</span>(X.columns, modelo_multiple.coef_):
+    <span class="keyword">print</span>(<span class="string">f"  {nombre}: {coef:.4f}"</span>)
+<span class="keyword">print</span>(<span class="string">f"\nR²: {modelo_multiple.score(X, Y):.3f}"</span>)</div>
+    </div>
+
+    <div class="code-block" style="margin-top:12px;">
+        <div class="code-header"><span>output</span></div>
+        <div class="code-body" style="color:var(--accent-green);"><span style="color:var(--text-muted);">--- Resultados del Modelo de Regresion Multiple ---</span>
+Intercepto: $90,260.04
+  ingresos_anuales: 0.4268
+  puntaje_credito: -386.3385
+  edad: 2805.2826
+
+R²: 0.601</div>
     </div>
 
     <div class="card" style="margin-top:20px;">
         <h3>Interpretacion de Coeficientes</h3>
         <ul style="padding-left:20px; margin-top:8px;">
-            <li><strong>ingresos_anuales:</strong> "Manteniendo puntaje y edad constantes, por cada peso adicional en ingresos, el monto del prestamo sube." Es el predictor mas fuerte dado la alta correlacion (r = 0.775).</li>
-            <li><strong>puntaje_credito:</strong> "Manteniendo ingresos y edad constantes, un mayor puntaje de credito puede influir en el monto que el banco aprueba."</li>
-            <li><strong>edad:</strong> "Manteniendo lo demas constante, la edad puede tener un efecto marginal en el monto solicitado."</li>
+            <li><strong>ingresos_anuales (0.4268):</strong> "Manteniendo puntaje y edad constantes, por cada peso adicional en ingresos, el monto del prestamo sube ~$0.43." Es el predictor mas fuerte dado la alta correlacion (r = 0.775).</li>
+            <li><strong>puntaje_credito (-386.34):</strong> "Manteniendo ingresos y edad constantes, cada punto adicional en el puntaje reduce el monto solicitado en $386 COP." Un efecto leve.</li>
+            <li><strong>edad (2,805.28):</strong> "Manteniendo lo demas constante, cada ano adicional de edad aumenta el prestamo en ~$2,805 COP." Un efecto marginal.</li>
         </ul>
     </div>
 </section>
@@ -1545,10 +1643,11 @@ plt.<span class="function">show</span>()
             <span>python &mdash; calcular_rmse.py</span>
             <button class="code-copy-btn" onclick="copyCode(this)">Copiar</button>
         </div>
-        <div class="code-body"><span class="comment"># Calcular el RMSE a partir del Error Cuadratico Medio de los Residuos</span>
-<span class="variable">rmse</span> = np.<span class="function">sqrt</span>(modelo_multiple.mse_resid)
+        <div class="code-body"><span class="comment"># Calcular predicciones y luego el RMSE</span>
+<span class="variable">Y_pred</span> = modelo_multiple.<span class="function">predict</span>(X)
+<span class="variable">rmse</span> = np.<span class="function">sqrt</span>(mean_squared_error(Y, Y_pred))
 <span class="keyword">print</span>(<span class="string">f"El RMSE de nuestro modelo es: ${rmse:,.0f} COP"</span>)
-<span class="comment"># Resultado: RMSE ≈ $14,100,000 COP</span></div>
+<span class="comment"># Resultado: RMSE &asymp; $14,117,665 COP</span></div>
     </div>
 
     <div class="callout tip">
@@ -1729,19 +1828,46 @@ plt.<span class="function">show</span>()
             <span>python &mdash; regresion_logistica.py</span>
             <button class="code-copy-btn" onclick="copyCode(this)">Copiar</button>
         </div>
-        <div class="code-body"><span class="comment"># --- 1. Ingenieria de Variables y Construccion del Modelo ---</span>
-<span class="comment"># Calculamos el DTI ratio, un predictor clave</span>
-df[<span class="string">'dti_ratio'</span>] = df[<span class="string">'monto_prestamo'</span>] / df[<span class="string">'ingresos_anuales'</span>]
-
-<span class="comment"># Creamos la variable objetivo numerica</span>
-df[<span class="string">'no_pago_numeric'</span>] = (df[<span class="string">'estado_pago'</span>] == <span class="string">'No Pagado'</span>).astype(<span class="keyword">int</span>)
-
+        <div class="code-body"><span class="comment"># --- 1. Preparar las variables (ya las creamos en Paso 4) ---</span>
 <span class="variable">Y</span> = df[<span class="string">'no_pago_numeric'</span>]
 <span class="variable">X</span> = df[[<span class="string">'puntaje_credito'</span>, <span class="string">'dti_ratio'</span>, <span class="string">'edad'</span>]]
-<span class="variable">X</span> = sm.<span class="function">add_constant</span>(X)
 
-<span class="variable">modelo_logistico</span> = sm.<span class="function">Logit</span>(Y, X).<span class="function">fit</span>()
-<span class="keyword">print</span>(modelo_logistico.<span class="function">summary</span>())</div>
+<span class="comment"># --- 2. Dividir en entrenamiento (80%) y prueba (20%) ---</span>
+<span class="variable">X_train</span>, <span class="variable">X_test</span>, <span class="variable">y_train</span>, <span class="variable">y_test</span> = train_test_split(
+    X, Y, test_size=<span class="number">0.2</span>, random_state=<span class="number">42</span>
+)
+
+<span class="comment"># --- 3. Crear y entrenar el modelo logistico ---</span>
+<span class="variable">modelo_logistico</span> = LogisticRegression(max_iter=<span class="number">1000</span>, random_state=<span class="number">42</span>)
+<span class="variable">modelo_logistico</span>.<span class="function">fit</span>(X_train, y_train)
+
+<span class="comment"># --- 4. Ver coeficientes y Odds Ratios ---</span>
+<span class="keyword">print</span>(<span class="string">"--- Coeficientes del Modelo Logistico ---"</span>)
+<span class="keyword">print</span>(<span class="string">f"Intercepto: {modelo_logistico.intercept_[0]:.4f}"</span>)
+<span class="keyword">for</span> nombre, coef <span class="keyword">in</span> <span class="function">zip</span>(X.columns, modelo_logistico.coef_[<span class="number">0</span>]):
+    <span class="keyword">print</span>(<span class="string">f"  {nombre}: coef={coef:.4f}  |  OR={np.exp(coef):.4f}"</span>)
+
+<span class="comment"># --- 5. Evaluar en datos de prueba ---</span>
+<span class="keyword">print</span>(<span class="string">f"\nAccuracy en test: {modelo_logistico.score(X_test, y_test):.3f}"</span>)</div>
+    </div>
+
+    <div class="code-block" style="margin-top:12px;">
+        <div class="code-header"><span>output</span></div>
+        <div class="code-body" style="color:var(--accent-green);"><span style="color:var(--text-muted);">--- Coeficientes del Modelo Logistico ---</span>
+Intercepto: 3.1777
+  puntaje_credito: coef=-0.0123  |  OR=0.9878
+  dti_ratio:       coef= 7.3934  |  OR=1625.15
+  edad:            coef=-0.0017  |  OR=0.9983
+
+Accuracy en test: 0.827</div>
+    </div>
+
+    <div class="callout tip" style="margin-top:16px;">
+        <div class="callout-icon">&#128161;</div>
+        <div>
+            <h4>Novedad: train_test_split</h4>
+            <p>A diferencia de la regresion lineal, aqui <strong>dividimos los datos</strong> en entrenamiento (80%) y prueba (20%). Esto es crucial para evaluar si el modelo generaliza bien a datos que <em>nunca ha visto</em>. Es una practica estandar en ML.</p>
+        </div>
     </div>
 
     <div class="card" style="margin-top:20px;">
@@ -1749,8 +1875,8 @@ df[<span class="string">'no_pago_numeric'</span>] = (df[<span class="string">'es
         <p style="margin-bottom:12px;">Los coeficientes se interpretan como <strong>Odds Ratios (OR)</strong>, calculados como e<sup>coeficiente</sup>:</p>
         <ul style="padding-left:20px;">
             <li><strong>puntaje_credito (OR &asymp; 0.988):</strong> "Por cada punto adicional en puntaje_credito, los 'odds' de no pagar <strong>disminuyen</strong> un 1.2%. Es un factor <strong>protector</strong>."</li>
-            <li><strong>dti_ratio (OR &asymp; 1,665):</strong> "Un aumento de una unidad en el dti_ratio incrementa los odds de no pago en <strong>1,665 veces</strong>. Es el predictor de riesgo mas fuerte del modelo."</li>
-            <li><strong>edad (OR &asymp; 0.999, p = 0.0002):</strong> Estadisticamente significativa pero con un efecto practicamente nulo. La edad casi no influye en la probabilidad de impago.</li>
+            <li><strong>dti_ratio (OR &asymp; 1,625):</strong> "Un aumento de una unidad en el dti_ratio incrementa los odds de no pago en <strong>1,625 veces</strong>. Es el predictor de riesgo mas fuerte del modelo."</li>
+            <li><strong>edad (OR &asymp; 0.998):</strong> El efecto es practicamente nulo. La edad casi no influye en la probabilidad de impago.</li>
         </ul>
     </div>
 
