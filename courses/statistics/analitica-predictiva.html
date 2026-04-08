@@ -2329,11 +2329,15 @@ Feature Importances:
   monto_prestamo:     0.020</div>
     </div>
 
+    <div style="margin:20px 0; text-align:center;">
+        <img src="img_decision_tree.png" alt="Arbol de decision visualizado" style="max-width:100%; border-radius:var(--radius); box-shadow:var(--shadow-md);">
+    </div>
+
     <div class="callout info" style="margin-top:12px;">
         <div class="callout-icon">&#128270;</div>
         <div>
-            <h4>El arbol dice: el puntaje lo es todo</h4>
-            <p>El 70.5% de las decisiones del arbol dependen del <strong>puntaje_credito</strong>. Tiene sentido: es la variable mas correlacionada con el impago (r = -0.40). Pero el recall de "No Pagado" es solo 24% &mdash; detecta pocos morosos.</p>
+            <h4>Lectura del arbol</h4>
+            <p>Cada nodo es una <strong>pregunta</strong>: "Puntaje &le; 527?" Si &rarr; izquierda, No &rarr; derecha. Los nodos <strong style="color:#e74c3c;">rojos</strong> predicen "No Pagado" y los <strong style="color:#00A99D;">verdes</strong> "Pagado". La primera pregunta (raiz) es siempre la mas importante. El 70.5% de las decisiones dependen del <strong>puntaje_credito</strong>.</p>
         </div>
     </div>
 
@@ -2419,6 +2423,18 @@ Feature Importances:
         </ul>
     </div>
 
+    <div style="margin:20px 0; text-align:center;">
+        <img src="img_knn_k.png" alt="KNN accuracy vs K" style="max-width:100%; border-radius:var(--radius); box-shadow:var(--shadow-md);">
+    </div>
+
+    <div class="callout tip" style="margin-top:12px; margin-bottom:24px;">
+        <div class="callout-icon">&#128161;</div>
+        <div>
+            <h4>Elegir K: el balance entre ruido y suavidad</h4>
+            <p>Con K bajo, el modelo es <strong>muy sensible al ruido</strong> (overfitting: train alto, test bajo). A medida que K sube, el modelo se suaviza. La linea roja (test) nos dice el rendimiento real. El punto morado marca el <strong>mejor K</strong>.</p>
+        </div>
+    </div>
+
     <div class="card card-accent purple" style="margin-bottom:24px;">
         <div class="icon-box purple"><i class="fa-solid fa-vector-square"></i></div>
         <h3>Support Vector Machine (SVM)</h3>
@@ -2428,6 +2444,18 @@ Feature Importances:
             <li><strong>Efectivo</strong> en espacios de alta dimension</li>
             <li><strong>Lento</strong> con datasets muy grandes (&gt;10K registros)</li>
         </ul>
+    </div>
+
+    <div style="margin:20px 0; text-align:center;">
+        <img src="img_svm_boundary.png" alt="SVM frontera de decision" style="max-width:100%; border-radius:var(--radius); box-shadow:var(--shadow-md);">
+    </div>
+
+    <div class="callout tip" style="margin-top:12px; margin-bottom:24px;">
+        <div class="callout-icon">&#128161;</div>
+        <div>
+            <h4>Lectura de la frontera SVM</h4>
+            <p>La linea punteada es la <strong>frontera de decision</strong>: todo lo que cae en la zona verde-claro se clasifica como "Pagado", y la zona roja-claro como "No Pagado". SVM busca maximizar el <strong>margen</strong> entre ambas clases. Nota como la frontera es <strong>curva</strong> (gracias al kernel RBF), no una linea recta.</p>
+        </div>
     </div>
 
     <div class="card card-accent amber" style="margin-bottom:24px;">
