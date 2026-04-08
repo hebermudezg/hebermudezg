@@ -919,7 +919,7 @@
     <div class="card" style="margin-top:20px;">
         <h3><i class="fa-solid fa-database" style="color:var(--accent-blue);margin-right:8px;"></i> Nuestro Dataset: credit_risk_data.csv</h3>
         <p>A lo largo de esta unidad trabajaremos con este dataset de <strong>10,000 registros</strong>:</p>
-        <a href="credit_risk_data.csv" download style="display:inline-flex;align-items:center;gap:10px;background:var(--accent-blue);color:#fff;padding:12px 24px;border-radius:10px;font-weight:700;font-size:0.95rem;text-decoration:none;margin:12px 0;transition:all 0.2s;box-shadow:var(--shadow-sm);" onmouseover="this.style.filter='brightness(1.15)';this.style.transform='translateY(-1px)'" onmouseout="this.style.filter='';this.style.transform=''"><i class="fa-solid fa-download"></i> Descargar credit_risk_data.csv (69 MB)</a>
+        <a href="credit_risk_data.csv" download style="display:inline-flex;align-items:center;gap:10px;background:var(--accent-blue);color:#fff;padding:12px 24px;border-radius:10px;font-weight:700;font-size:0.95rem;text-decoration:none;margin:12px 0;transition:all 0.2s;box-shadow:var(--shadow-sm);" onmouseover="this.style.filter='brightness(1.15)';this.style.transform='translateY(-1px)'" onmouseout="this.style.filter='';this.style.transform=''"><i class="fa-solid fa-download"></i> Descargar credit_risk_data.csv (483 KB)</a>
         <div class="compare-table" style="margin-top:12px;">
             <table class="compare-table">
                 <thead>
@@ -932,12 +932,13 @@
                 <tbody>
                     <tr><td><code>id_cliente</code></td><td>Identificador</td><td>ID unico del cliente</td></tr>
                     <tr><td><code>nombre</code>, <code>apellido</code></td><td>Texto</td><td>Datos personales del cliente</td></tr>
-                    <tr><td><code>edad</code></td><td>Numerica</td><td>Edad del solicitante (media: 33.4)</td></tr>
-                    <tr><td><code>ingresos_anuales</code></td><td>Numerica</td><td>Ingresos anuales en COP (media: ~$50.8M)</td></tr>
-                    <tr><td><code>monto_prestamo</code></td><td>Numerica</td><td>Monto del prestamo solicitado</td></tr>
-                    <tr><td><code>puntaje_credito</code></td><td>Numerica</td><td>Score crediticio (media: 648.7)</td></tr>
+                    <tr><td><code>edad</code></td><td>Numerica</td><td>Edad del solicitante (22-65, media: 38)</td></tr>
+                    <tr><td><code>antiguedad_laboral</code></td><td>Numerica</td><td>Anos en el empleo actual (0-40, media: 8)</td></tr>
+                    <tr><td><code>ingresos_anuales</code></td><td>Numerica</td><td>Ingresos anuales en COP (media: ~$30M)</td></tr>
+                    <tr><td><code>puntaje_credito</code></td><td>Numerica</td><td>Score crediticio (300-850, media: 534)</td></tr>
+                    <tr><td><code>monto_prestamo</code></td><td>Numerica</td><td>Monto del prestamo solicitado (media: ~$15M)</td></tr>
                     <tr><td><code>proposito_prestamo</code></td><td>Categorica</td><td>Personal, Coche, Vivienda, Educacion, Negocio</td></tr>
-                    <tr><td><code>estado_pago</code></td><td>Categorica</td><td>Pagado (~73%) / No Pagado (~27%)</td></tr>
+                    <tr><td><code>estado_pago</code></td><td>Categorica</td><td>Pagado (~71%) / No Pagado (~29%)</td></tr>
                 </tbody>
             </table>
         </div>
