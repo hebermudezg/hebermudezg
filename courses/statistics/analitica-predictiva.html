@@ -2312,7 +2312,29 @@ arbol.<span class="function">fit</span>(X_train, y_train)
 
 <span class="comment"># Evaluar</span>
 <span class="variable">y_pred</span> = arbol.<span class="function">predict</span>(X_test)
-<span class="keyword">print</span>(<span class="function">classification_report</span>(y_test, y_pred))</div>
+<span class="keyword">print</span>(<span class="function">classification_report</span>(y_test, y_pred, target_names=[<span class="string">'Pagado'</span>,<span class="string">'No Pagado'</span>]))</div>
+    </div>
+
+    <div class="code-block" style="margin-top:12px;">
+        <div class="code-header"><span>output</span></div>
+        <div class="code-body" style="color:var(--accent-green);">              precision    recall  f1-score   support
+      Pagado       0.75      0.96      0.84      1400
+   No Pagado       0.74      0.24      0.36       600
+    accuracy                           0.75      2000
+
+Feature Importances:
+  puntaje_credito:    0.705
+  antiguedad_laboral: 0.219
+  ingresos_anuales:   0.057
+  monto_prestamo:     0.020</div>
+    </div>
+
+    <div class="callout info" style="margin-top:12px;">
+        <div class="callout-icon">&#128270;</div>
+        <div>
+            <h4>El arbol dice: el puntaje lo es todo</h4>
+            <p>El 70.5% de las decisiones del arbol dependen del <strong>puntaje_credito</strong>. Tiene sentido: es la variable mas correlacionada con el impago (r = -0.40). Pero el recall de "No Pagado" es solo 24% &mdash; detecta pocos morosos.</p>
+        </div>
     </div>
 
     <h3 style="margin-top:32px;">Random Forest: La Sabiduria de la Multitud</h3>
@@ -2344,6 +2366,34 @@ rf.<span class="function">fit</span>(X_train, y_train)
 <span class="comment"># Ver la importancia de cada variable</span>
 <span class="keyword">for</span> name, imp <span class="keyword">in</span> <span class="function">zip</span>(X.columns, rf.feature_importances_):
     <span class="keyword">print</span>(<span class="string">f"  {name}: {imp:.3f}"</span>)</div>
+    </div>
+
+    <div class="code-block" style="margin-top:12px;">
+        <div class="code-header"><span>output</span></div>
+        <div class="code-body" style="color:var(--accent-green);">Accuracy: 0.755   (vs 0.747 del arbol individual)
+
+              precision    recall  f1-score   support
+      Pagado       0.78      0.91      0.84      1400
+   No Pagado       0.65      0.41      0.50       600
+    accuracy                           0.76      2000
+
+Feature Importances:
+  puntaje_credito:    0.487
+  ingresos_anuales:   0.217
+  antiguedad_laboral: 0.163
+  monto_prestamo:     0.134</div>
+    </div>
+
+    <div style="margin:20px 0; text-align:center;">
+        <img src="img_feature_importance.png" alt="Importancia de variables Random Forest" style="max-width:100%; border-radius:var(--radius); box-shadow:var(--shadow-md);">
+    </div>
+
+    <div class="callout success" style="margin-top:12px;">
+        <div class="callout-icon">&#9989;</div>
+        <div>
+            <h4>Random Forest mejora al arbol individual</h4>
+            <p>Recall de "No Pagado" subio de <strong>24% &rarr; 41%</strong>. Ademas, el bosque distribuye mejor la importancia entre variables: puntaje sigue liderando (49%) pero ahora ingresos (22%) y antiguedad (16%) tambien aportan. <strong>200 arboles votando son mejores que uno solo.</strong></p>
+        </div>
     </div>
 </section>
 
@@ -2419,6 +2469,25 @@ rf.<span class="function">fit</span>(X_train, y_train)
     modelo.<span class="function">fit</span>(datos_X, y_train)
     pred = modelo.<span class="function">predict</span>(datos_Xt)
     <span class="keyword">print</span>(<span class="string">f"{nombre}: F1 = {f1_score(y_test, pred):.3f}"</span>)</div>
+    </div>
+
+    <div class="code-block" style="margin-top:12px;">
+        <div class="code-header"><span>output</span></div>
+        <div class="code-body" style="color:var(--accent-green);">KNN (k=7):         F1 = 0.470
+SVM (RBF):         F1 = 0.450
+Gradient Boosting: F1 = 0.480</div>
+    </div>
+
+    <div style="margin:20px 0; text-align:center;">
+        <img src="img_comparacion_modelos.png" alt="Comparacion de modelos de clasificacion" style="max-width:100%; border-radius:var(--radius); box-shadow:var(--shadow-md);">
+    </div>
+
+    <div class="callout tip" style="margin-top:12px;">
+        <div class="callout-icon">&#128161;</div>
+        <div>
+            <h4>Lectura del grafico comparativo</h4>
+            <p>La barra verde es <strong>Accuracy</strong> (que tan bien clasifica en general) y la roja es <strong>F1 de "No Pagado"</strong> (que tan bien detecta morosos). Nota como Random Forest y Gradient Boosting lideran en F1. <em>Para un banco, detectar morosos (F1) importa mas que el accuracy general.</em></p>
+        </div>
     </div>
 
     <h3 style="margin-top:28px;">Tabla Comparativa de Modelos</h3>
@@ -2618,7 +2687,32 @@ modelo_nn.<span class="function">compile</span>(
 
 <span class="comment"># Evaluar</span>
 <span class="variable">loss</span>, <span class="variable">acc</span> = modelo_nn.<span class="function">evaluate</span>(X_test_sc, y_test)
-<span class="keyword">print</span>(<span class="string">f"Accuracy en test: {acc:.3f}"</span>)</div>
+<span class="keyword">print</span>(<span class="string">f"Accuracy en test: {acc:.3f}"</span>)
+<span class="keyword">print</span>(<span class="function">classification_report</span>(y_test,
+      (modelo_nn.<span class="function">predict</span>(X_test_sc) > <span class="number">0.5</span>).<span class="function">astype</span>(<span class="keyword">int</span>).<span class="function">ravel</span>(),
+      target_names=[<span class="string">'Pagado'</span>, <span class="string">'No Pagado'</span>]))</div>
+    </div>
+
+    <div class="code-block" style="margin-top:12px;">
+        <div class="code-header"><span>output</span></div>
+        <div class="code-body" style="color:var(--accent-green);">Accuracy en test: 0.765
+
+              precision    recall  f1-score   support
+      Pagado       0.79      0.91      0.84      1400
+   No Pagado       0.66      0.43      0.52       600
+    accuracy                           0.76      2000</div>
+    </div>
+
+    <div style="margin:20px 0; text-align:center;">
+        <img src="img_nn_training.png" alt="Curvas de entrenamiento red neuronal" style="max-width:100%; border-radius:var(--radius); box-shadow:var(--shadow-md);">
+    </div>
+
+    <div class="callout tip" style="margin-top:12px;">
+        <div class="callout-icon">&#128161;</div>
+        <div>
+            <h4>Lectura de las curvas de entrenamiento</h4>
+            <p>El grafico izquierdo muestra como el <strong>Accuracy</strong> sube con cada epoca (el modelo aprende). El derecho muestra como el <strong>Loss</strong> baja. Si la linea de validacion (roja) se separa mucho de la de entrenamiento (verde), hay <strong>overfitting</strong>. En nuestro caso se mantienen cercanas &mdash; buena senal.</p>
+        </div>
     </div>
 
     <div class="callout danger">
