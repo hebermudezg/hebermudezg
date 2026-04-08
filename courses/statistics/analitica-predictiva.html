@@ -19,9 +19,9 @@
             --text-muted: #5c5650;
             --text-dim: #9b958d;
             --ink: #2c2825;
-            --accent-main: #c05621;
-            --accent-main-dim: rgba(192, 86, 33, 0.08);
-            --accent-main-light: #e87f3e;
+            --accent-main: #00A99D;
+            --accent-main-dim: rgba(0, 169, 157, 0.08);
+            --accent-main-light: #26BFB5;
             --accent-blue: #1d6fa5;
             --accent-blue-dim: rgba(29, 111, 165, 0.08);
             --accent-green: #2a7d5f;
@@ -59,14 +59,14 @@
             text-align: center;
             position: relative;
             overflow: hidden;
-            background: linear-gradient(175deg, #fef6ee 0%, #faf9f7 60%, #f0ede8 100%);
+            background: linear-gradient(175deg, #eefaf9 0%, #f7faf9 60%, #e8f0ee 100%);
         }
         .hero::before {
             content: '';
             position: absolute;
             top: -200px; right: -200px;
             width: 600px; height: 600px;
-            background: radial-gradient(circle, rgba(192,86,33,0.06) 0%, transparent 70%);
+            background: radial-gradient(circle, rgba(0,169,157,0.06) 0%, transparent 70%);
             pointer-events: none;
         }
         .hero::after {
@@ -89,7 +89,7 @@
             text-transform: uppercase;
             padding: 8px 20px;
             border-radius: 30px;
-            border: 1px solid rgba(192,86,33,0.12);
+            border: 1px solid rgba(0,169,157,0.12);
             margin-bottom: 32px;
         }
         .hero h1 {
@@ -101,7 +101,7 @@
             font-weight: 400;
         }
         .hero h1 .highlight {
-            background: linear-gradient(135deg, var(--accent-main) 0%, #d4732e 100%);
+            background: linear-gradient(135deg, var(--accent-main) 0%, #008F85 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
@@ -170,7 +170,7 @@
         .nav-pill.active {
             color: var(--accent-main);
             background: var(--accent-main-dim);
-            border-color: rgba(192,86,33,0.12);
+            border-color: rgba(0,169,157,0.12);
         }
 
         /* ===== CHAPTERS ===== */
@@ -1269,7 +1269,7 @@
     <p>Antes de modelar, debemos <strong>cargar los datos</strong>, <strong>importar las librerias</strong> y <strong>explorar el dataset</strong>. Pero primero, conozcamos la herramienta estrella que usaremos de aqui en adelante.</p>
 
     <!-- SKLEARN INTRO CARD -->
-    <div class="card" style="margin:24px 0; border-left:4px solid var(--accent-main); background: linear-gradient(135deg, var(--surface) 0%, #fef6ee 100%);">
+    <div class="card" style="margin:24px 0; border-left:4px solid var(--accent-main); background: linear-gradient(135deg, var(--surface) 0%, #eefaf9 100%);">
         <div style="display:flex; align-items:center; gap:16px; margin-bottom:16px; flex-wrap:wrap;">
             <img src="https://upload.wikimedia.org/wikipedia/commons/0/05/Scikit_learn_logo_small.svg" alt="scikit-learn logo" style="height:52px; flex-shrink:0;">
             <div>
@@ -1306,14 +1306,6 @@
                 <div style="font-size:0.78rem; font-weight:700; color:var(--accent-purple);">Metricas</div>
                 <div style="font-size:0.72rem; color:var(--text-muted);">r2_score, RMSE, F1</div>
             </div>
-        </div>
-    </div>
-
-    <div class="callout tip">
-        <div class="callout-icon">&#128161;</div>
-        <div>
-            <h4>&iquest;Por que sklearn y no statsmodels?</h4>
-            <p><strong>statsmodels</strong> es excelente para analisis estadistico clasico (p-values, intervalos de confianza). Pero en la practica profesional de Machine Learning, <strong>sklearn</strong> domina por su interfaz unificada, velocidad y porque incluye todo el pipeline: desde preprocesamiento hasta evaluacion. <em>Aprende sklearn y podras usar cualquier modelo con el mismo codigo.</em></p>
         </div>
     </div>
 
@@ -1436,7 +1428,7 @@ plt.<span class="function">show</span>()
 plt.<span class="function">figure</span>(figsize=(<span class="number">10</span>, <span class="number">6</span>))
 plt.<span class="function">scatter</span>(df[<span class="string">'ingresos_anuales'</span>].<span class="function">sample</span>(<span class="number">5000</span>),
            df[<span class="string">'monto_prestamo'</span>].<span class="function">sample</span>(<span class="number">5000</span>),
-           alpha=<span class="number">0.3</span>, s=<span class="number">10</span>, color=<span class="string">'#c05621'</span>)
+           alpha=<span class="number">0.3</span>, s=<span class="number">10</span>, color=<span class="string">'#00A99D'</span>)
 plt.<span class="function">xlabel</span>(<span class="string">'Ingresos Anuales (COP)'</span>)
 plt.<span class="function">ylabel</span>(<span class="string">'Monto del Prestamo (COP)'</span>)
 plt.<span class="function">title</span>(<span class="string">'Relacion entre Ingresos Anuales y Monto del Prestamo'</span>)
@@ -2476,7 +2468,7 @@ let fitChart, fitData = [], fitOLSb0 = 0, fitOLSb1 = 0;
         type: 'scatter',
         data: {
             datasets: [
-                { label: 'Datos', data: [], backgroundColor: 'rgba(192,86,33,0.7)', pointRadius: 7, pointHoverRadius: 9, order: 3 },
+                { label: 'Datos', data: [], backgroundColor: 'rgba(0,169,157,0.7)', pointRadius: 7, pointHoverRadius: 9, order: 3 },
                 { label: 'Tu linea', data: [], type: 'line', borderColor: '#1a1816', borderWidth: 3, pointRadius: 0, fill: false, order: 1 },
                 { label: 'OLS', data: [], type: 'line', borderColor: 'var(--accent-green)', borderWidth: 2.5, borderDash: [8, 5], pointRadius: 0, fill: false, order: 2, hidden: true }
             ]
@@ -2657,8 +2649,8 @@ let olsChart, olsShowResiduals = false, olsPoints = [], olsBeta0 = 0, olsBeta1v 
         type: 'scatter',
         data: {
             datasets: [
-                { label: 'Datos', data: [], backgroundColor: 'rgba(192,86,33,0.5)', pointRadius: 5, order: 2 },
-                { label: 'Linea OLS', data: [], type: 'line', borderColor: '#c05621', borderWidth: 2.5, pointRadius: 0, fill: false, order: 1 },
+                { label: 'Datos', data: [], backgroundColor: 'rgba(0,169,157,0.5)', pointRadius: 5, order: 2 },
+                { label: 'Linea OLS', data: [], type: 'line', borderColor: '#00A99D', borderWidth: 2.5, pointRadius: 0, fill: false, order: 1 },
                 { label: 'Residuos', data: [], type: 'line', borderColor: 'rgba(181,51,74,0.4)', borderWidth: 1, pointRadius: 0, fill: false, showLine: false, order: 3 }
             ]
         },
@@ -2750,7 +2742,7 @@ let sigChart;
             labels: xs,
             datasets: [
                 { label: 'Sigmoide', data: ys, borderColor: '#6d4aaa', borderWidth: 3, pointRadius: 0, fill: false, tension: 0.4 },
-                { label: 'Punto actual', data: Array(xs.length).fill(null), borderColor: '#c05621', backgroundColor: '#c05621', pointRadius: 0, showLine: false },
+                { label: 'Punto actual', data: Array(xs.length).fill(null), borderColor: '#00A99D', backgroundColor: '#00A99D', pointRadius: 0, showLine: false },
                 { label: 'Umbral', data: Array(xs.length).fill(0.5), borderColor: 'rgba(181,51,74,0.4)', borderWidth: 2, borderDash: [6, 4], pointRadius: 0, fill: false }
             ]
         },
